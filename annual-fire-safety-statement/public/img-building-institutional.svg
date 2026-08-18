@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 750" width="600" height="750">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#dbeafe"/>
+      <stop offset="100%" stop-color="#bfdbfe"/>
+    </linearGradient>
+    <linearGradient id="brick" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a16207"/>
+      <stop offset="100%" stop-color="#713f12"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="750" fill="url(#sky)"/>
+  <rect x="0" y="600" width="600" height="150" fill="#57534e"/>
+
+  <!-- Building -->
+  <rect x="40" y="200" width="520" height="400" fill="url(#brick)"/>
+  <rect x="40" y="200" width="520" height="400" fill="#000000" opacity="0.1"/>
+
+  <!-- Trim -->
+  <rect x="40" y="200" width="520" height="14" fill="#fef3c7"/>
+  <rect x="40" y="586" width="520" height="14" fill="#fef3c7"/>
+
+  <!-- Windows -->
+  <g fill="#fef3c7" opacity="0.95">
+    <rect x="80" y="240" width="100" height="180"/>
+    <rect x="200" y="240" width="100" height="180"/>
+    <rect x="320" y="240" width="100" height="180"/>
+    <rect x="440" y="240" width="100" height="180"/>
+  </g>
+
+  <!-- Window crosses -->
+  <g stroke="#78350f" stroke-width="3">
+    <line x1="130" y1="240" x2="130" y2="420"/>
+    <line x1="80" y1="330" x2="180" y2="330"/>
+    <line x1="250" y1="240" x2="250" y2="420"/>
+    <line x1="200" y1="330" x2="300" y2="330"/>
+    <line x1="370" y1="240" x2="370" y2="420"/>
+    <line x1="320" y1="330" x2="420" y2="330"/>
+    <line x1="490" y1="240" x2="490" y2="420"/>
+    <line x1="440" y1="330" x2="540" y2="330"/>
+  </g>
+
+  <!-- Pillars -->
+  <g fill="#fef3c7">
+    <rect x="60" y="240" width="20" height="350"/>
+    <rect x="180" y="240" width="20" height="350"/>
+    <rect x="300" y="240" width="20" height="350"/>
+    <rect x="420" y="240" width="20" height="350"/>
+    <rect x="540" y="240" width="20" height="350"/>
+  </g>
+
+  <!-- Steps -->
+  <g fill="#a8a29e">
+    <rect x="0" y="600" width="600" height="14"/>
+    <rect x="0" y="614" width="600" height="14"/>
+    <rect x="0" y="628" width="600" height="14"/>
+  </g>
+
+  <!-- Tree -->
+  <g transform="translate(-30, 460)">
+    <rect x="20" y="120" width="20" height="80" fill="#78350f"/>
+    <circle cx="30" cy="100" r="60" fill="#16a34a"/>
+    <circle cx="0" cy="120" r="40" fill="#16a34a"/>
+    <circle cx="60" cy="120" r="40" fill="#16a34a"/>
+  </g>
+
+  <!-- Flag -->
+  <g transform="translate(280, 100)">
+    <line x1="0" y1="0" x2="0" y2="120" stroke="#111111" stroke-width="3"/>
+    <rect x="0" y="0" width="40" height="26" fill="#fb5614"/>
+    <rect x="0" y="0" width="40" height="26" fill="#000000" opacity="0.15"/>
+  </g>
+</svg>

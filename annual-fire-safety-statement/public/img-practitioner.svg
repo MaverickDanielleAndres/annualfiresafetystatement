@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 750" width="600" height="750">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#cbd5e1"/>
+      <stop offset="100%" stop-color="#64748b"/>
+    </linearGradient>
+    <linearGradient id="hi-vis" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fb923c"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="750" fill="url(#bg)"/>
+
+  <g transform="translate(150, 200)">
+    <path d="M 0 350 L 0 200 Q 0 180 20 175 L 280 175 Q 300 180 300 200 L 300 350 Z" fill="url(#hi-vis)"/>
+    <rect x="0" y="240" width="300" height="8" fill="#fef3c7" opacity="0.85"/>
+    <rect x="0" y="256" width="300" height="4" fill="#fef3c7" opacity="0.55"/>
+
+    <g transform="translate(80, 200)">
+      <rect x="0" y="0" width="140" height="100" rx="6" fill="#fef3c7"/>
+      <rect x="0" y="0" width="140" height="100" rx="6" fill="#000000" opacity="0.1"/>
+      <text x="70" y="38" text-anchor="middle" font-family="Inter, sans-serif" font-size="20" font-weight="800" fill="#111111" letter-spacing="3">APFS</text>
+      <text x="70" y="60" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#44403c">ACCREDITED</text>
+      <text x="70" y="76" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#44403c">PRACTITIONER</text>
+      <text x="70" y="92" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="700" fill="#44403c" letter-spacing="2">FIRE SAFETY</text>
+    </g>
+
+    <circle cx="150" cy="120" r="80" fill="#e8b795"/>
+    <path d="M 60 100 Q 60 30 150 30 Q 240 30 240 100 Z" fill="#fef3c7"/>
+    <rect x="60" y="98" width="180" height="14" fill="#fde047"/>
+    <rect x="52" y="100" width="196" height="10" fill="#facc15"/>
+    <text x="150" y="80" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#111111" letter-spacing="2">APFS</text>
+
+    <circle cx="125" cy="120" r="4" fill="#1f2937"/>
+    <circle cx="175" cy="120" r="4" fill="#1f2937"/>
+    <path d="M 125 145 Q 150 160 175 145" stroke="#1f2937" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+    <rect x="0" y="350" width="135" height="170" fill="#1e3a8a"/>
+    <rect x="135" y="350" width="165" height="170" fill="#1e3a8a"/>
+    <rect x="0" y="520" width="140" height="30" rx="4" fill="#0f172a"/>
+    <rect x="145" y="520" width="155" height="30" rx="4" fill="#0f172a"/>
+  </g>
+</svg>

@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1f2937"/>
+      <stop offset="100%" stop-color="#0a0e1a"/>
+    </linearGradient>
+    <linearGradient id="warn" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fde047"/>
+      <stop offset="100%" stop-color="#facc15"/>
+    </linearGradient>
+    <linearGradient id="warnPlaid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fde047"/>
+      <stop offset="100%" stop-color="#ca8a04"/>
+    </linearGradient>
+    <linearGradient id="haze" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="spotlight" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#fef3c7" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#fef3c7" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="900" fill="url(#bg)"/>
+  <rect width="1200" height="900" fill="url(#spotlight)"/>
+
+  <!-- Big date stamp on right -->
+  <g transform="translate(820, 200)">
+    <rect x="0" y="0" width="280" height="380" fill="#fde047"/>
+    <rect x="0" y="0" width="280" height="380" fill="#000000" opacity="0.1"/>
+    <!-- diagonal stripes -->
+    <g opacity="0.7">
+      <polygon points="0,0 80,0 0,80" fill="#facc15"/>
+      <polygon points="200,0 280,0 280,80" fill="#facc15"/>
+      <polygon points="0,300 0,380 80,380" fill="#facc15"/>
+      <polygon points="200,380 280,380 280,300" fill="#facc15"/>
+    </g>
+    <text x="140" y="170" text-anchor="middle" font-family="Inter, sans-serif" font-size="120" font-weight="900" fill="#111111" letter-spacing="-4">13</text>
+    <text x="140" y="230" text-anchor="middle" font-family="Inter, sans-serif" font-size="56" font-weight="800" fill="#111111" letter-spacing="2">FEB</text>
+    <text x="140" y="290" text-anchor="middle" font-family="Inter, sans-serif" font-size="56" font-weight="800" fill="#111111" letter-spacing="2">2026</text>
+    <line x1="40" y1="320" x2="240" y2="320" stroke="#111111" stroke-width="2"/>
+    <text x="140" y="350" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#111111" letter-spacing="3">NSW</text>
+  </g>
+
+  <!-- Background tags floating -->
+  <g opacity="0.4">
+    <rect x="500" y="120" width="180" height="60" fill="#fb5614" transform="rotate(-4 590 150)"/>
+    <text x="590" y="160" text-anchor="middle" font-family="Inter, sans-serif" font-size="22" font-weight="800" fill="#ffffff" letter-spacing="2" transform="rotate(-4 590 150)">AS 1851-2012</text>
+  </g>
+  <g opacity="0.3">
+    <rect x="540" y="650" width="220" height="60" fill="#fde047" transform="rotate(3 650 680)"/>
+    <text x="650" y="690" text-anchor="middle" font-family="Inter, sans-serif" font-size="22" font-weight="800" fill="#111111" letter-spacing="2" transform="rotate(3 650 680)">MAINTAIN · TEST</text>
+  </g>
+
+  <!-- Motion lines -->
+  <g opacity="0.3" stroke="#fde047" stroke-width="2" fill="none">
+    <line x1="100" y1="400" x2="450" y2="400"/>
+    <line x1="60" y1="450" x2="450" y2="450"/>
+    <line x1="100" y1="500" x2="450" y2="500"/>
+    <line x1="80" y1="550" x2="450" y2="550"/>
+  </g>
+
+  <!-- Haze on left -->
+  <rect x="0" y="0" width="520" height="900" fill="url(#haze)" opacity="0.55"/>
+</svg>

@@ -1,0 +1,237 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e5e7eb"/>
+      <stop offset="60%" stop-color="#cbd5e1"/>
+      <stop offset="100%" stop-color="#94a3b8"/>
+    </linearGradient>
+    <linearGradient id="building" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#475569"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="building2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#64748b"/>
+      <stop offset="100%" stop-color="#334155"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#374151"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="hi-vis" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fdba74"/>
+      <stop offset="100%" stop-color="#fb923c"/>
+    </linearGradient>
+    <linearGradient id="tablet" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1f2937"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0.8" cy="0.15" r="0.45">
+      <stop offset="0%" stop-color="#fef3c7" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#fef3c7" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="haze" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="1200" height="900" fill="url(#sky)"/>
+  <rect width="1200" height="900" fill="url(#sun)"/>
+
+  <!-- Background buildings -->
+  <rect x="0" y="380" width="280" height="520" fill="#475569" opacity="0.85"/>
+  <rect x="260" y="320" width="220" height="580" fill="#334155"/>
+  <rect x="460" y="240" width="200" height="660" fill="#1e293b"/>
+  <rect x="640" y="360" width="180" height="540" fill="#475569"/>
+  <rect x="800" y="280" width="220" height="620" fill="#334155"/>
+  <rect x="1000" y="400" width="200" height="500" fill="#1e293b"/>
+
+  <!-- Building windows pattern -->
+  <g opacity="0.45">
+    <rect x="0" y="380" width="280" height="520" fill="url(#building)"/>
+  </g>
+  <g fill="#fbbf24" opacity="0.55">
+    <rect x="20" y="420" width="14" height="22"/>
+    <rect x="60" y="420" width="14" height="22"/>
+    <rect x="100" y="420" width="14" height="22"/>
+    <rect x="140" y="420" width="14" height="22"/>
+    <rect x="180" y="420" width="14" height="22"/>
+    <rect x="220" y="420" width="14" height="22"/>
+    <rect x="20" y="480" width="14" height="22"/>
+    <rect x="60" y="480" width="14" height="22"/>
+    <rect x="140" y="480" width="14" height="22"/>
+    <rect x="220" y="480" width="14" height="22"/>
+    <rect x="20" y="540" width="14" height="22"/>
+    <rect x="100" y="540" width="14" height="22"/>
+    <rect x="180" y="540" width="14" height="22"/>
+    <rect x="220" y="540" width="14" height="22"/>
+    <rect x="20" y="600" width="14" height="22"/>
+    <rect x="60" y="600" width="14" height="22"/>
+    <rect x="140" y="600" width="14" height="22"/>
+    <rect x="180" y="600" width="14" height="22"/>
+    <rect x="60" y="660" width="14" height="22"/>
+    <rect x="100" y="660" width="14" height="22"/>
+    <rect x="180" y="660" width="14" height="22"/>
+    <rect x="220" y="660" width="14" height="22"/>
+    <rect x="20" y="720" width="14" height="22"/>
+    <rect x="100" y="720" width="14" height="22"/>
+    <rect x="140" y="720" width="14" height="22"/>
+    <rect x="220" y="720" width="14" height="22"/>
+    <rect x="20" y="780" width="14" height="22"/>
+    <rect x="60" y="780" width="14" height="22"/>
+    <rect x="140" y="780" width="14" height="22"/>
+    <rect x="180" y="780" width="14" height="22"/>
+  </g>
+  <g fill="#fef3c7" opacity="0.4">
+    <rect x="290" y="360" width="14" height="22"/>
+    <rect x="330" y="360" width="14" height="22"/>
+    <rect x="410" y="360" width="14" height="22"/>
+    <rect x="450" y="360" width="14" height="22"/>
+    <rect x="290" y="420" width="14" height="22"/>
+    <rect x="370" y="420" width="14" height="22"/>
+    <rect x="450" y="420" width="14" height="22"/>
+    <rect x="290" y="480" width="14" height="22"/>
+    <rect x="330" y="480" width="14" height="22"/>
+    <rect x="410" y="480" width="14" height="22"/>
+    <rect x="290" y="540" width="14" height="22"/>
+    <rect x="370" y="540" width="14" height="22"/>
+    <rect x="450" y="540" width="14" height="22"/>
+    <rect x="290" y="600" width="14" height="22"/>
+    <rect x="330" y="600" width="14" height="22"/>
+    <rect x="410" y="600" width="14" height="22"/>
+    <rect x="290" y="660" width="14" height="22"/>
+    <rect x="370" y="660" width="14" height="22"/>
+    <rect x="450" y="660" width="14" height="22"/>
+    <rect x="290" y="720" width="14" height="22"/>
+    <rect x="330" y="720" width="14" height="22"/>
+    <rect x="410" y="720" width="14" height="22"/>
+    <rect x="290" y="780" width="14" height="22"/>
+    <rect x="370" y="780" width="14" height="22"/>
+    <rect x="450" y="780" width="14" height="22"/>
+  </g>
+  <g fill="#fef3c7" opacity="0.5">
+    <rect x="660" y="400" width="14" height="22"/>
+    <rect x="700" y="400" width="14" height="22"/>
+    <rect x="780" y="400" width="14" height="22"/>
+    <rect x="660" y="460" width="14" height="22"/>
+    <rect x="740" y="460" width="14" height="22"/>
+    <rect x="780" y="460" width="14" height="22"/>
+    <rect x="660" y="520" width="14" height="22"/>
+    <rect x="700" y="520" width="14" height="22"/>
+    <rect x="780" y="520" width="14" height="22"/>
+    <rect x="660" y="580" width="14" height="22"/>
+    <rect x="740" y="580" width="14" height="22"/>
+    <rect x="660" y="640" width="14" height="22"/>
+    <rect x="700" y="640" width="14" height="22"/>
+    <rect x="780" y="640" width="14" height="22"/>
+    <rect x="660" y="700" width="14" height="22"/>
+    <rect x="740" y="700" width="14" height="22"/>
+    <rect x="660" y="760" width="14" height="22"/>
+    <rect x="700" y="760" width="14" height="22"/>
+    <rect x="780" y="760" width="14" height="22"/>
+  </g>
+  <g fill="#fbbf24" opacity="0.5">
+    <rect x="820" y="320" width="14" height="22"/>
+    <rect x="860" y="320" width="14" height="22"/>
+    <rect x="940" y="320" width="14" height="22"/>
+    <rect x="980" y="320" width="14" height="22"/>
+    <rect x="820" y="380" width="14" height="22"/>
+    <rect x="900" y="380" width="14" height="22"/>
+    <rect x="980" y="380" width="14" height="22"/>
+    <rect x="820" y="440" width="14" height="22"/>
+    <rect x="860" y="440" width="14" height="22"/>
+    <rect x="940" y="440" width="14" height="22"/>
+    <rect x="820" y="500" width="14" height="22"/>
+    <rect x="900" y="500" width="14" height="22"/>
+    <rect x="980" y="500" width="14" height="22"/>
+    <rect x="820" y="560" width="14" height="22"/>
+    <rect x="860" y="560" width="14" height="22"/>
+    <rect x="940" y="560" width="14" height="22"/>
+    <rect x="820" y="620" width="14" height="22"/>
+    <rect x="900" y="620" width="14" height="22"/>
+    <rect x="820" y="680" width="14" height="22"/>
+    <rect x="860" y="680" width="14" height="22"/>
+    <rect x="940" y="680" width="14" height="22"/>
+    <rect x="820" y="740" width="14" height="22"/>
+    <rect x="900" y="740" width="14" height="22"/>
+    <rect x="980" y="740" width="14" height="22"/>
+    <rect x="820" y="800" width="14" height="22"/>
+    <rect x="860" y="800" width="14" height="22"/>
+    <rect x="940" y="800" width="14" height="22"/>
+  </g>
+  <g fill="#fef3c7" opacity="0.45">
+    <rect x="1020" y="440" width="14" height="22"/>
+    <rect x="1060" y="440" width="14" height="22"/>
+    <rect x="1140" y="440" width="14" height="22"/>
+    <rect x="1020" y="500" width="14" height="22"/>
+    <rect x="1100" y="500" width="14" height="22"/>
+    <rect x="1020" y="560" width="14" height="22"/>
+    <rect x="1060" y="560" width="14" height="22"/>
+    <rect x="1140" y="560" width="14" height="22"/>
+    <rect x="1020" y="620" width="14" height="22"/>
+    <rect x="1100" y="620" width="14" height="22"/>
+    <rect x="1020" y="680" width="14" height="22"/>
+    <rect x="1060" y="680" width="14" height="22"/>
+    <rect x="1140" y="680" width="14" height="22"/>
+    <rect x="1020" y="740" width="14" height="22"/>
+    <rect x="1100" y="740" width="14" height="22"/>
+    <rect x="1020" y="800" width="14" height="22"/>
+    <rect x="1060" y="800" width="14" height="22"/>
+    <rect x="1140" y="800" width="14" height="22"/>
+  </g>
+
+  <!-- Foreground floor / pavement -->
+  <rect x="0" y="780" width="1200" height="120" fill="url(#floor)"/>
+  <rect x="0" y="780" width="1200" height="4" fill="#4b5563" opacity="0.5"/>
+
+  <!-- Technician silhouette — slightly off-right -->
+  <g transform="translate(740, 380)">
+    <!-- Body / hi-vis -->
+    <path d="M -10 320
+             L -10 200
+             Q -10 180 10 175
+             L 100 175
+             Q 120 180 120 200
+             L 120 320
+             Z"
+          fill="url(#hi-vis)"/>
+    <!-- Reflective stripes -->
+    <rect x="-10" y="240" width="130" height="6" fill="#fef3c7" opacity="0.85"/>
+    <rect x="-10" y="252" width="130" height="3" fill="#fef3c7" opacity="0.6"/>
+    <!-- Chest pocket detail -->
+    <rect x="22" y="200" width="36" height="40" fill="#ea580c" opacity="0.55"/>
+    <text x="40" y="226" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="800" fill="#ffffff" letter-spacing="0.5">AFSS</text>
+    <!-- Head -->
+    <circle cx="55" cy="140" r="38" fill="#f5d0a9"/>
+    <!-- Hard hat -->
+    <path d="M 10 130 Q 10 90 55 90 Q 100 90 100 130 Z" fill="#fbbf24"/>
+    <rect x="10" y="128" width="90" height="10" fill="#f59e0b"/>
+    <!-- Hat brim -->
+    <rect x="-2" y="129" width="114" height="6" fill="#d97706"/>
+    <!-- Eyes (subtle) -->
+    <circle cx="44" cy="140" r="2.5" fill="#1f2937"/>
+    <circle cx="66" cy="140" r="2.5" fill="#1f2937"/>
+    <!-- Arm holding tablet -->
+    <path d="M 90 220 L 145 250 L 155 240 L 100 200 Z" fill="url(#hi-vis)"/>
+    <!-- Tablet -->
+    <rect x="130" y="230" width="100" height="68" rx="6" fill="url(#tablet)"/>
+    <rect x="138" y="240" width="84" height="48" rx="2" fill="#f1f5f9"/>
+    <rect x="144" y="246" width="50" height="4" fill="#fb5614"/>
+    <rect x="144" y="256" width="72" height="3" fill="#94a3b8"/>
+    <rect x="144" y="264" width="60" height="3" fill="#94a3b8"/>
+    <rect x="144" y="272" width="68" height="3" fill="#94a3b8"/>
+    <rect x="144" y="280" width="40" height="3" fill="#94a3b8"/>
+    <!-- Other arm -->
+    <path d="M 20 220 L -25 250 L -35 240 L 10 200 Z" fill="url(#hi-vis)"/>
+    <!-- Pants -->
+    <rect x="-10" y="320" width="60" height="80" fill="#1f2937"/>
+    <rect x="50" y="320" width="70" height="80" fill="#1f2937"/>
+    <!-- Boots -->
+    <rect x="-10" y="400" width="65" height="20" rx="4" fill="#0f172a"/>
+    <rect x="55" y="400" width="65" height="20" rx="4" fill="#0f172a"/>
+  </g>
+
+  <!-- Subtle haze on left for fade-to-white -->
+  <rect x="0" y="0" width="500" height="900" fill="url(#haze)" opacity="0.6"/>
+</svg>

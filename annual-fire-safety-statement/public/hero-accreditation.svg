@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e5e7eb"/>
+      <stop offset="100%" stop-color="#9ca3af"/>
+    </linearGradient>
+    <linearGradient id="hi-vis2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fb923c"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+    <linearGradient id="metal" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e5e7eb"/>
+      <stop offset="100%" stop-color="#6b7280"/>
+    </linearGradient>
+    <linearGradient id="haze" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="vignette" cx="0.5" cy="0.4" r="0.7">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.35"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="900" fill="url(#bg)"/>
+  <rect width="1200" height="900" fill="url(#vignette)"/>
+
+  <!-- Lobby back wall -->
+  <rect x="0" y="0" width="1200" height="600" fill="#d1d5db"/>
+  <rect x="0" y="600" width="1200" height="300" fill="#9ca3af"/>
+
+  <!-- Glass partition -->
+  <g transform="translate(0, 200)">
+    <rect x="0" y="0" width="1200" height="380" fill="#1f2937" opacity="0.18"/>
+    <line x1="240" y1="0" x2="240" y2="380" stroke="#4b5563" stroke-width="2" opacity="0.6"/>
+    <line x1="480" y1="0" x2="480" y2="380" stroke="#4b5563" stroke-width="2" opacity="0.6"/>
+    <line x1="720" y1="0" x2="720" y2="380" stroke="#4b5563" stroke-width="2" opacity="0.6"/>
+    <line x1="960" y1="0" x2="960" y2="380" stroke="#4b5563" stroke-width="2" opacity="0.6"/>
+  </g>
+
+  <!-- Floor reflection -->
+  <rect x="0" y="700" width="1200" height="200" fill="#4b5563"/>
+  <rect x="0" y="700" width="1200" height="3" fill="#1f2937" opacity="0.6"/>
+
+  <!-- Practitioner portrait (center) -->
+  <g transform="translate(700, 320)">
+    <!-- Body -->
+    <path d="M -20 380
+             L -20 240
+             Q -20 220 0 215
+             L 110 215
+             Q 130 220 130 240
+             L 130 380
+             Z"
+          fill="url(#hi-vis2)"/>
+    <!-- Reflective stripes -->
+    <rect x="-20" y="290" width="150" height="8" fill="#fef3c7" opacity="0.85"/>
+    <rect x="-20" y="306" width="150" height="4" fill="#fef3c7" opacity="0.55"/>
+
+    <!-- APFS badge -->
+    <g transform="translate(20, 240)">
+      <rect x="0" y="0" width="80" height="60" rx="4" fill="#fef3c7"/>
+      <rect x="0" y="0" width="80" height="60" rx="4" fill="#000000" opacity="0.1"/>
+      <text x="40" y="22" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" font-weight="800" fill="#111111" letter-spacing="2">APFS</text>
+      <text x="40" y="38" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" font-weight="600" fill="#44403c">ACCREDITED</text>
+      <text x="40" y="50" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" font-weight="600" fill="#44403c">PRACTITIONER</text>
+    </g>
+
+    <!-- Head -->
+    <circle cx="55" cy="170" r="50" fill="#e8b795"/>
+    <!-- Boating hat (no — hard hat) -->
+    <path d="M 0 160 Q 0 105 55 105 Q 110 105 110 160 Z" fill="#fef3c7"/>
+    <rect x="0" y="158" width="110" height="12" fill="#fde047"/>
+    <rect x="-4" y="160" width="118" height="8" fill="#facc15"/>
+    <text x="55" y="142" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" font-weight="800" fill="#111111" letter-spacing="2">APFS</text>
+
+    <!-- Eyes -->
+    <circle cx="42" cy="172" r="3" fill="#1f2937"/>
+    <circle cx="68" cy="172" r="3" fill="#1f2937"/>
+    <!-- Subtle smile -->
+    <path d="M 42 188 Q 55 194 68 188" stroke="#1f2937" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+    <!-- Arm holding clipboard -->
+    <path d="M 100 270 L 180 290 L 188 278 L 110 250 Z" fill="url(#hi-vis2)"/>
+    <g transform="translate(170, 270)">
+      <rect x="0" y="0" width="80" height="100" rx="4" fill="#fef3c7"/>
+      <rect x="0" y="0" width="80" height="20" fill="#1f2937"/>
+      <rect x="6" y="30" width="68" height="3" fill="#9ca3af"/>
+      <rect x="6" y="38" width="60" height="3" fill="#9ca3af"/>
+      <rect x="6" y="46" width="68" height="3" fill="#9ca3af"/>
+      <rect x="6" y="54" width="50" height="3" fill="#9ca3af"/>
+      <rect x="6" y="68" width="68" height="3" fill="#9ca3af"/>
+      <rect x="6" y="76" width="60" height="3" fill="#9ca3af"/>
+      <rect x="6" y="84" width="40" height="3" fill="#9ca3af"/>
+    </g>
+
+    <!-- Other arm -->
+    <path d="M 10 270 L -40 290 L -48 278 L 0 250 Z" fill="url(#hi-vis2)"/>
+
+    <!-- Pants -->
+    <rect x="-20" y="380" width="70" height="100" fill="#1e3a8a"/>
+    <rect x="40" y="380" width="90" height="100" fill="#1e3a8a"/>
+    <!-- Boots -->
+    <rect x="-20" y="480" width="75" height="20" rx="4" fill="#0f172a"/>
+    <rect x="45" y="480" width="85" height="20" rx="4" fill="#0f172a"/>
+  </g>
+
+  <!-- Background person (out of focus) -->
+  <g transform="translate(400, 380)" opacity="0.55">
+    <path d="M -10 320 L -10 200 Q -10 180 0 175 L 90 175 Q 110 180 110 200 L 110 320 Z" fill="#78716c"/>
+    <circle cx="55" cy="140" r="38" fill="#d6b48e"/>
+    <path d="M 10 130 Q 10 90 55 90 Q 100 90 100 130 Z" fill="#a8a29e"/>
+    <rect x="-10" y="320" width="60" height="80" fill="#374151"/>
+    <rect x="50" y="320" width="60" height="80" fill="#374151"/>
+  </g>
+
+  <!-- Haze on left -->
+  <rect x="0" y="0" width="520" height="900" fill="url(#haze)" opacity="0.55"/>
+</svg>

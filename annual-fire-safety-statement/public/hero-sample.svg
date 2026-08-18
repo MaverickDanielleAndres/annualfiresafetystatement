@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f5f5f4"/>
+      <stop offset="100%" stop-color="#d6d3d1"/>
+    </linearGradient>
+    <linearGradient id="paper" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#fafaf9"/>
+    </linearGradient>
+    <linearGradient id="stamp" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fb5614"/>
+      <stop offset="100%" stop-color="#c2410c"/>
+    </linearGradient>
+    <linearGradient id="haze" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="shadow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="900" fill="url(#bg)"/>
+
+  <!-- Wooden desk surface -->
+  <rect x="0" y="0" width="1200" height="900" fill="#a8a29e"/>
+  <g opacity="0.4">
+    <line x1="0" y1="200" x2="1200" y2="180" stroke="#78716c" stroke-width="2"/>
+    <line x1="0" y1="400" x2="1200" y2="380" stroke="#78716c" stroke-width="2"/>
+    <line x1="0" y1="600" x2="1200" y2="580" stroke="#78716c" stroke-width="2"/>
+    <line x1="0" y1="800" x2="1200" y2="780" stroke="#78716c" stroke-width="2"/>
+  </g>
+
+  <!-- Document shadow -->
+  <ellipse cx="700" cy="780" rx="520" ry="40" fill="url(#shadow)"/>
+
+  <!-- Main AFSS document -->
+  <g transform="translate(420, 100) rotate(-3 200 350)">
+    <rect x="0" y="0" width="540" height="700" rx="2" fill="url(#paper)"/>
+    <rect x="0" y="0" width="540" height="700" rx="2" fill="#000000" opacity="0.05"/>
+    <!-- Header -->
+    <rect x="0" y="0" width="540" height="80" fill="#111111"/>
+    <text x="270" y="40" text-anchor="middle" font-family="Inter, sans-serif" font-size="18" font-weight="800" fill="#ffffff" letter-spacing="3">ANNUAL FIRE SAFETY</text>
+    <text x="270" y="62" text-anchor="middle" font-family="Inter, sans-serif" font-size="18" font-weight="800" fill="#ffffff" letter-spacing="3">STATEMENT</text>
+    <rect x="0" y="80" width="540" height="6" fill="#fb5614"/>
+    <!-- Document body -->
+    <text x="40" y="130" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#111111" letter-spacing="2">BUILDING DETAILS</text>
+    <rect x="40" y="140" width="460" height="60" fill="#f5f5f4"/>
+    <line x1="40" y1="170" x2="500" y2="170" stroke="#d6d3d1" stroke-width="1"/>
+    <line x1="280" y1="140" x2="280" y2="200" stroke="#d6d3d1" stroke-width="1"/>
+
+    <text x="40" y="220" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#111111" letter-spacing="2">FIRE SAFETY SCHEDULE</text>
+    <g transform="translate(40, 230)">
+      <rect x="0" y="0" width="460" height="20" fill="#111111"/>
+      <text x="6" y="14" font-family="Inter, sans-serif" font-size="9" font-weight="700" fill="#ffffff">MEASURE</text>
+      <text x="180" y="14" font-family="Inter, sans-serif" font-size="9" font-weight="700" fill="#ffffff">STANDARD</text>
+      <text x="320" y="14" font-family="Inter, sans-serif" font-size="9" font-weight="700" fill="#ffffff">ASSESSED</text>
+      <rect x="0" y="20" width="460" height="18" fill="#fafaf9"/>
+      <rect x="0" y="38" width="460" height="18" fill="#fafaf9"/>
+      <rect x="0" y="56" width="460" height="18" fill="#fafaf9"/>
+      <rect x="0" y="74" width="460" height="18" fill="#fafaf9"/>
+      <rect x="0" y="92" width="460" height="18" fill="#fafaf9"/>
+      <rect x="0" y="110" width="460" height="18" fill="#fafaf9"/>
+    </g>
+
+    <text x="40" y="380" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#111111" letter-spacing="2">PRACTITIONER DETAILS</text>
+    <rect x="40" y="390" width="460" height="60" fill="#f5f5f4"/>
+    <line x1="40" y1="420" x2="500" y2="420" stroke="#d6d3d1" stroke-width="1"/>
+
+    <text x="40" y="475" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#111111" letter-spacing="2">OWNER DECLARATION</text>
+    <rect x="40" y="485" width="460" height="80" fill="#f5f5f4"/>
+    <rect x="40" y="485" width="460" height="80" fill="#000000" opacity="0.05"/>
+
+    <!-- Stamp -->
+    <g transform="translate(360, 580) rotate(-12)">
+      <circle cx="0" cy="0" r="60" fill="none" stroke="#fb5614" stroke-width="4"/>
+      <circle cx="0" cy="0" r="50" fill="none" stroke="#fb5614" stroke-width="2"/>
+      <text x="0" y="-8" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="800" fill="#fb5614" letter-spacing="2">ASSESSED</text>
+      <text x="0" y="10" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" font-weight="900" fill="#fb5614" letter-spacing="2">APFS</text>
+      <text x="0" y="26" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="700" fill="#fb5614">2026</text>
+    </g>
+  </g>
+
+  <!-- Smaller document peeking behind -->
+  <g transform="translate(280, 240) rotate(-9 180 250)" opacity="0.9">
+    <rect x="0" y="0" width="380" height="500" rx="2" fill="#ffffff"/>
+    <rect x="0" y="0" width="380" height="40" fill="#374151"/>
+    <text x="190" y="26" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" font-weight="800" fill="#ffffff" letter-spacing="2">FIRE SAFETY SCHEDULE</text>
+    <rect x="20" y="60" width="340" height="14" fill="#e5e7eb"/>
+    <rect x="20" y="80" width="340" height="14" fill="#e5e7eb"/>
+    <rect x="20" y="100" width="340" height="14" fill="#e5e7eb"/>
+    <rect x="20" y="120" width="340" height="14" fill="#e5e7eb"/>
+    <rect x="20" y="140" width="340" height="14" fill="#e5e7eb"/>
+    <rect x="20" y="160" width="340" height="14" fill="#e5e7eb"/>
+    <rect x="20" y="180" width="340" height="14" fill="#e5e7eb"/>
+    <rect x="20" y="200" width="340" height="14" fill="#e5e7eb"/>
+    <rect x="20" y="220" width="340" height="14" fill="#e5e7eb"/>
+    <rect x="20" y="240" width="340" height="14" fill="#e5e7eb"/>
+    <rect x="20" y="260" width="340" height="14" fill="#e5e7eb"/>
+    <rect x="20" y="280" width="340" height="14" fill="#e5e7eb"/>
+    <rect x="20" y="300" width="340" height="14" fill="#e5e7eb"/>
+    <rect x="20" y="320" width="340" height="14" fill="#e5e7eb"/>
+    <rect x="20" y="340" width="340" height="14" fill="#e5e7eb"/>
+    <rect x="20" y="360" width="340" height="14" fill="#e5e7eb"/>
+    <rect x="20" y="380" width="340" height="14" fill="#e5e7eb"/>
+    <rect x="20" y="400" width="340" height="14" fill="#e5e7eb"/>
+    <rect x="20" y="420" width="340" height="14" fill="#e5e7eb"/>
+    <rect x="20" y="440" width="340" height="14" fill="#e5e7eb"/>
+  </g>
+
+  <!-- Haze on left -->
+  <rect x="0" y="0" width="500" height="900" fill="url(#haze)" opacity="0.55"/>
+</svg>

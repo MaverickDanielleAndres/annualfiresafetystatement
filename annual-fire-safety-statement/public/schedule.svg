@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" width="1200" height="1500">
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#fafaf9"/>
+    </linearGradient>
+  </defs>
+  <!-- Paper -->
+  <rect x="0" y="0" width="1200" height="1500" fill="url(#paper)"/>
+  <!-- Header -->
+  <rect x="0" y="0" width="1200" height="180" fill="#111111"/>
+  <rect x="0" y="180" width="1200" height="8" fill="#fb5614"/>
+  <text x="80" y="80" font-family="Inter, sans-serif" font-size="22" font-weight="800" fill="#fb5614" letter-spacing="3">FIRE SAFETY SCHEDULE</text>
+  <text x="80" y="140" font-family="Inter, sans-serif" font-size="40" font-weight="900" fill="#ffffff" letter-spacing="-1">Building &amp; Essential Measures</text>
+
+  <!-- Building details block -->
+  <g transform="translate(80, 230)">
+    <text x="0" y="0" font-family="Inter, sans-serif" font-size="13" font-weight="800" fill="#111111" letter-spacing="2">BUILDING DETAILS</text>
+    <rect x="0" y="14" width="1040" height="100" fill="#fafaf9" stroke="#e7e5e4"/>
+
+    <text x="20" y="50" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#6b7280" letter-spacing="2">PROPERTY NAME</text>
+    <text x="20" y="80" font-family="Inter, sans-serif" font-size="20" font-weight="700" fill="#111111">Strata Plan 12345</text>
+
+    <line x1="380" y1="14" x2="380" y2="114" stroke="#e7e5e4"/>
+
+    <text x="400" y="50" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#6b7280" letter-spacing="2">ADDRESS</text>
+    <text x="400" y="80" font-family="Inter, sans-serif" font-size="20" font-weight="700" fill="#111111">123 Example Street, Sydney NSW 2000</text>
+
+    <line x1="780" y1="14" x2="780" y2="114" stroke="#e7e5e4"/>
+
+    <text x="800" y="50" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#6b7280" letter-spacing="2">USE</text>
+    <text x="800" y="80" font-family="Inter, sans-serif" font-size="20" font-weight="700" fill="#111111">Mixed-use residential</text>
+  </g>
+
+  <!-- Schedule table -->
+  <g transform="translate(80, 380)">
+    <text x="0" y="0" font-family="Inter, sans-serif" font-size="13" font-weight="800" fill="#111111" letter-spacing="2">ESSENTIAL FIRE SAFETY MEASURES</text>
+    <text x="0" y="22" font-family="Inter, sans-serif" font-size="13" fill="#6b7280">12 measures listed · assessed annually</text>
+
+    <!-- Table header -->
+    <rect x="0" y="50" width="1040" height="50" fill="#111111"/>
+    <text x="20" y="82" font-family="Inter, sans-serif" font-size="12" font-weight="800" fill="#ffffff" letter-spacing="2">#</text>
+    <text x="60" y="82" font-family="Inter, sans-serif" font-size="12" font-weight="800" fill="#ffffff" letter-spacing="2">MEASURE</text>
+    <text x="500" y="82" font-family="Inter, sans-serif" font-size="12" font-weight="800" fill="#ffffff" letter-spacing="2">STANDARD</text>
+    <text x="780" y="82" font-family="Inter, sans-serif" font-size="12" font-weight="800" fill="#ffffff" letter-spacing="2">ASSESSED</text>
+
+    <!-- Rows -->
+    <g font-family="Inter, sans-serif" font-size="14" fill="#111111">
+      <rect x="0" y="100" width="1040" height="70" fill="#fafaf9"/>
+      <line x1="0" y1="170" x2="1040" y2="170" stroke="#e7e5e4"/>
+      <text x="20" y="142" font-weight="700">01</text>
+      <text x="60" y="142" font-weight="700">Fire detection &amp; alarm system</text>
+      <text x="500" y="142" fill="#6b7280">AS 1670.1</text>
+      <circle cx="800" cy="135" r="14" fill="#16a34a"/>
+      <path d="M 794 135 L 798 139 L 808 129" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <rect x="0" y="170" width="1040" height="70" fill="#ffffff"/>
+      <line x1="0" y1="240" x2="1040" y2="240" stroke="#e7e5e4"/>
+      <text x="20" y="212" font-weight="700">02</text>
+      <text x="60" y="212" font-weight="700">Sprinkler system</text>
+      <text x="500" y="212" fill="#6b7280">AS 2118.1</text>
+      <circle cx="800" cy="205" r="14" fill="#16a34a"/>
+      <path d="M 794 205 L 798 209 L 808 199" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <rect x="0" y="240" width="1040" height="70" fill="#fafaf9"/>
+      <line x1="0" y1="310" x2="1040" y2="310" stroke="#e7e5e4"/>
+      <text x="20" y="282" font-weight="700">03</text>
+      <text x="60" y="282" font-weight="700">Fire hydrant system</text>
+      <text x="500" y="282" fill="#6b7280">AS 2419.1</text>
+      <circle cx="800" cy="275" r="14" fill="#16a34a"/>
+      <path d="M 794 275 L 798 279 L 808 269" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <rect x="0" y="310" width="1040" height="70" fill="#ffffff"/>
+      <line x1="0" y1="380" x2="1040" y2="380" stroke="#e7e5e4"/>
+      <text x="20" y="352" font-weight="700">04</text>
+      <text x="60" y="352" font-weight="700">Fire hose reels</text>
+      <text x="500" y="352" fill="#6b7280">AS 2441</text>
+      <circle cx="800" cy="345" r="14" fill="#16a34a"/>
+      <path d="M 794 345 L 798 349 L 808 339" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <rect x="0" y="380" width="1040" height="70" fill="#fafaf9"/>
+      <line x1="0" y1="450" x2="1040" y2="450" stroke="#e7e5e4"/>
+      <text x="20" y="422" font-weight="700">05</text>
+      <text x="60" y="422" font-weight="700">Portable fire extinguishers</text>
+      <text x="500" y="422" fill="#6b7280">AS 2444</text>
+      <circle cx="800" cy="415" r="14" fill="#16a34a"/>
+      <path d="M 794 415 L 798 419 L 808 409" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <rect x="0" y="450" width="1040" height="70" fill="#ffffff"/>
+      <line x1="0" y1="520" x2="1040" y2="520" stroke="#e7e5e4"/>
+      <text x="20" y="492" font-weight="700">06</text>
+      <text x="60" y="492" font-weight="700">Fire doors (including -/120/30)</text>
+      <text x="500" y="492" fill="#6b7280">AS 1905.1</text>
+      <circle cx="800" cy="485" r="14" fill="#ca8a04"/>
+      <line x1="794" y1="479" x2="806" y2="491" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+      <line x1="806" y1="479" x2="794" y2="491" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+
+      <rect x="0" y="520" width="1040" height="70" fill="#fafaf9"/>
+      <line x1="0" y1="590" x2="1040" y2="590" stroke="#e7e5e4"/>
+      <text x="20" y="562" font-weight="700">07</text>
+      <text x="60" y="562" font-weight="700">Emergency lighting</text>
+      <text x="500" y="562" fill="#6b7280">AS 2293.1</text>
+      <circle cx="800" cy="555" r="14" fill="#16a34a"/>
+      <path d="M 794 555 L 798 559 L 808 549" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <rect x="0" y="590" width="1040" height="70" fill="#ffffff"/>
+      <line x1="0" y1="660" x2="1040" y2="660" stroke="#e7e5e4"/>
+      <text x="20" y="632" font-weight="700">08</text>
+      <text x="60" y="632" font-weight="700">Exit signs &amp; stairwell pressurisation</text>
+      <text x="500" y="632" fill="#6b7280">AS 2293.3</text>
+      <circle cx="800" cy="625" r="14" fill="#16a34a"/>
+      <path d="M 794 625 L 798 629 L 808 619" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <rect x="0" y="660" width="1040" height="70" fill="#fafaf9"/>
+      <line x1="0" y1="730" x2="1040" y2="730" stroke="#e7e5e4"/>
+      <text x="20" y="702" font-weight="700">09</text>
+      <text x="60" y="702" font-weight="700">Smoke hazard management</text>
+      <text x="500" y="702" fill="#6b7280">AS 1668.1</text>
+      <circle cx="800" cy="695" r="14" fill="#16a34a"/>
+      <path d="M 794 695 L 798 699 L 808 689" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <rect x="0" y="730" width="1040" height="70" fill="#ffffff"/>
+      <line x1="0" y1="800" x2="1040" y2="800" stroke="#e7e5e4"/>
+      <text x="20" y="772" font-weight="700">10</text>
+      <text x="60" y="772" font-weight="700">Passive fire (penetration seals)</text>
+      <text x="500" y="772" fill="#6b7280">AS 4072.1</text>
+      <circle cx="800" cy="765" r="14" fill="#16a34a"/>
+      <path d="M 794 765 L 798 769 L 808 759" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <rect x="0" y="800" width="1040" height="70" fill="#fafaf9"/>
+      <line x1="0" y1="870" x2="1040" y2="870" stroke="#e7e5e4"/>
+      <text x="20" y="842" font-weight="700">11</text>
+      <text x="60" y="842" font-weight="700">Fire control centre</text>
+      <text x="500" y="842" fill="#6b7280">AS 1670.1</text>
+      <circle cx="800" cy="835" r="14" fill="#16a34a"/>
+      <path d="M 794 835 L 798 839 L 808 829" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <rect x="0" y="870" width="1040" height="70" fill="#ffffff"/>
+      <line x1="0" y1="940" x2="1040" y2="940" stroke="#e7e5e4"/>
+      <text x="20" y="912" font-weight="700">12</text>
+      <text x="60" y="912" font-weight="700">Mechanical ventilation &amp; smoke exhaust</text>
+      <text x="500" y="912" fill="#6b7280">AS 1668.1</text>
+      <circle cx="800" cy="905" r="14" fill="#16a34a"/>
+      <path d="M 794 905 L 798 909 L 808 899" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+
+  <!-- Footer -->
+  <line x1="80" y1="1390" x2="1120" y2="1390" stroke="#e7e5e4"/>
+  <text x="80" y="1430" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#6b7280" letter-spacing="2">DOCUMENT</text>
+  <text x="80" y="1455" font-family="Inter, sans-serif" font-size="14" font-weight="700" fill="#111111">Fire Safety Schedule · Reference illustration only</text>
+</svg>

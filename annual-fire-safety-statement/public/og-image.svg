@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#faf9f7"/>
+    </linearGradient>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ff2a00"/>
+      <stop offset="100%" stop-color="#ffb700"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#111111"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </linearGradient>
+    <linearGradient id="fade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#ffffff"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="60" y="60" width="1080" height="510" fill="url(#panel)" rx="16"/>
+  <rect x="60" y="60" width="540" height="510" fill="url(#fade)" opacity="0.95"/>
+  <text x="100" y="170" font-family="Inter, sans-serif" font-size="22" font-weight="800" letter-spacing="2" fill="#fb5614">ANNUAL FIRE SAFETY STATEMENT · NSW</text>
+  <text x="100" y="290" font-family="Inter, sans-serif" font-size="84" font-weight="900" letter-spacing="-3" fill="#ffffff">YOUR FIRE SAFETY</text>
+  <text x="100" y="380" font-family="Inter, sans-serif" font-size="84" font-weight="900" letter-spacing="-3" fill="url(#brand)">COMPLIANCE. SORTED.</text>
+  <text x="100" y="460" font-family="Inter, sans-serif" font-size="26" font-weight="500" fill="rgba(255,255,255,0.85)">AFSS assessments &amp; lodgement support</text>
+  <text x="100" y="500" font-family="Inter, sans-serif" font-size="26" font-weight="500" fill="rgba(255,255,255,0.85)">for NSW strata, commercial &amp; industrial.</text>
+  <rect x="100" y="520" width="200" height="50" rx="25" fill="#fb5614"/>
+  <text x="200" y="552" text-anchor="middle" font-family="Inter, sans-serif" font-size="18" font-weight="700" fill="#ffffff">1300 765 594</text>
+</svg>
