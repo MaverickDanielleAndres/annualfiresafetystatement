@@ -450,7 +450,7 @@ export default function FreeSiteVisitModal() {
           }}
         >
           <Image
-            src="/Peter - Managing Director.jpg"
+            src="/peter-managing-director.jpg"
             alt="Peter, the Boss of All Fire Services"
             fill
             sizes="(max-width: 767px) 100vw, (max-width: 1024px) 100vw, 360px"

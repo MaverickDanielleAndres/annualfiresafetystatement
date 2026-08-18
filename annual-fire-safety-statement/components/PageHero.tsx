@@ -11,6 +11,8 @@ export interface PageHeroProps {
   primaryCta?: { label: string; href: string; isBookTheBoss?: boolean };
   secondaryCta?: { label: string; href: string };
   variant?: "light" | "dark";
+  layout?: "primary" | "secondary";
+  eyebrowClassName?: string;
 }
 
 import FreeSiteVisitButton from "@/components/free-site-visit/FreeSiteVisitButton";
@@ -24,7 +26,83 @@ export default function PageHero({
   imagePosition = "center",
   primaryCta,
   secondaryCta,
+  layout = "secondary",
+  eyebrowClassName,
 }: PageHeroProps) {
+  if (layout === "secondary") {
+    return (
+      <section className="relative w-full min-h-[40vh] md:min-h-[50vh] flex items-center bg-[#111111] overflow-hidden pt-20 pb-24 lg:pt-28 lg:pb-32">
+        {/* Full width background image with overlay */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={imageSrc}
+            alt={imageAlt}
+            fill
+            style={{ objectFit: "cover", objectPosition: imagePosition }}
+            priority
+            quality={90}
+          />
+          {/* Dark overlay to make text readable */}
+          <div className="absolute inset-0 bg-black/70" />
+        </div>
+
+        {/* Content wrapper */}
+        <div className="container-inner relative z-10 w-full">
+          <div className="grid lg:grid-cols-[1.5fr_1fr] gap-8 lg:gap-16 items-center">
+            {/* Left Column: Title */}
+            <div>
+              <h1 className="text-[clamp(2.5rem,5vw,4.5rem)] font-black tracking-tight leading-[0.95] m-0" style={{ textWrap: "balance" }}>
+                {titleLines.map((line, index) => {
+                  const isLast = index === titleLines.length - 1;
+                  return (
+                    <span
+                      key={`${line}-${index}`}
+                      className={isLast ? "bg-gradient-to-r from-[#ff5614] to-[#ffad05] bg-clip-text text-transparent" : "text-white"}
+                      style={{ display: "block", width: "fit-content" }}
+                    >
+                      {line}
+                    </span>
+                  );
+                })}
+              </h1>
+            </div>
+
+            {/* Right Column: Eyebrow + Description */}
+            <div className="flex flex-col pl-0 lg:pl-10 mt-6 lg:mt-0">
+              <p className={`font-bold tracking-widest uppercase mb-4 text-xs md:text-sm ${eyebrowClassName || 'text-[#fb5614]'}`}>
+                {eyebrow}
+              </p>
+              <p className="text-base md:text-lg font-medium text-white/90 leading-relaxed max-w-lg">
+                {description}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom fade into the next section */}
+        <div 
+          className="absolute bottom-0 left-0 right-0 z-[5] pointer-events-none" 
+          style={{
+            height: "35%",
+            background: `linear-gradient(to bottom,
+              rgba(255,255,255,0) 0%,
+              rgba(255,255,255,0.05) 12%,
+              rgba(255,255,255,0.12) 24%,
+              rgba(255,255,255,0.22) 36%,
+              rgba(255,255,255,0.36) 48%,
+              rgba(255,255,255,0.54) 60%,
+              rgba(255,255,255,0.72) 72%,
+              rgba(255,255,255,0.86) 84%,
+              rgba(255,255,255,0.96) 94%,
+              #ffffff 100%
+            )`,
+            marginBottom: "-1px"
+          }}
+        />
+      </section>
+    );
+  }
+
   return (
     <section className="relative w-full min-h-[60vh] flex items-center bg-[#1a0505] overflow-hidden pt-4 pb-16 lg:pt-8 lg:pb-20">
       {/* Background Image on the right side only */}

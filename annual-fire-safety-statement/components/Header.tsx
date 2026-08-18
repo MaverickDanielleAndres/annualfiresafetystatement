@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { Menu, X, Phone } from "lucide-react";
 import { SITE_PHONE, SITE_PHONE_TEL, navLinks } from "@/lib/site";
 import { FacebookIcon, InstagramIcon, LinkedinIcon, YoutubeIcon, TikTokIcon, XIcon } from "./SocialIcons";
+import FreeSiteVisitButton from "@/components/free-site-visit/FreeSiteVisitButton";
 
 export default function Header() {
   return (
@@ -131,13 +132,12 @@ function HeaderShell() {
         </ul>
 
         <div className="navbar-actions">
-          <Link
-            href="/free-quote"
-            className="btn animate-pump navbar-cta bg-gradient-to-r from-[#ff5614] to-[#ffad05] !text-white border-none shadow-sm hover:scale-105 transition-transform"
+          <FreeSiteVisitButton
+            source="nav"
+            pulse
+            className="navbar-cta"
             onClick={closeMenus}
-          >
-            BOOK THE BOSS
-          </Link>
+          />
         </div>
 
         <button

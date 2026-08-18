@@ -102,6 +102,7 @@ export default function HomePage() {
   return (
     <>
       <PageHero
+        layout="primary"
         eyebrow="ACCREDITED PRACTITIONERS (FIRE SAFETY) • NSW"
         titleLines={["YOUR AFSS ISN'T", "JUST PAPERWORK.", "IT'S RESPONSIBILITY."]}
         description="From your Fire Safety Schedule to the annual assessment and statement, we help make the AFSS process clear, thorough and straightforward."
@@ -124,19 +125,18 @@ export default function HomePage() {
                 01 / WHAT WE DO
               </span>
             </div>
-            <h2 className="text-[clamp(2.5rem,4vw,3.5rem)] font-black mb-5 tracking-tight leading-[1.05] text-[#111111]">
-              From Fire Safety <br />
-              Schedule to <br />
+            <h2 className="text-[clamp(2.5rem,4vw,3.5rem)] font-black mb-6 tracking-tight leading-[1.05] text-[#111111]">
+              From Fire Safety Schedule to <br />
               <span className="bg-gradient-to-r from-[#ff5614] to-[#ffad05] bg-clip-text text-transparent">
                 Annual Statement.
               </span>
             </h2>
-            <p className="text-lg text-[#4a4a46] mb-10 max-w-xl leading-relaxed">
+            <p className="text-lg text-[#4a4a46] mb-8 max-w-xl leading-relaxed">
               We take the requirements in your Fire Safety Schedule, coordinate the right assessments, document the findings, and help keep your building compliant — every year.
             </p>
             
             {/* 5 Icons Row */}
-            <div className="flex flex-wrap sm:flex-nowrap justify-between gap-2 sm:gap-4 mb-10">
+            <div className="flex flex-wrap sm:flex-nowrap justify-between gap-2 sm:gap-4 mb-8">
               {/* Icon 1 */}
               <div className="flex flex-col items-center text-center flex-1">
                 <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl bg-[#fff8f5] flex items-center justify-center mb-3">
@@ -179,7 +179,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center gap-6 mt-auto">
+            <div className="flex flex-wrap items-center gap-6 mt-6">
               <FreeSiteVisitButton
                 source="floating"
                 pulse
@@ -192,18 +192,18 @@ export default function HomePage() {
           </div>
           
           {/* Right Column: Code Mockup */}
-          <div className="relative w-full h-full min-h-[500px] bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.06)] border border-gray-100 overflow-hidden flex flex-col scale-[0.98] transform-gpu transition-transform hover:scale-100 duration-500">
+          <div className="relative w-full h-full bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.06)] border border-gray-100 overflow-hidden flex flex-col scale-[0.98] transform-gpu transition-transform hover:scale-100 duration-500">
             {/* Mockup Header */}
-            <div className="bg-[#111111] px-6 py-5 border-b-[4px] border-[#fb5614]">
+            <div className="bg-[#111111] px-5 py-4 border-b-[4px] border-[#fb5614]">
               <p className="text-[#fb5614] text-[9px] font-black uppercase tracking-[0.15em] mb-1.5">Fire Safety Schedule</p>
               <h3 className="text-white text-lg font-bold">Building & Essential Measures</h3>
             </div>
             
             {/* Mockup Body */}
-            <div className="p-6 flex-1 flex flex-col bg-white">
+            <div className="p-5 flex-1 flex flex-col bg-white">
               {/* Details */}
               <h4 className="text-[9px] font-bold tracking-widest uppercase text-gray-500 mb-2">Building Details</h4>
-              <div className="grid grid-cols-3 gap-3 mb-6">
+              <div className="grid grid-cols-3 gap-3 mb-5">
                 <div className="border border-gray-200 p-2.5 rounded-md">
                   <p className="text-[8px] text-gray-400 uppercase font-bold mb-0.5">Property Address</p>
                   <p className="text-[11px] font-semibold text-[#111111]">2-20 Park Road</p>
@@ -238,7 +238,7 @@ export default function HomePage() {
                     { num: '07', title: 'Exit & Directional Signage', std: 'AS 2293.1', status: 'pass' },
                     { num: '08', title: 'Portable Fire Extinguishers', std: 'AS 2444', status: 'pass' },
                   ].map((row, i) => (
-                    <div key={i} className={`grid grid-cols-[24px_1fr_60px_50px] py-2 px-3 border-b border-gray-50 last:border-0 items-center ${i % 2 === 0 ? 'bg-[#faf9f7]' : 'bg-white'}`}>
+                    <div key={i} className={`grid grid-cols-[24px_1fr_60px_50px] py-1.5 px-3 border-b border-gray-50 last:border-0 items-center ${i % 2 === 0 ? 'bg-[#faf9f7]' : 'bg-white'}`}>
                       <div className="text-[9px] font-semibold text-gray-400">{row.num}</div>
                       <div className="text-[10px] font-medium text-[#4a4a46] whitespace-nowrap overflow-hidden text-ellipsis">{row.title}</div>
                       <div className="text-[9px] text-gray-400">{row.std}</div>
@@ -346,9 +346,11 @@ export default function HomePage() {
             <h3 className="text-[#fb5614] text-xs font-bold tracking-[0.15em] uppercase mb-4">
               02 / SAMPLE AFSS
             </h3>
-            <h2 className="text-[clamp(2rem,3.5vw,3rem)] font-black mb-6 tracking-tight leading-[1.1] uppercase">
-              <span className="text-[#111111]">Know what you&apos;re</span><br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff5614] to-[#ffad05]">signing off on.</span>
+            <h2 className="text-[clamp(2.5rem,4vw,3.5rem)] font-black mb-6 tracking-tight leading-[1.05] text-[#111111]">
+              Know what you&apos;re <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff5614] to-[#ffad05]">
+                signing off on.
+              </span>
             </h2>
             <p className="text-lg text-[#4a4a46] mb-8">
               See the structure of an Annual Fire Safety Statement before your next assessment.
@@ -399,10 +401,10 @@ export default function HomePage() {
                 03 / Accreditation
               </p>
               
-              <h2 className="text-[clamp(2.5rem,4vw,3.5rem)] font-black mb-6 tracking-tight leading-[1.05] uppercase whitespace-nowrap">
-                <span className="text-[#111111] block">THE RIGHT SCOPE.</span>
-                <span className="bg-gradient-to-r from-[#ff5614] to-[#ffad05] bg-clip-text text-transparent block">
-                  THE RIGHT ASSESSMENT.
+              <h2 className="text-[clamp(2.5rem,4vw,3.5rem)] font-black mb-6 tracking-tight leading-[1.05] text-[#111111]">
+                The right scope. <br />
+                <span className="bg-gradient-to-r from-[#ff5614] to-[#ffad05] bg-clip-text text-transparent">
+                  The right assessment.
                 </span>
               </h2>
               
@@ -507,10 +509,11 @@ export default function HomePage() {
             <h3 className="text-[#fb5614] text-xs font-bold tracking-[0.15em] uppercase mb-4">
               04 / AS 1851-2012
             </h3>
-            <h2 className="text-[clamp(2rem,3.5vw,3rem)] font-black mb-6 tracking-tight leading-[1.1] uppercase">
-              <span className="text-[#111111]">FIRE SAFETY</span><br />
-              <span className="text-[#111111]">MAINTENANCE</span><br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff5614] to-[#ffad05]">CHANGED IN NSW.</span>
+            <h2 className="text-[clamp(2.5rem,4vw,3.5rem)] font-black mb-6 tracking-tight leading-[1.05] text-[#111111]">
+              Fire safety maintenance <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff5614] to-[#ffad05]">
+                changed in NSW.
+              </span>
             </h2>
             <p className="text-lg text-[#4a4a46] mb-8">
               AS 1851-2012 now forms part of the maintenance requirements for applicable fire safety measures in NSW.
@@ -579,9 +582,8 @@ export default function HomePage() {
                 06 / THE CLOCK
               </span>
             </div>
-            <h2 className="text-[clamp(2.5rem,4vw,3.5rem)] font-black mb-5 tracking-tight leading-[1.05] text-[#111111]">
-              12 months. <br />
-              Don&apos;t let your AFSS <br />
+            <h2 className="text-[clamp(2.5rem,4vw,3.5rem)] font-black mb-6 tracking-tight leading-[1.05] text-[#111111]">
+              12 months. Don&apos;t let your AFSS <br />
               <span className="bg-gradient-to-r from-[#ff5614] to-[#ffad05] bg-clip-text text-transparent">
                 date sneak up.
               </span>
