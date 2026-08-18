@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
-import CTASection from "@/components/CTASection";
+import ContactCTA from "@/components/ContactCTA";
 import RevealOnView from "@/components/RevealOnView";
 import ContactForm from "@/components/ContactForm";
 import { createPageMetadata, SITE_PHONE, SITE_EMAIL } from "@/lib/site";
@@ -85,12 +85,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <CTASection
-        title="Have a building to talk about?"
-        body="If you'd rather skip the message and get straight to a quote, we've made that easy too."
-        primaryCta={{ label: "Get a free quote", href: "/free-quote" }}
-        secondaryCta={{ label: "View sample AFSS", href: "/sample" }}
-      />
+      <ContactCTA />
     </>
   );
 }

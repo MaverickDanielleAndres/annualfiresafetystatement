@@ -4,7 +4,7 @@
  * Mirrors the All Fire Services section pattern.
  */
 export interface SectionHeadingProps {
-  kicker?: string;
+  kicker?: React.ReactNode;
   title: React.ReactNode;
   body?: React.ReactNode;
   align?: "left" | "center";

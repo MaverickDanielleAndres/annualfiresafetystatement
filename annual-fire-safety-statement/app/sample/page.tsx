@@ -2,7 +2,7 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import SectionHeading from "@/components/SectionHeading";
-import CTASection from "@/components/CTASection";
+import ContactCTA from "@/components/ContactCTA";
 import RevealOnView from "@/components/RevealOnView";
 import { createPageMetadata } from "@/lib/site";
 
@@ -146,12 +146,7 @@ export default function SamplePage() {
       </section>
 
       {/* Final CTA */}
-      <CTASection
-        title="Ready for a real one?"
-        body="Send us your Fire Safety Schedule and we'll prepare an AFSS draft for your building — scoped, signed, and lodge-ready."
-        primaryCta={{ label: "Get a free quote", href: "/free-quote" }}
-        secondaryCta={{ label: "Call 1300 765 594", href: "tel:1300765594" }}
-      />
+      <ContactCTA />
     </>
   );
 }

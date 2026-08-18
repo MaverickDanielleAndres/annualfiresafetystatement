@@ -3,7 +3,7 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import SectionHeading from "@/components/SectionHeading";
-import CTASection from "@/components/CTASection";
+import ContactCTA from "@/components/ContactCTA";
 import RevealOnView from "@/components/RevealOnView";
 import { createPageMetadata } from "@/lib/site";
 
@@ -247,12 +247,7 @@ export default function AccreditationPage() {
       </section>
 
       {/* Final CTA */}
-      <CTASection
-        title="One building. Multiple measures."
-        body="Send us your Fire Safety Schedule and we'll match the right Accredited Practitioner to the right measures."
-        primaryCta={{ label: "Get a free quote", href: "/free-quote" }}
-        secondaryCta={{ label: "Call 1300 765 594", href: "tel:1300765594" }}
-      />
+      <ContactCTA />
     </>
   );
 }

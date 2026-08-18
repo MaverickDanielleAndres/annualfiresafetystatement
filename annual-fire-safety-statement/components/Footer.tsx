@@ -1,6 +1,8 @@
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Mail } from "lucide-react";
 import { SITE_PHONE, SITE_EMAIL, navLinks } from "@/lib/site";
+import { FacebookIcon, InstagramIcon, LinkedinIcon, YoutubeIcon, TikTokIcon, XIcon } from "./SocialIcons";
+import FreeSiteVisitButton from "./free-site-visit/FreeSiteVisitButton";
 
 export default function Footer() {
   return (
@@ -27,13 +29,10 @@ export default function Footer() {
             </h2>
 
             <div className="mt-4 grid max-w-xl grid-cols-1 gap-2 sm:grid-cols-2 sm:mt-5">
-              <Link
-                href="/free-quote"
-                className="btn btn-primary"
-                style={{ borderRadius: 999, color: "#ffffff" }}
-              >
-                Get a free quote
-              </Link>
+              <FreeSiteVisitButton 
+                source="footer" 
+                className="btn bg-gradient-to-r from-[#ff5614] to-[#ffad05] text-white py-3 px-6 uppercase font-black tracking-widest text-sm rounded-full border-none shadow-sm hover:scale-105 transition-transform"
+              />
               <a
                 href={`tel:${SITE_PHONE.replace(/\s/g, "")}`}
                 className="btn btn-secondary"
@@ -158,6 +157,19 @@ export default function Footer() {
                     </Link>
                   </li>
                 </ul>
+
+                <div className="mt-8 pt-6 border-t border-[rgba(17,17,17,0.05)]">
+                  <h3 className="text-[1rem] font-black text-[#111111] mb-4">Socials</h3>
+                  <div className="flex items-center gap-5 sm:gap-6 text-[#111111]">
+                    <a href="https://www.facebook.com/profile.php?id=61566630403365" target="_blank" rel="noreferrer" aria-label="Facebook" className="hover:text-[#d64114] transition-colors"><FacebookIcon size={16} /></a>
+                    <a href="https://www.youtube.com/@allfireservices" target="_blank" rel="noreferrer" aria-label="YouTube" className="hover:text-[#d64114] transition-colors"><YoutubeIcon size={18} /></a>
+                    <a href="https://au.linkedin.com/in/allfire-services-sydney-92690516" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="hover:text-[#d64114] transition-colors"><LinkedinIcon size={16} /></a>
+                    <a href="https://www.instagram.com/_allfireservices_/" target="_blank" rel="noreferrer" aria-label="Instagram" className="hover:text-[#d64114] transition-colors"><InstagramIcon size={16} /></a>
+                    <a href="https://tiktok.com/@allfireservices" target="_blank" rel="noreferrer" aria-label="TikTok" className="hover:text-[#d64114] transition-colors"><TikTokIcon size={16} /></a>
+                    <a href="https://x.com/Allfiresydney" target="_blank" rel="noreferrer" aria-label="X (Twitter)" className="hover:text-[#d64114] transition-colors"><XIcon size={14} /></a>
+                    <a href={`mailto:${SITE_EMAIL}`} aria-label="Email" className="hover:text-[#d64114] transition-colors"><Mail size={18} strokeWidth={2.5} /></a>
+                  </div>
+                </div>
               </nav>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
-import CTASection from "@/components/CTASection";
+import ContactCTA from "@/components/ContactCTA";
 import RevealOnView from "@/components/RevealOnView";
 import { createPageMetadata } from "@/lib/site";
 
@@ -243,12 +243,7 @@ export default function AS1851Page() {
       </section>
 
       {/* Final CTA */}
-      <CTASection
-        title="AFSS coming up?"
-        body="Send us your Fire Safety Schedule and we'll handle the AFSS — and flag any AS 1851-2012 maintenance items we've seen on your servicing records."
-        primaryCta={{ label: "Get a free quote", href: "/free-quote" }}
-        secondaryCta={{ label: "Call 1300 765 594", href: "tel:1300765594" }}
-      />
+      <ContactCTA />
     </>
   );
 }

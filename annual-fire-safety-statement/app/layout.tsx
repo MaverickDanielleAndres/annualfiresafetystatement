@@ -4,6 +4,7 @@ import { Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import FreeSiteVisitIsland from "@/components/free-site-visit/FreeSiteVisitIsland";
 import { SITE_NAME, SITE_URL, DEFAULT_DESCRIPTION } from "@/lib/site";
 
 const inter = Inter({
@@ -117,6 +118,7 @@ export default function RootLayout({
       >
         <Header />
         <main className="flex-1">{children}</main>
+        <FreeSiteVisitIsland />
         <Footer />
       </body>
     </html>

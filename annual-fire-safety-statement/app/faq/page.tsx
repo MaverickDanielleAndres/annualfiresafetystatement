@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { ArrowUpRight } from "lucide-react";
 import PageHero from "@/components/PageHero";
-import CTASection from "@/components/CTASection";
+import ContactCTA from "@/components/ContactCTA";
 import RevealOnView from "@/components/RevealOnView";
 import FAQAccordion from "@/components/FAQAccordion";
 import { createPageMetadata } from "@/lib/site";
@@ -106,12 +106,7 @@ export default function FAQPage() {
         </RevealOnView>
       </section>
 
-      <CTASection
-        title="Still have a question?"
-        body="If the answer isn't here, give us a call. We respond to enquiries within one business day."
-        primaryCta={{ label: "Get a free quote", href: "/free-quote" }}
-        secondaryCta={{ label: "Call 1300 765 594", href: "tel:1300765594" }}
-      />
+      <ContactCTA />
     </>
   );
 }

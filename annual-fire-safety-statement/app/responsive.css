@@ -1,0 +1,833 @@
+/*
+ * Responsive behavior layer
+ * Breakpoints follow the existing Webflow/Tailwind system:
+ * mobile 0-767px, tablet 768-1023px, desktop 1024px+.
+ */
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+body,
+.main-wrapper,
+.scroll-wrapper,
+.container-large,
+.padding-global,
+main,
+section,
+header,
+footer {
+  min-width: 0;
+}
+
+.footer-link-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  white-space: normal;
+}
+
+.main-wrapper,
+.scroll-wrapper {
+  width: 100%;
+}
+
+img,
+video,
+iframe,
+svg {
+  max-width: 100%;
+}
+
+/* ── Section heading standardization ─────────────────────────────────────
+ * Match the non-hero section h2 typography of the homepage Strata
+ * section (HomeServices.module.css .header h2). Applies wherever the
+ * global Webflow .heading-style-h{1..4} utility is used inside a
+ * non-hero section on pages we don't control via a CSS module.
+ *
+ * Intentionally does NOT override the .hero-* classes — hero h1s keep
+ * their existing typography. We also avoid setting `color` here so the
+ * dark-theme white-text rule at the @767px media query keeps working
+ * for pages rendered with data-theme="dark".
+ */
+.section_process :where(h2, h3).heading-style-h1,
+.section_process :where(h2, h3).heading-style-h2,
+.section_process :where(h2, h3).heading-style-h3,
+.section_process :where(h2, h3).heading-style-h4,
+.regulation-update-section :where(h2, h3).heading-style-h3 {
+  font-size: clamp(2.2rem, 3.8vw, 3.4rem);
+  font-weight: 780;
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+  text-wrap: balance;
+}
+
+.section_contact-cta .contact-cta_header h2 {
+  font-size: clamp(2.2rem, 3.8vw, 3.4rem) !important;
+  font-weight: 780 !important;
+  letter-spacing: -0.04em !important;
+  line-height: 0.92 !important;
+  text-wrap: balance;
+}
+
+/* Global utility for any non-hero section h2 that doesn't already
+ * inherit typography from a scoped module (e.g. brand-coloured text on
+ * the homepage testimonials wrapper, or h2s that aren't inside a
+ * .legacyHeader/.storyHeader* parent). */
+.section-heading {
+  margin: 0;
+  color: #111111;
+  font-size: clamp(2.2rem, 3.8vw, 3.4rem);
+  font-weight: 780;
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+  text-wrap: balance;
+}
+
+@media (max-width: 767px) {
+  .section-heading {
+    font-size: clamp(1.35rem, 6.5vw, 2rem);
+    text-wrap: wrap;
+    max-width: none;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+span {
+  overflow-wrap: anywhere;
+}
+
+a,
+button,
+input,
+select,
+textarea {
+  touch-action: manipulation;
+}
+
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid #fb5614;
+  outline-offset: 3px;
+}
+
+.button-wrap,
+.button-content,
+.w-button {
+  min-height: 44px;
+}
+
+.button-content,
+.w-button {
+  display: inline-flex;
+  align-items: center;
+}
+
+.contact-social-links {
+  flex-wrap: wrap;
+}
+
+/* The footer social list is styled via Tailwind in the component.
+   Removed global flex-nowrap/overflow-x to prevent desktop scrollbars. */
+
+.contact-social-link,
+.footer-social-link {
+  display: inline-grid;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  place-items: center;
+  border-radius: 999px;
+}
+
+.contact-social-link:hover,
+.footer-social-link:hover {
+  background: rgba(251, 86, 20, 0.08);
+}
+
+.strata-grid-shell {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.strata-grid-page {
+  width: 100%;
+}
+
+.strata-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(1.25rem, 2.5vw, 2rem) clamp(0.75rem, 2vw, 1.5rem);
+}
+
+.strata-grid-item {
+  position: relative;
+  min-width: 0;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid rgba(10, 22, 31, 0.08);
+  border-radius: 0.75rem;
+}
+
+.strata-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.strata-page-button {
+  display: inline-grid;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@media (max-width: 1023px) {
+  .padding-global {
+    padding-inline: clamp(1.25rem, 3vw, 2rem);
+  }
+
+  .section_hero-home {
+    position: relative;
+    display: block !important;
+    width: 100%;
+    min-height: 0;
+    overflow: hidden;
+    background: #111;
+  }
+
+  .section_hero-home .parallax {
+    position: relative !important;
+    width: 100%;
+    min-height: 0;
+    overflow: hidden;
+    background-image:
+      linear-gradient(90deg, rgba(7, 7, 7, 0.9), rgba(7, 7, 7, 0.48)) !important;
+    background-position: center;
+    background-size: cover;
+  }
+
+  .section_hero-home
+    .parallax__layer-img[data-parallax-layer="1"] {
+    display: block !important;
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    z-index: 0;
+  }
+
+  .section_hero-home .parallax__layers::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      rgba(7, 7, 7, 0.9),
+      rgba(7, 7, 7, 0.48)
+    );
+  }
+
+  .section_hero-home .parallax__header,
+  .section_hero-home .parallax__visuals,
+  .section_hero-home .parallax__layers {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .section_hero-home .parallax__black-line-overflow,
+  .section_hero-home .parallax__fade {
+    display: none !important;
+  }
+
+  .section_hero-home .parallax__layer-title {
+    position: relative !important;
+    inset: auto !important;
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    transform: none !important;
+    z-index: 2;
+  }
+
+  .section_hero-home .hero-home_content {
+    width: 100%;
+    min-height: 0 !important;
+  }
+
+  .section_hero-home .padding-section-large.is-hero-home {
+    width: 100% !important;
+    min-height: 0 !important;
+    padding-block: clamp(2.25rem, 5vw, 4rem) !important;
+  }
+
+  .section_hero-home .hero-home_component {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1.45fr) minmax(14rem, 0.65fr);
+    align-items: stretch !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    gap: clamp(1.25rem, 3vw, 2rem) !important;
+  }
+
+  .section_hero-home .max-width-hero {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0;
+    margin: 0 !important;
+    flex: none !important;
+  }
+
+  .section_hero-home .header-wrapper {
+    width: 100%;
+    max-width: none !important;
+  }
+
+  .section_hero-home .header-text-wrap {
+    padding: clamp(1.5rem, 3.5vw, 2rem) !important;
+  }
+
+  .section_hero-home .heading-style {
+    font-size: clamp(2.25rem, 5.7vw, 3.4rem) !important;
+    line-height: 1.08 !important;
+  }
+
+  .section_hero-home .hero_text-wrap {
+    max-width: 42rem;
+  }
+
+  .section_hero-home .button-group {
+    width: 100%;
+    margin-top: 1rem !important;
+  }
+
+  .section_hero-home .button-wrap {
+    min-width: min(100%, 13.5rem);
+  }
+
+  .section_hero-home .button-content {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .section_hero-home .hero-portrait-wrapper {
+    width: 100% !important;
+    max-width: none !important;
+    min-height: clamp(21rem, 42vw, 28rem);
+    margin-left: 0 !important;
+    flex: none !important;
+  }
+
+  .strata-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .section_about-hero .heading-style-h1 {
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
+    line-height: 1;
+  }
+
+  .section_contact-cta .contact-cta_component {
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+
+}
+
+@media (max-width: 767px) {
+  .padding-global {
+    padding-inline: clamp(1rem, 5vw, 1.5rem);
+  }
+
+  .padding-section-large {
+    padding-block: clamp(3rem, 12vw, 4.5rem);
+  }
+
+  .padding-section-large.is-about {
+    padding-block: clamp(2rem, 8vw, 3rem) !important;
+  }
+
+  .heading-style-h1,
+  .section_about-hero .heading-style-h1 {
+    font-size: clamp(1.5rem, 7vw, 2.1rem);
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+    text-wrap: wrap;
+    max-width: none;
+  }
+
+  .heading-style-h2 {
+    font-size: clamp(1.35rem, 6.5vw, 2rem);
+    line-height: 1.08;
+    text-wrap: wrap;
+    max-width: none;
+  }
+
+  .heading-style-h3 {
+    font-size: clamp(1.65rem, 7vw, 2.25rem) !important;
+    line-height: 1.12;
+  }
+
+  /* Keep section (non-hero) headings on the standard clamp even at
+     ≤767px so they stay consistent with the homepage Strata section. */
+  .section_process :where(h2, h3).heading-style-h1,
+  .section_process :where(h2, h3).heading-style-h2,
+  .section_process :where(h2, h3).heading-style-h3,
+  .section_process :where(h2, h3).heading-style-h4,
+  .regulation-update-section :where(h2, h3).heading-style-h3 {
+    font-size: clamp(1.35rem, 6.5vw, 2rem);
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    text-wrap: wrap;
+    max-width: none;
+  }
+
+  .body-text {
+    font-size: 1rem !important;
+    line-height: 1.6 !important;
+  }
+
+  .hero_content_wrapper {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 1.5rem;
+  }
+
+  .about-hero_component {
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  .section_hero-home .parallax__header {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+  }
+
+  .section_hero-home .parallax__layer-title {
+    position: relative !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  .section_hero-home .hero-home_component {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: clamp(1rem, 5vw, 1.5rem) !important;
+  }
+
+  .section_hero-home .max-width-hero {
+    width: 100% !important;
+    flex: 0 1 auto !important;
+  }
+
+  .section_hero-home .header-text-wrap {
+    padding: clamp(1rem, 4vw, 1.5rem) !important;
+    border-radius: 12px !important;
+  }
+
+  .section_hero-home .header-eyebrow-text {
+    margin-bottom: 0.6rem !important;
+    font-size: clamp(0.72rem, 3.2vw, 0.85rem) !important;
+    line-height: 1.35;
+  }
+
+  .section_hero-home .heading-style {
+    margin-bottom: 0.6rem !important;
+    font-size: clamp(1.6rem, 7.5vw, 2.5rem) !important;
+    line-height: 1.1 !important;
+  }
+
+  .section_hero-home .body-text {
+    margin-bottom: 0 !important;
+    font-size: clamp(0.94rem, 3.8vw, 1rem) !important;
+    line-height: 1.55 !important;
+  }
+
+  .section_hero-home .button-group {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem !important;
+    margin-top: 0.9rem !important;
+  }
+
+  .section_hero-home .button-wrap {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .section_hero-home .button-content {
+    width: 100%;
+    min-height: 48px;
+    padding-inline: 0.75rem;
+  }
+
+  .section_hero-home .button-text {
+    font-size: clamp(0.75rem, 3.1vw, 0.9rem);
+  }
+
+  .section_hero-home .hero-portrait-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: clamp(15rem, 72vw, 22rem);
+    flex: 0 1 auto !important;
+    margin-left: 0 !important;
+  }
+
+  .section_team-spirit {
+    padding-block: clamp(3.5rem, 12vw, 5rem) !important;
+  }
+
+  .team-spirit_header {
+    margin-bottom: 2rem !important;
+  }
+
+  .team-spirit_grid > div {
+    min-width: 0 !important;
+    flex-basis: 100% !important;
+  }
+
+  #why-allfire,
+  #why-allfire-services {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  #why-allfire > div,
+  #why-allfire-services > div {
+    width: 100%;
+    min-width: 0 !important;
+    padding-inline: clamp(1rem, 5vw, 1.5rem) !important;
+  }
+
+  #why-allfire > div:first-child,
+  #why-allfire-services > div:last-child {
+    min-height: clamp(16rem, 76vw, 24rem) !important;
+    padding: 0 !important;
+  }
+
+  #why-allfire-services .heading-style-h3 {
+    white-space: normal !important;
+  }
+
+  .products_list {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 1rem !important;
+  }
+
+  .products_info-wrap .text-size-small,
+  .products_info-wrap p {
+    font-size: 0.9375rem !important;
+    line-height: 1.55 !important;
+  }
+
+  .prc-wrap {
+    padding-inline: clamp(1rem, 5vw, 1.5rem) !important;
+  }
+
+  .button-group {
+    width: 100%;
+    max-width: 100%;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.75rem !important;
+  }
+
+  .button-group > .button-wrap,
+  .button-group > a {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .button-group .button-content,
+  .button-group .button-layout {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .strata-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(0.625rem, 3vw, 1rem);
+  }
+
+  .section_process[style] {
+    padding-block: clamp(2.5rem, 10vw, 3.75rem) !important;
+  }
+
+  .section_process .process_list {
+    gap: clamp(2.5rem, 10vw, 4rem);
+  }
+
+  .section_process .process_item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.25rem;
+  }
+
+  .section_process .process_image-wrap {
+    width: 100%;
+    height: clamp(12rem, 68vw, 19rem) !important;
+    min-height: 0 !important;
+    overflow: hidden;
+    background: #171717;
+    border-radius: 0.75rem;
+  }
+
+  .section_process .process_image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .section_process .process_content-right {
+    gap: 1rem;
+  }
+
+  .section_process[data-theme="dark"] .body-text {
+    color: rgba(255, 255, 255, 0.78);
+  }
+
+  .section_process[data-theme="dark"] :is(.heading-style-h1, .heading-style-h2, .heading-style-h3, .heading-style-h4, .heading-style-h5, .heading-style-h6) {
+    color: #fff;
+  }
+
+  .section_contact-cta .contact-cta_component {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.5rem;
+  }
+
+  .section_contact-cta .contact-cta_header h2 {
+    font-size: clamp(1.35rem, 6.5vw, 2rem) !important;
+    text-wrap: wrap;
+    max-width: none;
+  }
+
+  .section_contact-cta .contact-cta_header .body-text,
+  .section_contact-cta .contact-cta_info-wrapper .body-text {
+    font-size: 1rem !important;
+    line-height: 1.55 !important;
+  }
+
+  .section_contact-cta :is(input, select, textarea) {
+    min-height: 44px !important;
+    font-size: 1rem !important;
+  }
+
+  .section_contact-cta textarea {
+    min-height: 7rem !important;
+  }
+
+  .section_contact-cta .form_field-wrapper._2col {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem !important;
+  }
+
+  .contact-social-links {
+    gap: 0.25rem !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .contact-social-link {
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+  }
+
+  .footer-cta-buttons {
+    flex-wrap: wrap !important;
+  }
+
+  .footer-social-list {
+    flex-wrap: nowrap !important;
+    gap: 0.25rem !important;
+  }
+
+  .footer-social-link {
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+  }
+
+  footer li a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    padding-block: 0.15rem;
+  }
+}
+
+@media (max-width: 479px) {
+  .padding-global {
+    padding-inline: 1rem;
+  }
+
+  .section_hero-home .padding-section-large.is-hero-home {
+    padding-top: 1.25rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+
+  .section_hero-home .heading-style {
+    font-size: clamp(1.85rem, 9.5vw, 2.5rem) !important;
+  }
+
+  .section_hero-home .button-group {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .section_hero-home .button-content {
+    min-height: 50px;
+  }
+
+  .section_hero-home .hero-portrait-wrapper {
+    min-height: clamp(14rem, 70vw, 19rem);
+  }
+
+  .header-eyebrow-text {
+    line-height: 1.35;
+  }
+
+  .strata-grid-item {
+    border-radius: 0.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  .section_hero-home.hero-scroll-section {
+    height: auto !important;
+    min-height: 290svh !important;
+    overflow: visible !important;
+  }
+
+  .section_hero-home.hero-scroll-section .hero-scroll-parallax,
+  .section_hero-home.hero-scroll-section .hero-scroll-content-layer {
+    min-height: 290svh !important;
+  }
+
+  .section_hero-home.hero-scroll-section .hero-scroll-pin {
+    position: sticky !important;
+    top: 0 !important;
+    height: 100svh !important;
+    min-height: 100svh !important;
+    overflow: hidden !important;
+  }
+
+  .section_hero-home.hero-scroll-section .hero-scroll-visuals {
+    position: absolute !important;
+    inset: 0 !important;
+    height: 100% !important;
+    min-height: 100svh !important;
+    overflow: hidden !important;
+  }
+
+  .section_hero-home.hero-scroll-section .hero-scroll-content-layer {
+    position: relative !important;
+    z-index: 3;
+  }
+
+  .section_hero-home.hero-scroll-section .hero-home_content {
+    min-height: 100svh !important;
+    align-items: flex-start !important;
+  }
+
+  .section_hero-home.hero-scroll-section .hero-home_component {
+    grid-template-columns: minmax(0, 1.15fr) minmax(14rem, 0.72fr) !important;
+    gap: clamp(1rem, 2.5vw, 1.75rem) !important;
+    min-height: auto !important;
+  }
+
+  .section_hero-home.hero-scroll-section .hero-scroll-video-media {
+    object-position: center;
+  }
+}
+
+@media (max-width: 767px) {
+  .section_hero-home.hero-scroll-section {
+    min-height: 260svh !important;
+  }
+
+  .section_hero-home.hero-scroll-section .hero-scroll-parallax,
+  .section_hero-home.hero-scroll-section .hero-scroll-content-layer {
+    min-height: 260svh !important;
+  }
+
+  .section_hero-home.hero-scroll-section .hero-scroll-intro {
+    margin-top: 86svh;
+    min-height: 55svh;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .section_hero-home.hero-scroll-section .hero-scroll-intro-title {
+    font-size: clamp(3.15rem, 14vw, 5.8rem);
+    line-height: 0.86;
+  }
+
+  .section_hero-home.hero-scroll-section .hero-scroll-intro-copy {
+    font-size: clamp(0.95rem, 4vw, 1.1rem);
+    max-width: 23rem;
+  }
+
+  .section_hero-home.hero-scroll-section .hero-scroll-intro-copy span {
+    white-space: normal;
+  }
+
+  .section_hero-home.hero-scroll-section .hero-scroll-details {
+    margin-top: clamp(5rem, 14svh, 8rem);
+  }
+
+  .section_hero-home.hero-scroll-section .hero-home_component {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 1.35rem !important;
+  }
+
+  .section_hero-home.hero-scroll-section .padding-section-large.is-hero-home {
+    padding-top: 1.25rem !important;
+    padding-bottom: 2rem !important;
+  }
+
+  .section_hero-home.hero-scroll-section .hero-portrait-wrapper {
+    min-height: 14rem !important;
+    max-height: 17rem;
+  }
+}
