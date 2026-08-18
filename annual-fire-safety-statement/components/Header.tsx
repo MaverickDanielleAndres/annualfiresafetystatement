@@ -133,7 +133,7 @@ function HeaderShell() {
 
         <div className="navbar-actions">
           <FreeSiteVisitButton
-            source="nav"
+            source="header"
             pulse
             className="navbar-cta"
             onClick={closeMenus}
