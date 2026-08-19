@@ -53,7 +53,7 @@ export default function InstantQuoteModal({ isOpen, onClose }: InstantQuoteModal
       aria-labelledby="afss-quote-title"
       className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 sm:p-6"
     >
-      <div className="relative flex w-full max-h-full flex-col overflow-hidden bg-white shadow-2xl sm:max-h-[900px] sm:max-w-5xl sm:rounded-2xl md:flex-row">
+      <div className="relative flex w-full max-h-[calc(100dvh-2rem)] flex-col overflow-hidden bg-white shadow-2xl sm:max-h-[min(900px,calc(100dvh-3rem))] sm:max-w-5xl sm:rounded-2xl md:flex-row">
         {/* CLOSE — top right of left column */}
         <button
           onClick={onClose}
@@ -77,7 +77,7 @@ export default function InstantQuoteModal({ isOpen, onClose }: InstantQuoteModal
         </button>
 
         {/* LEFT — flow */}
-        <div className="relative flex w-full flex-col bg-white md:w-3/5 md:min-w-[420px]">
+        <div className="relative flex w-full flex-col overflow-y-auto bg-white md:w-3/5 md:min-w-[420px]">
           {loading ? (
             <div className="flex flex-1 items-center justify-center p-12 text-sm text-gray-400">
               Loading…
