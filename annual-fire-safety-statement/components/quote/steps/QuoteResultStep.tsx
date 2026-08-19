@@ -45,6 +45,7 @@ export default function QuoteResultStep({ summary, onClose }: Props) {
           type="button"
           onClick={onClose}
           className={primaryButton}
+          style={{ background: "linear-gradient(to right, #ff5614, #ffad05)", color: "#ffffff" }}
         >
           Close
         </button>
@@ -130,6 +131,7 @@ export default function QuoteResultStep({ summary, onClose }: Props) {
         disabled={paying}
         onClick={pay}
         className={primaryButton}
+        style={{ background: "linear-gradient(to right, #ff5614, #ffad05)", color: "#ffffff" }}
       >
         {paying ? 'Starting payment…' : 'Pay / Book →'}
       </button>

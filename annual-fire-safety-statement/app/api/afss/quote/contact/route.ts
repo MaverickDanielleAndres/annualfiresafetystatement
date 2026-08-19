@@ -3,6 +3,7 @@ import {
   startOrResumeSession,
   logActivity,
   getCurrentSession,
+  updateSession,
 } from '@/lib/afss/quote-session';
 import {
   validateFirstName,
@@ -15,8 +16,12 @@ export const runtime = 'nodejs';
 
 /**
  * POST /api/afss/quote/contact
+ *
  * Step 1 — save customer contact. Creates the quote session if no
  * cookie, otherwise resumes it. Cookie is written server-side.
+ *
+ * Always returns the latest server-side status so the client only
+ * has to update local state from a single field.
  */
 export async function POST(req: NextRequest) {
   let body: any;
@@ -36,7 +41,6 @@ export async function POST(req: NextRequest) {
   if (!moR.ok)
     return NextResponse.json({ error: moR.error }, { status: 400 });
 
-  // Capture UTM from headers/body.
   const utm = body?.utm ?? {};
   const ref = req.headers.get('referer') ?? null;
 
@@ -59,7 +63,6 @@ export async function POST(req: NextRequest) {
     });
 
     if (!isNew) {
-      // Update existing contact details + status.
       const sb = (await import('@/lib/supabase/admin')).getAdminSupabase();
       await sb
         .schema('afss')

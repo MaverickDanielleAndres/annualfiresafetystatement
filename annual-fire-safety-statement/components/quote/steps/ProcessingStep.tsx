@@ -62,9 +62,6 @@ export default function ProcessingStep({ summary, onResult }: Props) {
 
   return (
     <div className="mx-auto max-w-md">
-      <p className="mb-1 text-xs font-bold uppercase tracking-widest text-[#fb5614]">
-        Step 6 of 6
-      </p>
       <h2 className="mb-2 text-2xl font-black uppercase tracking-tight text-black sm:text-3xl">
         Reading your AFSS…
       </h2>

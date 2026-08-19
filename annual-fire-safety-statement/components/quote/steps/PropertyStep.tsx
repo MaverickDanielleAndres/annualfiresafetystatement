@@ -1,11 +1,29 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import {
-  Field,
-  inputClass,
-  primaryButton,
-} from './ContactStep';
+// 🔥 RUNTIME MARKER — proves the actual module loaded.
+console.log('🔥 PROPERTY STEP MODULE LOADED');
+
+/**
+ * Step 2 — Australian address autocomplete.
+ *
+ * Architecture:
+ *   BROWSER  →  /api/afss/quote/address-search  →
+ *   server (uses GEOAPIFY_API_KEY from process.env)  →
+ *   Geoapify with countrycode:au filter  →  normalised JSON.
+ *
+ * The browser NEVER calls Geoapify. NEXT_PUBLIC_GEOAPIFY_API_KEY is
+ * not consulted on the client.
+ *
+ * Implementation notes — the dropdown is rendered into a React
+ * Portal so the modal's `overflow-hidden` and the scrollable
+ * `overflow-y-auto` container do not clip the suggestions list.
+ */
+
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { Field, inputClass, primaryButton, subtleLink } from '../common';
+import { api } from '../api';
+import { useToaster } from '../Toast';
 import type { QuoteSessionSummary } from '@/lib/afss/types';
 
 interface Props {
@@ -13,16 +31,24 @@ interface Props {
   onBack: () => void;
 }
 
-interface PlaceSuggestion {
-  place_id: string;
-  description: string;
-  structured_formatting?: { main_text?: string; secondary_text?: string };
+interface Suggestion {
+  id: string;
+  formatted: string;
+  addressLine1: string | null;
+  addressLine2: string | null;
+  suburb: string | null;
+  state: string | null;
+  postcode: string | null;
+  country: string | null;
+  latitude: number | null;
+  longitude: number | null;
 }
 
-interface ResolvedPlace {
-  google_place_id: string;
-  formatted_address: string;
-  address_line_1: string | null;
+interface ResolvedAddress {
+  providerId: string;
+  formattedAddress: string;
+  addressLine1: string | null;
+  addressLine2: string | null;
   suburb: string | null;
   state: string | null;
   postcode: string | null;
@@ -31,230 +57,445 @@ interface ResolvedPlace {
   longitude: number | null;
 }
 
-declare global {
-  interface Window {
-      google?: any;
-  }
+interface DropdownPos {
+  left: number;
+  top: number;
+  width: number;
 }
 
 export default function PropertyStep({ onSaved, onBack }: Props) {
+  // 🔥 RUNTIME MARKER — confirms this component instance actually mounted.
+  console.log('🔥 PROPERTY STEP RENDERED');
+
+  const { push } = useToaster();
   const [query, setQuery] = useState('');
-  const [suggestions, setSuggestions] = useState<PlaceSuggestion[]>([]);
-  const [selected, setSelected] = useState<ResolvedPlace | null>(null);
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [highlighted, setHighlighted] = useState<number>(-1);
+  const [resolvedAddress, setResolvedAddress] = useState<ResolvedAddress | null>(
+    null
+  );
+  const [manualMode, setManualMode] = useState(false);
+  const [manualAddressLine1, setManualAddressLine1] = useState('');
+  const [manualSuburb, setManualSuburb] = useState('');
+  const [manualState, setManualState] = useState('NSW');
+  const [manualPostcode, setManualPostcode] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_BROWSER_KEY;
-  const autocompleteSessionRef = useRef<any>(null);
+  const [mounted, setMounted] = useState(false);
+  const [pos, setPos] = useState<DropdownPos | null>(null);
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const requestSeq = useRef(0);
 
   useEffect(() => {
-    if (!apiKey) return; // No browser key → user types manually.
-    // Lazy-load the Maps JS library once.
-    if (typeof window === 'undefined') return;
-    if (window.google?.maps?.places) return;
-    const existing = document.getElementById('google-maps-js');
-    if (existing) return;
-    const s = document.createElement('script');
-    s.id = 'google-maps-js';
-    s.async = true;
-    s.defer = true;
-    s.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&loading=async`;
-    document.head.appendChild(s);
-  }, [apiKey]);
+    setMounted(true);
+  }, []);
+
+  // Recompute dropdown position when it opens + on scroll/resize.
+  useLayoutEffect(() => {
+    if (!showDropdown) return;
+    function recompute() {
+      const el = inputRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      setPos({
+        left: rect.left,
+        top: rect.bottom + 4, // small gap below the input
+        width: rect.width,
+      });
+    }
+    recompute();
+    window.addEventListener('resize', recompute);
+    window.addEventListener('scroll', recompute, true);
+    return () => {
+      window.removeEventListener('resize', recompute);
+      window.removeEventListener('scroll', recompute, true);
+    };
+  }, [showDropdown, query]);
+
+  useEffect(() => {
+    // 🔥 RUNTIME MARKER — runs whenever query changes.
+    console.log('🔥 AUTOCOMPLETE EFFECT', JSON.stringify(query));
+    if (query.trim().length < 3) {
+      setSuggestions([]);
+      setShowDropdown(false);
+      setLoading(false);
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+        debounceRef.current = null;
+      }
+      return;
+    }
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      // 🔥 RUNTIME MARKER — actually about to fetch.
+      console.log('🔥 FETCHING ADDRESS SEARCH', JSON.stringify(query));
+      void fetchSuggestions(query);
+    }, 280);
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+        debounceRef.current = null;
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query]);
 
   async function fetchSuggestions(q: string) {
-    if (!apiKey || !window.google?.maps?.places) return;
-    if (!autocompleteSessionRef.current) {
-      // @ts-ignore
-      autocompleteSessionRef.current =
-        new window.google.maps.places.AutocompleteSessionToken();
-    }
-    // @ts-ignore
-    const { suggestions: results } =
-      await window.google.maps.places.AutocompleteSuggestion.fetchAutocompleteSuggestions(
-        {
-          input: q,
-          sessionToken: autocompleteSessionRef.current,
-          includedRegionCodes: ['AU'],
-        }
-      );
-    setSuggestions(
-      (results ?? []).map((r: any) => ({
-        place_id: r.placePrediction.placeId,
-        description: r.placePrediction.text?.text ?? '',
-        structured_formatting: {
-          main_text: r.placePrediction.mainText?.text,
-          secondary_text: r.placePrediction.secondaryText?.text,
-        },
-      }))
-    );
-  }
-
-  async function resolvePlace(placeId: string) {
-    if (!window.google?.maps?.places) return null;
-    // @ts-ignore
-    const { places } = await window.google.maps.places.PlacesService;
-    // Fallback approach via PlacesService (or use a temporary div):
-    const div = document.createElement('div');
-    // @ts-ignore
-    const svc = new window.google.maps.places.PlacesService(div);
-    return new Promise<ResolvedPlace | null>((resolve) => {
-      svc.getDetails(
-        {
-          placeId,
-          fields: [
-            'place_id',
-            'formatted_address',
-            'address_component',
-            'geometry',
-          ],
-          sessionToken: autocompleteSessionRef.current,
-        },
-        (place: any, status: any) => {
-          if (status !== 'OK' || !place) return resolve(null);
-          const comps = place.address_components ?? [];
-          const streetNumber = comps.find((c: any) => c.types.includes('street_number'))?.long_name;
-          const route = comps.find((c: any) => c.types.includes('route'))?.long_name;
-          resolve({
-            google_place_id: place.place_id,
-            formatted_address: place.formatted_address ?? '',
-            address_line_1: [streetNumber, route].filter(Boolean).join(' ') || null,
-            suburb:
-              comps.find((c: any) => c.types.includes('locality'))?.long_name ??
-              comps.find((c: any) => c.types.includes('postal_town'))?.long_name ??
-              null,
-            state:
-              comps.find((c: any) =>
-                c.types.includes('administrative_area_level_1')
-              )?.short_name ?? null,
-            postcode:
-              comps.find((c: any) => c.types.includes('postal_code'))?.long_name ??
-              null,
-            country:
-              comps.find((c: any) => c.types.includes('country'))?.short_name ??
-              'AU',
-            latitude: place.geometry?.location?.lat() ?? null,
-            longitude: place.geometry?.location?.lng() ?? null,
-          });
-        }
-      );
-    });
-  }
-
-  async function handleSelect(s: PlaceSuggestion) {
+    const seq = ++requestSeq.current;
+    setLoading(true);
     setError(null);
-    setSuggestions([]);
-    setQuery(s.description);
-
-    if (!apiKey) {
-      // Without a Google key, fall back to manual entry.
-      setSelected({
-        google_place_id: '',
-        formatted_address: s.description,
-        address_line_1: s.description,
-        suburb: null,
-        state: null,
-        postcode: null,
-        country: 'AU',
-        latitude: null,
-        longitude: null,
+    const r = await api.get<{
+      ok: boolean;
+      suggestions?: Suggestion[];
+      error?: string;
+    }>(
+      `/api/afss/quote/address-search?q=${encodeURIComponent(q.trim())}`
+    );
+    if (seq !== requestSeq.current) return;
+    setLoading(false);
+    if (!r.ok || !r.data.ok) {
+      setSuggestions([]);
+      setShowDropdown(false);
+      push({
+        kind: 'warning',
+        title: 'Address lookup',
+        text: r.error || r.data?.error || 'Address service is not reachable.',
       });
       return;
     }
+    const list = Array.isArray(r.data.suggestions)
+      ? r.data.suggestions.filter((s) => s && s.id)
+      : [];
+    setSuggestions(list);
+    setShowDropdown(list.length > 0);
+    setHighlighted(-1);
+  }
 
-    const place = await resolvePlace(s.place_id);
-    if (!place) {
-      setError('Could not retrieve that address. Please type it manually.');
+  async function selectSuggestion(idx: number) {
+    const s = suggestions[idx];
+    if (!s) return;
+    setError(null);
+    setSuggestions([]);
+    setShowDropdown(false);
+    setQuery(s.formatted);
+    const resolved: ResolvedAddress = {
+      providerId: s.id,
+      formattedAddress: s.formatted,
+      addressLine1: s.addressLine1,
+      addressLine2: s.addressLine2,
+      suburb: s.suburb,
+      state: s.state,
+      postcode: s.postcode,
+      country: s.country ?? 'AU',
+      latitude: s.latitude,
+      longitude: s.longitude,
+    };
+    setResolvedAddress(resolved);
+    setLoading(false);
+  }
+
+  function handleKey(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (!showDropdown || suggestions.length === 0) {
+      if (e.key === 'Escape') setShowDropdown(false);
       return;
     }
-    setSelected(place);
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setHighlighted((h) => Math.min(h + 1, suggestions.length - 1));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setHighlighted((h) => Math.max(h - 1, -1));
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (highlighted >= 0) void selectSuggestion(highlighted);
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      setShowDropdown(false);
+    }
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
-    if (!selected && !query.trim()) {
-      setError('Please select an address from the suggestions.');
+    if (manualMode) {
+      if (!manualAddressLine1.trim()) {
+        setError('Please type at least the first line of the address.');
+        return;
+      }
+    } else if (!resolvedAddress) {
+      setError('Please pick an Australian address from the suggestions.');
       return;
     }
     setSubmitting(true);
-    try {
-      const res = await fetch('/api/afss/quote/property', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(
-          selected ?? {
-            formatted_address: query,
+    const payload: any = manualMode
+      ? {
+          address_provider: 'manual',
+          address_provider_id: null,
+          formatted_address: `${manualAddressLine1}, ${manualSuburb} ${manualState} ${manualPostcode}`
+            .replace(/\s+/g, ' ')
+            .trim(),
+          address_line_1: manualAddressLine1,
+          address_line_2: null,
+          suburb: manualSuburb || null,
+          state: manualState,
+          postcode: manualPostcode,
+          country: 'AU',
+          latitude: null,
+          longitude: null,
+        }
+      : resolvedAddress
+        ? {
+            address_provider: 'geoapify',
+            address_provider_id: resolvedAddress.providerId,
+            address_line_1: resolvedAddress.addressLine1,
+            address_line_2: resolvedAddress.addressLine2,
+            suburb: resolvedAddress.suburb,
+            state: resolvedAddress.state,
+            postcode: resolvedAddress.postcode,
+            country: resolvedAddress.country,
+            formatted_address: resolvedAddress.formattedAddress,
+            latitude: resolvedAddress.latitude,
+            longitude: resolvedAddress.longitude,
             google_place_id: null,
           }
-        ),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.error ?? 'Please check the address.');
-        setSubmitting(false);
-        return;
-      }
-      const status = await fetch('/api/afss/quote/status').then((r) => r.json());
-      onSaved(status.session);
-    } catch {
-      setError('Something went wrong.');
-    } finally {
+        : null;
+    if (!payload) return;
+    const res = await api.post<{ ok: boolean }>(
+      '/api/afss/quote/property',
+      payload
+    );
+    if (!res.ok) {
       setSubmitting(false);
+      setError(res.error);
+      push({ kind: 'error', title: 'Address not saved', text: res.error });
+      return;
     }
+    push({ kind: 'success', text: 'Address saved.' });
+    const status = await api.get<{
+      ok: boolean;
+      session: QuoteSessionSummary | null;
+    }>('/api/afss/quote/status');
+    onSaved(status.ok ? status.data.session : null);
   }
+
+  const dropdown = useMemo(() => {
+    if (!showDropdown || !pos) return null;
+    if (suggestions.length === 0) {
+      // "No addresses found" panel.
+      if (loading || query.trim().length < 3) return null;
+      return (
+        <div
+          role="status"
+          className="rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm text-gray-500 shadow-xl"
+          style={{
+            position: 'fixed',
+            top: pos.top,
+            left: pos.left,
+            width: pos.width,
+            zIndex: 2147483600,
+          }}
+        >
+          No addresses found.
+        </div>
+      );
+    }
+    return (
+      <ul
+        role="listbox"
+        className="max-h-72 overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-xl"
+        style={{
+          position: 'fixed',
+          top: pos.top,
+          left: pos.left,
+          width: pos.width,
+          zIndex: 2147483600,
+        }}
+      >
+        {suggestions.map((s, i) => (
+          <li
+            key={s.id}
+            role="option"
+            aria-selected={i === highlighted}
+            onMouseDown={(e) => {
+              e.preventDefault();
+              void selectSuggestion(i);
+            }}
+            onTouchStart={(e) => {
+              e.preventDefault();
+              void selectSuggestion(i);
+            }}
+            onMouseEnter={() => setHighlighted(i)}
+            className={
+              'flex cursor-pointer flex-col gap-0.5 px-4 py-2.5 text-sm ' +
+              (i === highlighted
+                ? 'bg-[#fb5614]/10 text-black'
+                : 'text-gray-800 hover:bg-gray-50')
+            }
+          >
+            <span className="font-medium">{s.addressLine1 || s.formatted}</span>
+            {(s.suburb || s.state || s.postcode) && (
+              <span className="text-xs text-gray-500">
+                {[s.suburb, s.state, s.postcode].filter(Boolean).join(', ')}
+              </span>
+            )}
+          </li>
+        ))}
+      </ul>
+    );
+  }, [showDropdown, pos, suggestions, highlighted, query, loading]);
 
   return (
     <div className="mx-auto max-w-md">
-      <p className="mb-1 text-xs font-bold uppercase tracking-widest text-[#fb5614]">
-        Step 2 of 6
-      </p>
+      {/* 🔥 RUNTIME MARKER — bright red box; visible iff this component renders */}
+      <div
+        style={{
+          background: '#dc2626',
+          color: 'white',
+          padding: '8px 12px',
+          borderRadius: '8px',
+          fontWeight: 700,
+          fontSize: '11px',
+          marginBottom: '12px',
+          textAlign: 'center',
+        }}
+        data-testid="property-step-active-marker"
+      >
+        DEBUG PROPERTY STEP ACTIVE
+      </div>
       <h2 className="mb-2 text-2xl font-black uppercase tracking-tight text-black sm:text-3xl">
-        Where&apos;s the building?
+        Your building address
       </h2>
       <p className="mb-6 text-sm text-gray-600">
         Start typing — pick an Australian address from the list.
       </p>
 
       <form className="space-y-4" onSubmit={handleSubmit}>
-        <Field label="Address">
-          <input
-            type="text"
-            autoComplete="off"
-            value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
-              if (apiKey) void fetchSuggestions(e.target.value);
-            }}
-            className={inputClass}
-            placeholder="Start typing your address…"
-          />
-          {!apiKey && (
-            <p className="mt-1 text-xs text-gray-400">
-              Address autocomplete is unavailable in this environment. You can
-              still type the address manually.
-            </p>
-          )}
-          {suggestions.length > 0 && (
-            <ul className="mt-2 max-h-60 overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-sm">
-              {suggestions.map((s) => (
-                <li key={s.place_id}>
-                  <button
-                    type="button"
-                    onClick={() => handleSelect(s)}
-                    className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50"
-                  >
-                    {s.description}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-        </Field>
+        {!manualMode ? (
+          <Field label="Address" hint="Start typing your address…">
+            <div>
+              <input
+                ref={inputRef}
+                type="text"
+                autoComplete="off"
+                spellCheck={false}
+                value={query}
+                onChange={(e) => {
+                  // 🔥 RUNTIME MARKER — proves the user's keystroke
+                  // actually reaches this onChange handler.
+                  console.log('🔥 ADDRESS CHANGE', e.target.value);
+                  setQuery(e.target.value);
+                  setResolvedAddress(null);
+                }}
+                onFocus={() => {
+                  if (suggestions.length > 0) setShowDropdown(true);
+                }}
+                onBlur={() => {
+                  window.setTimeout(() => setShowDropdown(false), 180);
+                }}
+                onKeyDown={handleKey}
+                className={inputClass}
+                placeholder="200 George Street, Sydney NSW 2000"
+                aria-label="Building address"
+                aria-autocomplete="list"
+                aria-expanded={showDropdown}
+                aria-controls="afss-address-listbox"
+              />
+              {loading && (
+                <span className="mt-1 block text-xs text-gray-400">
+                  Searching…
+                </span>
+              )}
+            </div>
+          </Field>
+        ) : (
+          <div className="space-y-3">
+            <Field label="Street address">
+              <input
+                type="text"
+                value={manualAddressLine1}
+                onChange={(e) => setManualAddressLine1(e.target.value)}
+                className={inputClass}
+                placeholder="200 George Street"
+                aria-label="Street address"
+              />
+            </Field>
+            <Field label="Suburb">
+              <input
+                type="text"
+                value={manualSuburb}
+                onChange={(e) => setManualSuburb(e.target.value)}
+                className={inputClass}
+                placeholder="Sydney"
+                aria-label="Suburb"
+              />
+            </Field>
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="State">
+                <select
+                  value={manualState}
+                  onChange={(e) => setManualState(e.target.value)}
+                  className={inputClass}
+                  aria-label="State"
+                >
+                  {['NSW', 'VIC', 'QLD', 'WA', 'SA', 'TAS', 'ACT', 'NT'].map(
+                    (s) => (
+                      <option key={s} value={s}>
+                        {s}
+                      </option>
+                    )
+                  )}
+                </select>
+              </Field>
+              <Field label="Postcode">
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={4}
+                  pattern="[0-9]{4}"
+                  value={manualPostcode}
+                  onChange={(e) =>
+                    setManualPostcode(
+                      e.target.value.replace(/\D/g, '').slice(0, 4)
+                    )
+                  }
+                  className={inputClass}
+                  placeholder="2000"
+                  aria-label="Postcode"
+                />
+              </Field>
+            </div>
+          </div>
+        )}
 
-        {selected && (
-          <div className="rounded-lg border border-gray-200 bg-gray-50 p-3 text-sm">
-            <div className="font-semibold">Selected</div>
-            <div>{selected.formatted_address}</div>
+        {!manualMode && (
+          <button
+            type="button"
+            onClick={() => setManualMode(true)}
+            className={subtleLink + ' mt-2 inline-block'}
+          >
+            Or enter address manually →
+          </button>
+        )}
+        {manualMode && (
+          <button
+            type="button"
+            onClick={() => setManualMode(false)}
+            className={subtleLink + ' mt-2 inline-block'}
+          >
+            ← Use address search
+          </button>
+        )}
+
+        {resolvedAddress && !manualMode && (
+          <div className="rounded-lg border border-[#fb5614]/30 bg-[#fb5614]/5 p-3 text-sm">
+            <div className="text-xs font-bold uppercase tracking-widest text-[#fb5614]">
+              Selected
+            </div>
+            <div className="text-black">{resolvedAddress.formattedAddress}</div>
           </div>
         )}
 
@@ -264,21 +505,30 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
           </div>
         )}
 
-        <button
-          type="submit"
-          disabled={submitting}
+        <button 
+          type="submit" 
+          disabled={submitting} 
           className={primaryButton}
+          style={{ background: "linear-gradient(to right, #ff5614, #ffad05)", color: "#ffffff" }}
         >
           {submitting ? 'Saving…' : 'Next →'}
         </button>
+
         <button
           type="button"
           onClick={onBack}
-          className="w-full text-xs uppercase tracking-widest text-gray-400 hover:text-black"
+          className={subtleLink + ' w-full text-center'}
         >
           ← Back
         </button>
       </form>
+
+      {/* Autocomplete dropdown rendered into a portal so it escapes
+          the modal's `overflow-hidden` and the scrollable column's
+          `overflow-y-auto`. */}
+      {mounted && dropdown && typeof document !== 'undefined'
+        ? createPortal(dropdown, document.body)
+        : null}
     </div>
   );
 }

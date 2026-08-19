@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import InstantQuoteModal from "./InstantQuoteModal";
+import InstantQuoteModal from "./quote/InstantQuoteModal";
 import RevealOnView from "./RevealOnView";
 import Link from "next/link";
 import { User, Building2, FileUp, FileCheck, CheckCircle2 } from "lucide-react";

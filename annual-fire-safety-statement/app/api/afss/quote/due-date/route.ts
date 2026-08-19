@@ -39,12 +39,10 @@ export async function POST(req: NextRequest) {
     await updateSession(id, {
       afss_due_date: r.value.date,
       due_date_known: r.value.known,
-      // If the document was already uploaded we go to processing;
-      // otherwise we stay in 'awaiting_document' / 'due_date'.
-      status: 'due_date_saved',
-      current_step: 'processing',
+      status: 'processing',
+      current_step: 'quote',
     });
-    await logActivity(id, 'due_date_saved', {
+    await logActivity(id, r.value.known ? 'due_date_saved' : 'due_date_unsure', {
       known: r.value.known,
       date: r.value.date,
     });

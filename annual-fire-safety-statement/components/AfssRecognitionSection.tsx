@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import InstantQuoteModal, { type DocumentType } from "./InstantQuoteModal";
+import InstantQuoteModal from "./quote/InstantQuoteModal";
 import RevealOnView from "./RevealOnView";
 
 export default function AfssRecognitionSection() {

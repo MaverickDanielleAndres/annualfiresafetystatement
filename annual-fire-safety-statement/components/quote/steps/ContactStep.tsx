@@ -1,6 +1,13 @@
 'use client';
 
+// Legacy re-exports so existing step components that import from
+// './ContactStep' keep working without churn.
+export { Field, inputClass, primaryButton, secondaryButton } from '../common';
+
 import { useState } from 'react';
+import { Field, inputClass, primaryButton } from '../common';
+import { api } from '../api';
+import { useToaster } from '../Toast';
 import type { QuoteSessionSummary } from '@/lib/afss/types';
 
 interface Props {
@@ -9,9 +16,16 @@ interface Props {
 }
 
 export default function ContactStep({ initialSummary, onSaved }: Props) {
-  const [firstName, setFirstName] = useState(initialSummary?.quote_reference ? '' : '');
-  const [email, setEmail] = useState('');
-  const [mobile, setMobile] = useState('');
+  const { push } = useToaster();
+  const [firstName, setFirstName] = useState(
+    initialSummary?.quote_reference ? (initialSummary as any).first_name ?? '' : ''
+  );
+  const [email, setEmail] = useState(
+    initialSummary?.quote_reference ? (initialSummary as any).email ?? '' : ''
+  );
+  const [mobile, setMobile] = useState(
+    initialSummary?.quote_reference ? (initialSummary as any).mobile ?? '' : ''
+  );
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -19,46 +33,40 @@ export default function ContactStep({ initialSummary, onSaved }: Props) {
     e.preventDefault();
     setError(null);
     setSubmitting(true);
-    try {
-      const res = await fetch('/api/afss/quote/contact', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          first_name: firstName,
-          email,
-          mobile,
-          utm: readUtm(),
-          landing_path:
-            typeof window !== 'undefined' ? window.location.pathname : null,
-          source: 'instant_quote_modal',
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.error ?? 'Please check your details.');
-        setSubmitting(false);
-        return;
-      }
-      // Pull current summary.
-      const status = await fetch('/api/afss/quote/status').then((r) => r.json());
-      onSaved(status.session);
-    } catch {
-      setError('Something went wrong. Please try again.');
-    } finally {
-      setSubmitting(false);
+    const res = await api.post<{
+      ok: true;
+      session_id: string;
+      quote_reference: string;
+    }>('/api/afss/quote/contact', {
+      first_name: firstName,
+      email,
+      mobile,
+      utm: readUtm(),
+      landing_path:
+        typeof window !== 'undefined' ? window.location.pathname : null,
+      source: 'instant_quote_modal',
+    });
+    setSubmitting(false);
+    if (!res.ok) {
+      setError(res.error);
+      push({ kind: 'error', title: 'Save failed', text: res.error });
+      return;
     }
+    push({ kind: 'success', text: 'Details saved.' });
+    // Fetch updated summary so the wizard can advance correctly.
+    const status = await api.get<{ ok: true; session: QuoteSessionSummary | null }>(
+      '/api/afss/quote/status'
+    );
+    if (status.ok) onSaved(status.data.session);
   }
 
   return (
     <div className="mx-auto max-w-md">
-      <p className="mb-1 text-xs font-bold uppercase tracking-widest text-[#fb5614]">
-        Step 1 of 6
-      </p>
       <h2 className="mb-2 text-2xl font-black uppercase tracking-tight text-black sm:text-3xl">
-        Let&apos;s start with you.
+        Your details
       </h2>
       <p className="mb-6 text-sm text-gray-600">
-        We&apos;ll save your details straight away — you can come back any time.
+        We&apos;ll save this straight away — you can come back any time.
       </p>
 
       <form className="space-y-5" onSubmit={handleSubmit}>
@@ -71,6 +79,7 @@ export default function ContactStep({ initialSummary, onSaved }: Props) {
             onChange={(e) => setFirstName(e.target.value)}
             className={inputClass}
             placeholder="e.g. Sam"
+            aria-label="First name"
           />
         </Field>
         <Field label="Email">
@@ -83,6 +92,7 @@ export default function ContactStep({ initialSummary, onSaved }: Props) {
             onChange={(e) => setEmail(e.target.value)}
             className={inputClass}
             placeholder="sam@example.com"
+            aria-label="Email"
           />
         </Field>
         <Field label="Mobile">
@@ -95,6 +105,7 @@ export default function ContactStep({ initialSummary, onSaved }: Props) {
             onChange={(e) => setMobile(e.target.value)}
             className={inputClass}
             placeholder="0400 000 000"
+            aria-label="Mobile"
           />
         </Field>
 
@@ -104,38 +115,21 @@ export default function ContactStep({ initialSummary, onSaved }: Props) {
           </div>
         )}
 
-        <button
-          type="submit"
-          disabled={submitting}
-          className={primaryButton}
-        >
-          {submitting ? 'Saving…' : 'Next →'}
-        </button>
+        <div className="pt-4 text-center">
+          <button
+            type="submit"
+            disabled={submitting}
+            className={primaryButton}
+            style={{ 
+              background: "linear-gradient(to right, #ff5614, #ffad05)",
+              color: "#ffffff"
+            }}
+          >
+            {submitting ? 'Saving…' : 'Next →'}
+          </button>
+        </div>
       </form>
     </div>
-  );
-}
-
-export const inputClass =
-  'w-full rounded-lg border border-gray-300 px-4 py-3 text-base text-black placeholder-gray-400 focus:border-[#fb5614] focus:outline-none focus:ring-2 focus:ring-[#fb5614]/40';
-
-export const primaryButton =
-  'w-full rounded-lg bg-gradient-to-r from-[#ff5614] to-[#ffad05] px-4 py-4 text-base font-bold uppercase tracking-widest text-white transition-all hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60';
-
-export function Field({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <label className="block">
-      <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-gray-700">
-        {label}
-      </span>
-      {children}
-    </label>
   );
 }
 

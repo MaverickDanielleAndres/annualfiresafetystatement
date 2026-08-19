@@ -16,8 +16,13 @@ export const runtime = 'nodejs';
 
 /**
  * POST /api/afss/quote/property
- * Step 2 — save property address. Updates the same quote session.
- * Body shape is the validated AddressInput from validation.ts.
+ *
+ * Saves the customer-selected address to afss.properties.
+ * Provider-neutral. Accepts either the old Google-style payload
+ * (google_place_id) or the new Geoapify-style payload
+ * (address_provider / address_provider_id).
+ *
+ * After save we advance the session to building_confirmation.
  */
 export async function POST(req: NextRequest) {
   let body: any;
@@ -34,17 +39,21 @@ export async function POST(req: NextRequest) {
       { status: 401 }
     );
 
+  // Reuse the existing validateAddress; it doesn't pin a provider.
   const ar = validateAddress(body);
   if (!ar.ok) return NextResponse.json({ error: ar.error }, { status: 400 });
 
-  // Optional streetview fields.
-  const streetview: Record<string, unknown> = {};
-  if (typeof body?.streetview_pano_id === 'string')
-    streetview.streetview_pano_id = body.streetview_pano_id;
-  if (typeof body?.streetview_heading === 'number')
-    streetview.streetview_heading = body.streetview_heading;
-  if (typeof body?.streetview_pitch === 'number')
-    streetview.streetview_pitch = body.streetview_pitch;
+  // Provider-neutral normalization.
+  const providerName =
+    typeof body?.address_provider === 'string'
+      ? String(body.address_provider).toLowerCase()
+      : ar.value.google_place_id
+        ? 'google'
+        : 'manual';
+  const providerId =
+    typeof body?.address_provider_id === 'string'
+      ? String(body.address_provider_id)
+      : ar.value.google_place_id || null;
 
   try {
     await upsertProperty(id, {
@@ -55,10 +64,12 @@ export async function POST(req: NextRequest) {
       postcode: ar.value.postcode,
       country: 'AU',
       formatted_address: ar.value.formatted_address,
-      google_place_id: ar.value.google_place_id,
+      google_place_id: ar.value.google_place_id, // legacy column still populated
       latitude: ar.value.latitude,
       longitude: ar.value.longitude,
-      ...streetview,
+      address_provider: providerName,
+      address_provider_id: providerId,
+      address_provider_json: body ?? null,
     });
 
     await updateSession(id, {
@@ -66,11 +77,11 @@ export async function POST(req: NextRequest) {
       current_step: 'building_confirmation',
     });
     await logActivity(id, 'address_selected', {
-      has_place_id: !!ar.value.google_place_id,
-      has_pano: !!streetview.streetview_pano_id,
+      provider: providerName,
+      has_provider_id: !!providerId,
     });
 
-    return NextResponse.json({ ok: true });
+    return NextResponse.json({ ok: true, provider: providerName });
   } catch (e: any) {
     return NextResponse.json(
       { error: e?.message ?? 'Failed to save property.' },

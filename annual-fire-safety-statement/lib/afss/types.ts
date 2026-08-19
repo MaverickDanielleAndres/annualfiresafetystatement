@@ -13,7 +13,8 @@ export type QuoteStep =
   | 'due_date'
   | 'processing'
   | 'quote'
-  | 'complete';
+  | 'complete'
+  | 'submitted';
 
 export type QuoteStatus =
   | 'started'
@@ -71,6 +72,8 @@ export type PaymentType =
   | 'booking_fee'
   | 'assessment_fee';
 
+export type PaymentPreference = 'pay_now_simulation' | 'contact_first';
+
 export interface QuoteSessionSummary {
   quote_reference: string;
   status: QuoteStatus;
@@ -82,4 +85,27 @@ export interface QuoteSessionSummary {
   total_amount: number | null;
   currency: string;
   blocked_by_business_rule: boolean;
+  /** Simulation vs real quote engine. Drives UI note. */
+  quote_mode?: 'simulation' | 'real' | null;
+  /** Customer's final payment preference, if any. */
+  payment_preference?: PaymentPreference | null;
+  /** When the customer clicked submit and a submission row was written. */
+  final_submitted_at?: string | null;
+  /** True when a quote_submissions row exists for this session. */
+  is_submitted?: boolean;
+  /** Pre-submit resume info — surfaced so the flow can pick up where it left off. */
+  resume_step?: string | null;
+}
+
+export interface QuoteSubmissionSummary {
+  id: string;
+  submission_reference: string;
+  payment_preference: PaymentPreference;
+  payment_mode: 'real' | 'simulation';
+  payment_status: 'simulated_paid' | 'deferred' | 'pending' | 'succeeded' | 'failed';
+  submitted_at: string;
+  quote_number: string | null;
+  total_amount: number | null;
+  currency: string;
+  is_simulation: boolean;
 }

@@ -7,9 +7,10 @@ export const runtime = 'nodejs';
 
 /**
  * GET /api/afss/quote/property-get
- * Returns the property record (if any) for the current cookie session.
- * Used by the building-confirmation step to fetch the formatted
- * address and Street View metadata.
+ *
+ * Returns the saved property for the current cookie session,
+ * including provider-neutral fields for the building-confirmation
+ * step (street_image_provider, etc.).
  */
 export async function GET() {
   const id = await findSessionIdByCookie();
@@ -20,7 +21,10 @@ export async function GET() {
     .schema('afss')
     .from('properties')
     .select(
-      'id, formatted_address, latitude, longitude, streetview_pano_id, address_line_1, suburb, state, postcode'
+      `id, formatted_address, address_line_1, address_line_2, suburb, state, postcode, country,
+       latitude, longitude, address_provider, address_provider_id,
+       street_image_provider, street_image_id, street_image_sequence_id,
+       street_image_captured_at, street_image_thumb_url, building_confirmed`
     )
     .eq('quote_session_id', id)
     .maybeSingle();

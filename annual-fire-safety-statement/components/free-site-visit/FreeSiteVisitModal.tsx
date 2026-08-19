@@ -5,7 +5,7 @@ import {
   useFreeSiteVisitState,
   closeFreeSiteVisit,
 } from "@/lib/free-site-visit/FreeSiteVisitStore";
-import InstantQuoteModal from "@/components/InstantQuoteModal";
+import InstantQuoteModal from "../quote/InstantQuoteModal";
 
 export default function FreeSiteVisitModal() {
   const visit = useFreeSiteVisitState();

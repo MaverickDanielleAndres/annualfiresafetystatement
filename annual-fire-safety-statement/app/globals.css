@@ -1381,3 +1381,26 @@ body.mobile-menu-open {
 .animate-pump {
   animation: pump 1.5s infinite;
 }
+
+/* Hide header when modal is open */
+body.quote-modal-open #afss-header {
+  display: none !important;
+}
+
+/* Foolproof NEXT button styles */
+.afss-primary-btn {
+  background: linear-gradient(to right, #ff5614, #ffad05) !important;
+  color: #ffffff !important;
+  padding: 14px 36px !important;
+  border-radius: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  font-weight: 800 !important;
+  font-size: 15px !important;
+  letter-spacing: 0.1em !important;
+  border: none !important;
+  text-transform: uppercase !important;
+}
