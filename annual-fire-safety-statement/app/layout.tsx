@@ -16,7 +16,7 @@ const inter = Inter({
   // "optional" — if Inter isn't cached by the time we paint, the browser
   // keeps the system fallback and avoids layout shift. CLS win on mobile.
   display: "optional",
-  preload: true,
+  preload: false,
   fallback: ["system-ui", "Helvetica", "Arial", "sans-serif"],
   adjustFontFallback: true,
 });
@@ -25,6 +25,7 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
   display: "optional",
+  preload: false,
   fallback: ["ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
 });
 

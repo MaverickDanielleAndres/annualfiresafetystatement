@@ -40,9 +40,9 @@ export default function InstantQuoteModal({ isOpen, onClose, documentType }: Ins
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity">
       <div 
-        className="bg-white p-8 md:p-10 max-w-md w-full rounded-2xl shadow-2xl relative animate-[fadeIn_0.3s_ease-out]"
+        className="bg-white p-6 md:p-10 max-w-md w-full max-h-[95vh] overflow-y-auto rounded-2xl shadow-2xl relative animate-[fadeIn_0.3s_ease-out]"
         role="dialog"
         aria-modal="true"
         aria-labelledby="quote-modal-title"
@@ -87,7 +87,7 @@ export default function InstantQuoteModal({ isOpen, onClose, documentType }: Ins
                 <input type="tel" required className="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff5614] focus:border-transparent transition-all" placeholder="0400 000 000" />
               </div>
               <div className="pt-2">
-                <button type="submit" className="w-full bg-gradient-to-r from-[#ff5614] to-[#ffad05] text-white font-bold py-4 rounded-lg uppercase tracking-widest hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+                <button type="submit" style={{ background: "linear-gradient(135deg, #ff5614 0%, #ffad05 100%)" }} className="w-full text-white font-bold min-h-[60px] flex items-center justify-center rounded-lg uppercase tracking-widest hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
                   Continue →
                 </button>
               </div>
@@ -110,7 +110,7 @@ export default function InstantQuoteModal({ isOpen, onClose, documentType }: Ins
                 <input type="text" required className="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff5614] focus:border-transparent transition-all" placeholder="Start typing address..." />
               </div>
               <div className="pt-2">
-                <button type="submit" className="w-full bg-gradient-to-r from-[#ff5614] to-[#ffad05] text-white font-bold py-4 rounded-lg uppercase tracking-widest hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+                <button type="submit" style={{ background: "linear-gradient(135deg, #ff5614 0%, #ffad05 100%)" }} className="w-full text-white font-bold min-h-[60px] flex items-center justify-center rounded-lg uppercase tracking-widest hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
                   Find Building →
                 </button>
               </div>
@@ -131,7 +131,7 @@ export default function InstantQuoteModal({ isOpen, onClose, documentType }: Ins
               </div>
             </div>
             <form className="space-y-3" onSubmit={nextStep}>
-              <button type="submit" className="w-full bg-gradient-to-r from-[#ff5614] to-[#ffad05] text-white font-bold py-4 rounded-lg uppercase tracking-widest hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+              <button type="submit" style={{ background: "linear-gradient(135deg, #ff5614 0%, #ffad05 100%)" }} className="w-full text-white font-bold min-h-[60px] flex items-center justify-center rounded-lg uppercase tracking-widest hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
                 YES, THIS IS IT →
               </button>
               <button type="button" onClick={() => setStep(2)} className="w-full bg-gray-100 text-gray-700 font-bold py-4 rounded-lg uppercase tracking-widest hover:bg-gray-200 transition-all duration-300">
@@ -155,7 +155,7 @@ export default function InstantQuoteModal({ isOpen, onClose, documentType }: Ins
                 <span className="text-gray-500 font-bold uppercase tracking-widest text-sm">Click to Upload</span>
               </div>
               <div className="pt-2">
-                <button type="submit" className="w-full bg-gradient-to-r from-[#ff5614] to-[#ffad05] text-white font-bold py-4 rounded-lg uppercase tracking-widest hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+                <button type="submit" style={{ background: "linear-gradient(135deg, #ff5614 0%, #ffad05 100%)" }} className="w-full text-white font-bold min-h-[60px] flex items-center justify-center rounded-lg uppercase tracking-widest hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
                   Continue →
                 </button>
               </div>
@@ -180,7 +180,7 @@ export default function InstantQuoteModal({ isOpen, onClose, documentType }: Ins
                 I'M NOT SURE
               </button>
               <div className="pt-2">
-                <button type="submit" className="w-full bg-gradient-to-r from-[#ff5614] to-[#ffad05] text-white font-bold py-4 rounded-lg uppercase tracking-widest hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+                <button type="submit" style={{ background: "linear-gradient(135deg, #ff5614 0%, #ffad05 100%)" }} className="w-full text-white font-bold min-h-[60px] flex items-center justify-center rounded-lg uppercase tracking-widest hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
                   Continue →
                 </button>
               </div>
@@ -199,7 +199,7 @@ export default function InstantQuoteModal({ isOpen, onClose, documentType }: Ins
             </div>
             <form className="space-y-5" onSubmit={nextStep}>
               <div className="pt-2">
-                <button type="submit" className="w-full bg-gradient-to-r from-[#ff5614] to-[#ffad05] text-white font-bold py-4 rounded-lg uppercase tracking-widest hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+                <button type="submit" style={{ background: "linear-gradient(135deg, #ff5614 0%, #ffad05 100%)" }} className="w-full text-white font-bold min-h-[60px] flex items-center justify-center rounded-lg uppercase tracking-widest hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
                   Submit Request →
                 </button>
               </div>

@@ -50,7 +50,6 @@ export default function PageHero({
             fill
             style={{ objectFit: "cover", objectPosition: imagePosition }}
             priority
-            quality={90}
           />
           {/* Dark overlay to make text readable */}
           <div className="absolute inset-0 bg-black/70" />
@@ -124,7 +123,6 @@ export default function PageHero({
           style={{ objectFit: imageObjectFit, objectPosition: imagePosition }}
           priority
           sizes="(max-width: 1024px) 100vw, 65vw"
-          quality={90}
         />
         {/* Warm/Dark Red Tint on the right side to remove any blueish feel */}
         {!hideImageTints && (

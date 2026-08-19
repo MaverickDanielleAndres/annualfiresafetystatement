@@ -93,7 +93,7 @@ export default function FreeSiteVisitTrustStrip() {
       <div className="fsv-trust-strip-inner">
         <div className="fsv-trust-strip-portrait" aria-hidden="true">
           <Image
-            src="/Peter - Managing Director.jpg"
+            src="/peter-managing-director.jpg"
             alt=""
             fill
             sizes="56px"

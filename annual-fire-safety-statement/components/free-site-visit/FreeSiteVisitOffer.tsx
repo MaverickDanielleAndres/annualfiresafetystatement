@@ -125,7 +125,7 @@ export default function FreeSiteVisitOffer({
       <div className="fsv-offer-card">
         <div className="fsv-offer-portrait" aria-hidden="true">
           <Image
-            src="/Peter - Managing Director.jpg"
+            src="/peter-managing-director.jpg"
             alt=""
             fill
             sizes="120px"

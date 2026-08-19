@@ -52,19 +52,27 @@ export default function FireSafetyScheduleSection() {
       setLines(newLines);
     };
 
+    // Ensure it updates on load and if any fonts/images change sizes
     updateLines();
     window.addEventListener('resize', updateLines);
     
-    // Continuously update lines for the first 1.5 seconds to perfectly track the RevealOnView animation
-    const interval = setInterval(updateLines, 30);
-    setTimeout(() => {
-      clearInterval(interval);
-      updateLines(); // One final update
-    }, 1500);
+    // Use ResizeObserver for more robust tracking of the container
+    const container = originRef.current?.closest('section');
+    let observer: ResizeObserver | null = null;
+    if (container && typeof ResizeObserver !== 'undefined') {
+      observer = new ResizeObserver(updateLines);
+      observer.observe(container);
+    }
+    
+    // Small timeouts to catch any delayed renders like custom fonts
+    const timeout1 = setTimeout(updateLines, 100);
+    const timeout2 = setTimeout(updateLines, 500);
 
     return () => {
       window.removeEventListener('resize', updateLines);
-      clearInterval(interval);
+      if (observer) observer.disconnect();
+      clearTimeout(timeout1);
+      clearTimeout(timeout2);
     };
   }, []);
 
@@ -98,13 +106,13 @@ export default function FireSafetyScheduleSection() {
           <div className="w-full lg:w-[45%] flex flex-col relative z-10 lg:py-4">
             
             {/* Eyebrow */}
-            <RevealOnView>
+            <div>
               <p className="font-bold tracking-widest uppercase mb-3 text-xs md:text-sm flex items-center gap-3">
                 <span className="text-[#fb5614]">06 / YOUR FIRE SAFETY STATEMENT</span>
               </p>
-            </RevealOnView>
+            </div>
 
-            <RevealOnView delay={100}>
+            <div>
               <h2 className="text-[clamp(2.5rem,4vw,3.5rem)] font-black tracking-tight leading-[1.05] text-[#111111] mb-4">
                 <span className="whitespace-nowrap">What's in your</span><br/>
                 <span className="bg-gradient-to-r from-[#fb5614] to-[#ffad05] bg-clip-text text-transparent whitespace-nowrap">Fire Safety Statement?</span>
@@ -113,10 +121,10 @@ export default function FireSafetyScheduleSection() {
               <p className="text-gray-700 leading-relaxed font-medium mb-2 max-w-md lg:max-w-[90%]">
                 An annual fire safety statement records the building, owner and assessment information used to confirm annual fire safety compliance.
               </p>
-            </RevealOnView>
+            </div>
             
             {/* Document Image */}
-            <RevealOnView delay={200} className="relative w-full max-w-[380px] lg:mr-auto mt-0 flex flex-col justify-end">
+            <div className="relative w-full max-w-[380px] lg:mr-auto mt-0 flex flex-col justify-end">
               <div className="relative w-full aspect-[1/1.3] flex items-center justify-center">
                 <Image 
                   src="/sampleafss-nobg.png" 
@@ -124,6 +132,10 @@ export default function FireSafetyScheduleSection() {
                   fill 
                   className="object-contain drop-shadow-2xl rounded-sm" 
                   sizes="(max-width: 1024px) 100vw, 380px"
+                  onLoad={() => {
+                    // Dispatch a resize event when image loads to trigger line update
+                    window.dispatchEvent(new Event('resize'));
+                  }}
                 />
               </div>
               
@@ -131,13 +143,13 @@ export default function FireSafetyScheduleSection() {
               <div ref={originRef} className="hidden lg:flex absolute top-1/2 -right-[12px] -translate-y-1/2 w-[20px] h-[20px] bg-white border border-gray-100 items-center justify-center rounded-full z-20">
                 <div className="w-2.5 h-2.5 bg-[#fb5614] rounded-full shadow-[0_0_10px_rgba(251,86,20,0.5)]"></div>
               </div>
-            </RevealOnView>
+            </div>
           </div>
 
           {/* Right Column */}
           <div className="w-full lg:w-[45%] flex flex-col justify-between h-auto lg:h-[700px] relative z-10 mt-12 lg:mt-auto gap-3 lg:gap-0">
             {items.map((item, i) => (
-              <RevealOnView key={i} delay={100 + (i * 30)} className="w-full h-full flex items-center">
+              <div key={i} className="w-full h-full flex items-center">
                 <div className="relative w-full border border-gray-200 rounded-full py-3 lg:py-0 h-14 xl:h-16 px-6 md:px-8 flex items-center bg-white shadow-sm hover:shadow-md transition-shadow">
                   {/* Destination point for SVG line */}
                   <div 
@@ -149,7 +161,7 @@ export default function FireSafetyScheduleSection() {
                   <div className="w-[1px] h-6 bg-gray-200 mx-4 md:mx-6 flex-shrink-0"></div>
                   <span className="text-[#111111] font-semibold text-[0.95rem]">{item}</span>
                 </div>
-              </RevealOnView>
+              </div>
             ))}
           </div>
           
@@ -441,6 +453,7 @@ export default function FireSafetyScheduleSection() {
                 fill
                 className="object-cover"
                 priority
+                sizes="(max-width: 1024px) 100vw, 50vw"
              />
 
              {/* 13 FEB 2026 Card Overlay */}
