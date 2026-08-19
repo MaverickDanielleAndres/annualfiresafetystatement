@@ -4,7 +4,7 @@ import Link from "next/link";
 export interface PageHeroProps {
   eyebrow: string;
   titleLines: string[];
-  description: string;
+  description: string | React.ReactNode;
   imageSrc: string;
   imageAlt: string;
   imagePosition?: string;

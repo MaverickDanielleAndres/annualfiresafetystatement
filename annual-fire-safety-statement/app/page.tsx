@@ -23,6 +23,8 @@ export const metadata: Metadata = createPageMetadata({
 
 
 
+import AfssRecognitionSection from "@/components/AfssRecognitionSection";
+
 export default function HomePage() {
   return (
     <>
@@ -30,7 +32,12 @@ export default function HomePage() {
         layout="primary"
         eyebrow="ANNUAL FIRE SAFETY STATEMENTS • NSW"
         titleLines={["YOUR AFSS ISN'T", "JUST PAPERWORK.", "IT'S RESPONSIBILITY."]}
-        description="From your Fire Safety Schedule to assessment and statement, we make the AFSS process clear and straightforward."
+        description={
+          <>
+            From your Fire Safety Schedule to assessment and statement,<br />
+            we make the AFSS process clear and straightforward.
+          </>
+        }
         imageSrc="/herosection.avif"
         imageAlt="Accredited practitioner inspecting building equipment on site"
         imagePosition="center"
@@ -41,8 +48,7 @@ export default function HomePage() {
         secondaryCta={{ label: "VIEW SAMPLE AFSS →", href: "/sample" }}
       />
 
-
-
+      <AfssRecognitionSection />
       {/* Final CTA */}
       <ContactCTA />
     </>
