@@ -126,23 +126,24 @@ export default function QuoteResultStep({ summary, onClose }: Props) {
         </div>
       )}
 
-      <button
-        type="button"
-        disabled={paying}
-        onClick={pay}
-        className={primaryButton}
-        style={{ background: "linear-gradient(to right, #ff5614, #ffad05)", color: "#ffffff" }}
-      >
-        {paying ? 'Starting payment…' : 'Pay / Book →'}
-      </button>
-
-      <button
-        type="button"
-        onClick={onClose}
-        className="mt-3 w-full text-xs uppercase tracking-widest text-gray-400 hover:text-black"
-      >
-        Close
-      </button>
+      <div className="mt-8 flex flex-col-reverse sm:flex-row items-center justify-center gap-4 sm:gap-6">
+        <button
+          type="button"
+          onClick={onClose}
+          className="text-sm text-gray-500 hover:text-black hover:underline"
+        >
+          Close
+        </button>
+        <button
+          type="button"
+          disabled={paying}
+          onClick={pay}
+          className={primaryButton + ' !mx-0'}
+          style={{ background: "linear-gradient(to right, #ff5614, #ffad05)", color: "#ffffff" }}
+        >
+          {paying ? 'Starting payment…' : 'Pay / Book →'}
+        </button>
+      </div>
     </div>
   );
 }

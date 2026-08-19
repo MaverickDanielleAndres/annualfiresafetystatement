@@ -209,31 +209,33 @@ export default function DueDateStep({ onSaved, onBack }: Props) {
           </div>
         )}
 
-        <button
-          type="submit"
-          disabled={submitting || unsure || !iso}
-          className={primaryButton}
-          style={{ background: "linear-gradient(to right, #ff5614, #ffad05)", color: "#ffffff" }}
-        >
-          {submitting ? 'Saving…' : 'Next →'}
-        </button>
+        <div className="pt-4 flex items-center justify-center gap-6">
+          <button
+            type="button"
+            onClick={onBack}
+            className={subtleLink}
+          >
+            ← Back
+          </button>
 
-        <button
-          type="button"
-          disabled={submitting}
-          onClick={onSubmitUnsure}
-          className="w-full text-sm text-gray-500 hover:text-black"
-        >
-          I&apos;m not sure →
-        </button>
+          <button
+            type="submit"
+            disabled={submitting || unsure || !iso}
+            className={primaryButton + ' !mx-0'}
+            style={{ background: "linear-gradient(to right, #ff5614, #ffad05)", color: "#ffffff" }}
+          >
+            {submitting ? 'Saving…' : 'Next →'}
+          </button>
 
-        <button
-          type="button"
-          onClick={onBack}
-          className={subtleLink + ' w-full text-center'}
-        >
-          ← Back
-        </button>
+          <button
+            type="button"
+            disabled={submitting}
+            onClick={onSubmitUnsure}
+            className={subtleLink}
+          >
+            I&apos;m not sure →
+          </button>
+        </div>
       </form>
     </div>
   );

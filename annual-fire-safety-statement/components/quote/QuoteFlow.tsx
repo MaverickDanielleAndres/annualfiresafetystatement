@@ -117,6 +117,7 @@ function QuoteFlowInner({ onClose, initialSummary }: QuoteFlowProps) {
           <DocumentStep
             onUploaded={() => setStep(5)}
             onFallback={() => setStep(5)}
+            onBack={() => setStep(3)}
           />
         )}
         {step === 5 && (
@@ -131,6 +132,7 @@ function QuoteFlowInner({ onClose, initialSummary }: QuoteFlowProps) {
         {step === 6 && summary && (
           <QuotePaymentStep
             summary={summary}
+            onBack={() => setStep(5)}
             onSubmitted={(s) => {
               setStep(7);
               // Refresh submission details.

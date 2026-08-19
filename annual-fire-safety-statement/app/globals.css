@@ -1396,8 +1396,6 @@ body.quote-modal-open #afss-header {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
   font-weight: 800 !important;
   font-size: 15px !important;
   letter-spacing: 0.1em !important;

@@ -74,10 +74,20 @@ export async function POST(req: NextRequest) {
           mobile: moR.value,
           mobile_normalized: moR.value,
           status: 'contact_saved',
-          current_step: 'contact',
+          current_step: 'property',
         })
         .eq('id', id);
       await logActivity(id, 'contact_saved', { resumed: true });
+    } else {
+      // New session: advance straight to step 2 so the wizard
+      // resumes correctly on reload and so QuoteFlow's auto-sync
+      // doesn't snap the customer back to step 1.
+      const sb = (await import('@/lib/supabase/admin')).getAdminSupabase();
+      await sb
+        .schema('afss')
+        .from('quote_sessions')
+        .update({ current_step: 'property' })
+        .eq('id', id);
     }
 
     const sess = await getCurrentSession();

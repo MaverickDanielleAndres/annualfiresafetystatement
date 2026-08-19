@@ -348,9 +348,6 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
 
   return (
     <div className="mx-auto max-w-md">
-      <p className="mb-1 text-xs font-bold uppercase tracking-widest text-[#fb5614]">
-        Step 2 of 6
-      </p>
       <h2 className="mb-2 text-2xl font-black uppercase tracking-tight text-black sm:text-3xl">
         Your building address
       </h2>
@@ -487,17 +484,19 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
           </div>
         )}
 
-        <button type="submit" disabled={submitting} className={primaryButton}>
-          {submitting ? 'Saving…' : 'Next →'}
-        </button>
-
-        <button
-          type="button"
-          onClick={onBack}
-          className={subtleLink + ' w-full text-center'}
-        >
-          ← Back
-        </button>
+        <div className="pt-4 flex items-center justify-center gap-6">
+          <button
+            type="button"
+            onClick={onBack}
+            className={subtleLink}
+          >
+            ← Back
+          </button>
+          
+          <button type="submit" disabled={submitting} className={primaryButton + ' !mx-0'}>
+            {submitting ? 'Saving…' : 'Next →'}
+          </button>
+        </div>
       </form>
 
       {mounted && dropdown && typeof document !== 'undefined'

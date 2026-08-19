@@ -9,6 +9,7 @@ import type { QuoteSessionSummary } from '@/lib/afss/types';
 interface Props {
   summary: QuoteSessionSummary;
   onSubmitted: (s: { submission_reference: string }) => void;
+  onBack?: () => void;
 }
 
 type Preference = 'pay_now_simulation' | 'contact_first';
@@ -40,7 +41,7 @@ function formatAUD(cents: number | null): string {
  *      applicable) afss.payments(mode='simulation'). Server is
  *      idempotent on duplicate submit.
  */
-export default function QuotePaymentStep({ summary, onSubmitted }: Props) {
+export default function QuotePaymentStep({ summary, onSubmitted, onBack }: Props) {
   const { push } = useToaster();
   const [quoteNumber, setQuoteNumber] = useState<string | null>(summary.quote_number ?? null);
   const [totalCents, setTotalCents] = useState<number | null>(
@@ -239,17 +240,29 @@ export default function QuotePaymentStep({ summary, onSubmitted }: Props) {
         </div>
       )}
 
-      <button
-        type="button"
-        disabled={!preference || submitting}
-        onClick={submit}
-        className={primaryButton}
-        style={{ background: "linear-gradient(to right, #ff5614, #ffad05)", color: "#ffffff" }}
-      >
-        {submitting ? 'Submitting…' : 'Submit →'}
-      </button>
+      <div className="pt-4 flex items-center justify-center gap-6">
+        {onBack && (
+          <button
+            type="button"
+            onClick={onBack}
+            className={subtleLink}
+          >
+            ← Back
+          </button>
+        )}
 
-      <p className="mt-3 text-center text-[11px] text-gray-400">
+        <button
+          type="button"
+          disabled={!preference || submitting}
+          onClick={submit}
+          className={primaryButton + ' !mx-0'}
+          style={{ background: "linear-gradient(to right, #ff5614, #ffad05)", color: "#ffffff" }}
+        >
+          {submitting ? 'Submitting…' : 'Submit →'}
+        </button>
+      </div>
+
+      <p className="mt-4 text-center text-[11px] text-gray-400">
         By submitting, you agree to be contacted about your AFSS. No payment is taken in simulation mode.
       </p>
     </div>

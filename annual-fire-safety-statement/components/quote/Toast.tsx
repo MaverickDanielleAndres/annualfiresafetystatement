@@ -139,7 +139,7 @@ function ToastViewport({
     <div
       aria-live="polite"
       aria-atomic="false"
-      className="pointer-events-none fixed inset-x-0 top-3 z-[200] flex flex-col items-center gap-2 px-3 sm:bottom-4 sm:right-4 sm:left-auto sm:top-auto sm:items-end"
+      className="pointer-events-none fixed inset-x-0 top-4 z-[9999] flex flex-col items-center gap-2 px-4"
     >
       {toasts.map((t) => (
         <Toast key={t.id} toast={t} onDismiss={() => onDismiss(t.id)} />
@@ -153,8 +153,8 @@ const KIND_STYLES: Record<
   { bar: string; icon: React.ReactNode; ring: string }
 > = {
   success: {
-    bar: 'bg-[#fb5614]',
-    ring: 'ring-1 ring-[#fb5614]/20',
+    bar: 'bg-emerald-500',
+    ring: 'ring-1 ring-emerald-200',
     icon: <CheckIcon />,
   },
   error: {
@@ -186,7 +186,7 @@ function Toast({
     <div
       role="status"
       className={
-        'pointer-events-auto flex w-full max-w-sm overflow-hidden rounded-xl bg-white shadow-xl ' +
+        'pointer-events-auto flex w-full max-w-sm overflow-hidden rounded-xl bg-white shadow-lg transition-all ' +
         style.ring
       }
       onMouseEnter={(e) => {
@@ -196,22 +196,22 @@ function Toast({
         e.currentTarget.dataset.hover = '1';
       }}
     >
-      <div className={'w-1 shrink-0 ' + style.bar} aria-hidden />
-      <div className="flex flex-1 items-start gap-3 px-4 py-3">
-        <div className="mt-0.5 shrink-0">{style.icon}</div>
-        <div className="flex-1 text-sm leading-snug">
+      <div className={'w-1.5 shrink-0 ' + style.bar} aria-hidden />
+      <div className="flex flex-1 items-start gap-3 px-4 py-3.5">
+        <div className="shrink-0">{style.icon}</div>
+        <div className="flex min-h-[24px] flex-1 flex-col justify-center text-sm leading-snug">
           {toast.title && (
-            <div className="mb-0.5 text-xs font-bold uppercase tracking-widest text-gray-700">
+            <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-gray-500">
               {toast.title}
             </div>
           )}
-          <div className="text-gray-900">{toast.text}</div>
+          <div className="font-medium text-gray-900">{toast.text}</div>
         </div>
         <button
           type="button"
           onClick={onDismiss}
           aria-label="Dismiss notification"
-          className="rounded p-1 text-gray-300 hover:text-black"
+          className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <line x1="18" y1="6" x2="6" y2="18" />
@@ -225,7 +225,7 @@ function Toast({
 
 function CheckIcon() {
   return (
-    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#fb5614]/15 text-[#fb5614]">
+    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="20 6 9 17 4 12" />
       </svg>

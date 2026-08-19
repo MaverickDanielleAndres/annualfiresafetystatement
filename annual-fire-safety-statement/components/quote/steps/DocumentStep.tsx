@@ -8,6 +8,7 @@ import { useToaster } from '../Toast';
 interface Props {
   onUploaded: () => void;
   onFallback: () => void;
+  onBack?: () => void;
 }
 
 interface UploadedFile {
@@ -68,7 +69,7 @@ function clientValidate(file: File): string | null {
  * "I CAN'T FIND MY AFSS →" preserved path that does not delete
  * previous progress.
  */
-export default function DocumentStep({ onUploaded, onFallback }: Props) {
+export default function DocumentStep({ onUploaded, onFallback, onBack }: Props) {
   const { push } = useToaster();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [dragOver, setDragOver] = useState(false);
@@ -371,14 +372,27 @@ export default function DocumentStep({ onUploaded, onFallback }: Props) {
       )}
 
       {!uploaded && (
-        <button
-          type="button"
-          onClick={reportFallback}
-          disabled={busy}
-          className="w-full text-sm text-gray-500 underline-offset-4 hover:text-black hover:underline"
-        >
-          I can&apos;t find my AFSS →
-        </button>
+        <div className="pt-4 flex items-center justify-center gap-6">
+          {onBack && (
+            <button
+              type="button"
+              onClick={onBack}
+              disabled={busy}
+              className={subtleLink}
+            >
+              ← Back
+            </button>
+          )}
+
+          <button
+            type="button"
+            onClick={reportFallback}
+            disabled={busy}
+            className={subtleLink}
+          >
+            I can&apos;t find my AFSS →
+          </button>
+        </div>
       )}
     </div>
   );

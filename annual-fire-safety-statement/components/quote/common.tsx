@@ -38,7 +38,7 @@ export const inputClass =
   'w-full rounded-lg border border-gray-300 px-4 py-3 text-base text-black placeholder-gray-400 focus:border-[#fb5614] focus:outline-none focus:ring-2 focus:ring-[#fb5614]/40';
 
 export const primaryButton = clsx(
-  'afss-primary-btn',
+  'afss-primary-btn mx-auto',
   'transition-all shadow-[0_8px_20px_rgba(251,86,20,0.25)] hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(251,86,20,0.4)] disabled:cursor-not-allowed disabled:opacity-60'
 );
 

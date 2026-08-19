@@ -237,12 +237,20 @@ export default function BuildingConfirmStep({ onConfirmed, onChange }: Props) {
         </div>
       )}
 
-      <div className="space-y-3">
+      <div className="pt-4 flex items-center justify-center gap-6">
+        <button
+          type="button"
+          disabled={submitting}
+          onClick={() => post(false)}
+          className={subtleLink}
+        >
+          ← Back
+        </button>
         <button
           type="button"
           disabled={submitting}
           onClick={() => post(true)}
-          className={primaryButton}
+          className={primaryButton + ' !mx-0'}
           style={{ background: "linear-gradient(to right, #ff5614, #ffad05)", color: "#ffffff" }}
         >
           {state === 'no_coverage' ||
@@ -252,14 +260,6 @@ export default function BuildingConfirmStep({ onConfirmed, onChange }: Props) {
           state === 'invalid_response'
             ? 'Yes, this is the correct address →'
             : "Yes, that's it →"}
-        </button>
-        <button
-          type="button"
-          disabled={submitting}
-          onClick={() => post(false)}
-          className={secondaryButton}
-        >
-          Change address
         </button>
       </div>
     </div>
