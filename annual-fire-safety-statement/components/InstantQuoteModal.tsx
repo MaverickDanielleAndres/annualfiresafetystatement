@@ -53,12 +53,13 @@ export default function InstantQuoteModal({ isOpen, onClose, documentType }: Ins
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/70 backdrop-blur-md transition-opacity">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/70 backdrop-blur-md transition-opacity" onClick={onClose}>
       <div 
         className="bg-white w-full max-w-[1000px] max-h-[95vh] md:max-h-[90vh] rounded-2xl shadow-2xl relative flex flex-col md:flex-row overflow-hidden animate-[fadeIn_0.4s_ease-out]"
         role="dialog"
         aria-modal="true"
         aria-labelledby="quote-modal-title"
+        onClick={(e) => e.stopPropagation()}
       >
         {/* Left Side: Dynamic Form */}
         <div className="w-full md:w-[65%] p-6 md:p-10 flex flex-col bg-white relative z-10 overflow-y-auto md:overflow-visible">
