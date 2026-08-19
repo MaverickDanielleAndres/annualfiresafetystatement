@@ -139,19 +139,23 @@ export default function PageHero({
           <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-[#1a0505] from-[5%] via-[#1a0505]/80 via-[30%] to-transparent pointer-events-none" />
         )}
         
-        {foregroundImageSrc && (
-          <div className="absolute inset-0 z-10 flex items-center justify-center lg:justify-end pr-0 lg:-mr-[5%] pb-10 lg:pb-0 pointer-events-none drop-shadow-2xl">
+      </div>
+
+      {/* Foreground Image aligned with navbar-inner right edge */}
+      {foregroundImageSrc && (
+        <div className="absolute inset-0 z-10 pointer-events-none w-full flex justify-center">
+          <div className="w-full max-w-[1440px] relative h-full flex items-center justify-center lg:justify-end pr-[1rem] min-[1025px]:pr-[2rem] min-[1441px]:pr-[4rem] pb-10 lg:pb-0 drop-shadow-2xl">
             <Image
               src={foregroundImageSrc}
               alt={foregroundImageAlt || ""}
               width={900}
               height={1100}
-              className="w-[100%] sm:w-[85%] lg:w-auto h-[80%] lg:h-[120%] max-h-none lg:max-h-[1000px] object-contain rotate-3 hover:rotate-0 transition-transform duration-500 pointer-events-auto mt-24 lg:mt-0"
+              className="w-[100%] sm:w-[85%] lg:w-auto h-[80%] lg:h-[120%] max-h-none lg:max-h-[1000px] object-contain rotate-3 hover:rotate-0 transition-transform duration-500 pointer-events-auto mt-24 lg:mt-0 lg:translate-x-10 xl:translate-x-20"
               priority
             />
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Watermark aligned exactly with the navbar-inner right edge */}
       {!hideWatermark && (

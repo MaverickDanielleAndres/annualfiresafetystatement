@@ -15,7 +15,7 @@ export default function AfssRecognitionSection() {
   };
 
   return (
-    <section className="bg-white pt-8 pb-16 md:pt-12 md:pb-24 lg:pt-16 lg:pb-32 w-full overflow-hidden relative">
+    <section className="bg-white pt-8 pb-10 md:pt-12 md:pb-16 lg:pt-16 lg:pb-16 w-full overflow-hidden relative">
       <style>{`
         .afss-option {
           width: 100%;
@@ -75,25 +75,25 @@ export default function AfssRecognitionSection() {
         <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
           
           {/* Left Column (Text & Choices) */}
-          <div className="w-full lg:w-[45%] flex flex-col items-start order-1 lg:order-1">
-            <RevealOnView>
-              <p className="font-bold tracking-widest uppercase mb-4 text-xs md:text-sm flex items-center gap-3">
+          <div className="w-full lg:w-[45%] flex flex-col items-center text-center order-1 lg:order-1">
+            <RevealOnView className="flex flex-col items-center w-full">
+              <p className="font-bold tracking-widest uppercase mb-2 text-xs md:text-sm flex items-center justify-center gap-3">
                 <span className="w-2 h-2 bg-[#fb5614]" aria-hidden="true" />
                 <span className="bg-gradient-to-r from-[#ff5614] to-[#ffad05] bg-clip-text text-transparent">01 / YOUR AFSS</span>
               </p>
               
-              <h2 className="text-[clamp(2.5rem,4vw,3.5rem)] font-black tracking-tight leading-[1.05] mb-6 text-[#111111]">
-                Have you got<br/>
+              <h2 className="text-[clamp(2.5rem,4vw,3.5rem)] font-black tracking-tight leading-[1.05] mb-4 text-[#111111]">
+                Have you <span className="text-[#ff5614]">got</span><br/>
                 <span className="bg-gradient-to-r from-[#ff5614] to-[#ffad05] bg-clip-text text-transparent">an AFSS?</span>
               </h2>
               
-              <p className="text-lg md:text-xl font-medium text-gray-700 mb-10 max-w-[480px] leading-relaxed">
+              <p className="text-lg md:text-xl font-medium text-gray-700 mb-6 max-w-[480px] leading-relaxed">
                 If you have an AFSS or Fire Safety Schedule, you're ready to get started.
               </p>
             </RevealOnView>
 
             {/* In mobile, this is pushed below the image via ordering */}
-            <div className="w-full max-w-[500px] flex flex-col mb-10 order-3 lg:order-none mt-10 lg:mt-0">
+            <div className="w-full max-w-[500px] flex flex-col mb-8 order-3 lg:order-none mt-6 lg:mt-0">
               <RevealOnView delay={100}>
                 <button 
                   onClick={() => handleOpenQuote("afss")}
@@ -181,12 +181,12 @@ export default function AfssRecognitionSection() {
               AFSS
             </div>
             
-            <RevealOnView delay={200} className="relative w-full max-w-[450px] lg:max-w-[650px] aspect-[1/1.3] flex items-center justify-center">
+            <RevealOnView delay={200} className="relative w-full max-w-[450px] lg:max-w-[700px] aspect-[1/1.2] flex items-center justify-center">
               <Image 
                 src="/sampleafss-nobg.png"
                 alt="Sample NSW Annual Fire Safety Statement"
                 fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 650px"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
                 style={{ objectFit: 'contain' }}
                 className="drop-shadow-2xl z-10"
                 priority

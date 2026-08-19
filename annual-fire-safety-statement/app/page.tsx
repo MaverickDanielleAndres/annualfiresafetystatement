@@ -24,6 +24,11 @@ export const metadata: Metadata = createPageMetadata({
 
 
 import AfssRecognitionSection from "@/components/AfssRecognitionSection";
+import InstantQuoteJourneySection from "@/components/InstantQuoteJourneySection";
+import KnowYourDocumentsSection from "@/components/KnowYourDocumentsSection";
+import TheProcessSection from "@/components/TheProcessSection";
+import WhatIsAnAfssSection from "@/components/WhatIsAnAfssSection";
+import FireSafetyScheduleSection from "@/components/FireSafetyScheduleSection";
 
 export default function HomePage() {
   return (
@@ -49,6 +54,11 @@ export default function HomePage() {
       />
 
       <AfssRecognitionSection />
+      <InstantQuoteJourneySection />
+      <KnowYourDocumentsSection />
+      <WhatIsAnAfssSection />
+      <TheProcessSection />
+      <FireSafetyScheduleSection />
       {/* Final CTA */}
       <ContactCTA />
     </>

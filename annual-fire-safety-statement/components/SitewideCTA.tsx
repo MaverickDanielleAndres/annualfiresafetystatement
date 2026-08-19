@@ -82,8 +82,7 @@ export default function SitewideCTA() {
           <div className="pre-faq-cta-actions">
             <FreeSiteVisitButton
               source="sitewide"
-              pulse
-              className="pre-faq-cta-button is-primary"
+              className="pre-faq-cta-button is-primary animate-pump"
               label="GET AN INSTANT QUOTE"
               trailingIcon={
                 <svg
