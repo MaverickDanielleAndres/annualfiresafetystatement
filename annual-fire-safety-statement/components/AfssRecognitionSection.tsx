@@ -7,9 +7,9 @@ import RevealOnView from "./RevealOnView";
 
 export default function AfssRecognitionSection() {
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedDoc, setSelectedDoc] = useState<DocumentType>(null);
+  const [selectedDoc, setSelectedDoc] = useState<'afss' | 'fire-safety-schedule' | 'none' | null>(null);
 
-  const handleOpenQuote = (docType: DocumentType) => {
+  const handleOpenQuote = (docType: 'afss' | 'fire-safety-schedule' | 'none' | null) => {
     setSelectedDoc(docType);
     setModalOpen(true);
   };
@@ -196,10 +196,9 @@ export default function AfssRecognitionSection() {
         </div>
       </div>
 
-      <InstantQuoteModal 
-        isOpen={modalOpen} 
-        onClose={() => setModalOpen(false)} 
-        documentType={selectedDoc} 
+      <InstantQuoteModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
       />
     </section>
   );

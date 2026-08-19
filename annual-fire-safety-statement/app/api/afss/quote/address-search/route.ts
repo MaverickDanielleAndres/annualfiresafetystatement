@@ -63,8 +63,6 @@ export async function GET(req: NextRequest) {
 
   const url = new URL(req.url);
   const q = (url.searchParams.get('q') ?? '').trim();
-  // 🔥 RUNTIME MARKER — server-side log proves this route was hit by a real browser.
-  console.log('🔥 ADDRESS SEARCH ROUTE HIT', JSON.stringify(q));
   if (q.length < 3) {
     return NextResponse.json({ ok: true, suggestions: [] });
   }

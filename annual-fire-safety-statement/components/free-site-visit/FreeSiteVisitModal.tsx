@@ -14,7 +14,6 @@ export default function FreeSiteVisitModal() {
     <InstantQuoteModal
       isOpen={visit.isOpen}
       onClose={closeFreeSiteVisit}
-      documentType="afss"
     />
   );
 }

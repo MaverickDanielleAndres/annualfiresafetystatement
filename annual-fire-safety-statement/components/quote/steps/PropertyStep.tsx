@@ -1,8 +1,5 @@
 'use client';
 
-// 🔥 RUNTIME MARKER — proves the actual module loaded.
-console.log('🔥 PROPERTY STEP MODULE LOADED');
-
 /**
  * Step 2 — Australian address autocomplete.
  *
@@ -64,9 +61,6 @@ interface DropdownPos {
 }
 
 export default function PropertyStep({ onSaved, onBack }: Props) {
-  // 🔥 RUNTIME MARKER — confirms this component instance actually mounted.
-  console.log('🔥 PROPERTY STEP RENDERED');
-
   const { push } = useToaster();
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
@@ -94,7 +88,6 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
     setMounted(true);
   }, []);
 
-  // Recompute dropdown position when it opens + on scroll/resize.
   useLayoutEffect(() => {
     if (!showDropdown) return;
     function recompute() {
@@ -103,7 +96,7 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
       const rect = el.getBoundingClientRect();
       setPos({
         left: rect.left,
-        top: rect.bottom + 4, // small gap below the input
+        top: rect.bottom + 4,
         width: rect.width,
       });
     }
@@ -117,8 +110,6 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
   }, [showDropdown, query]);
 
   useEffect(() => {
-    // 🔥 RUNTIME MARKER — runs whenever query changes.
-    console.log('🔥 AUTOCOMPLETE EFFECT', JSON.stringify(query));
     if (query.trim().length < 3) {
       setSuggestions([]);
       setShowDropdown(false);
@@ -131,8 +122,6 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
     }
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
-      // 🔥 RUNTIME MARKER — actually about to fetch.
-      console.log('🔥 FETCHING ADDRESS SEARCH', JSON.stringify(query));
       void fetchSuggestions(query);
     }, 280);
     return () => {
@@ -157,13 +146,23 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
     );
     if (seq !== requestSeq.current) return;
     setLoading(false);
-    if (!r.ok || !r.data.ok) {
+    if (!r.ok) {
       setSuggestions([]);
       setShowDropdown(false);
       push({
         kind: 'warning',
         title: 'Address lookup',
-        text: r.error || r.data?.error || 'Address service is not reachable.',
+        text: r.error || 'Address service is not reachable.',
+      });
+      return;
+    }
+    if (!r.data.ok) {
+      setSuggestions([]);
+      setShowDropdown(false);
+      push({
+        kind: 'warning',
+        title: 'Address lookup',
+        text: r.data.error || 'Address service is not reachable.',
       });
       return;
     }
@@ -285,7 +284,6 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
   const dropdown = useMemo(() => {
     if (!showDropdown || !pos) return null;
     if (suggestions.length === 0) {
-      // "No addresses found" panel.
       if (loading || query.trim().length < 3) return null;
       return (
         <div
@@ -350,22 +348,9 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
 
   return (
     <div className="mx-auto max-w-md">
-      {/* 🔥 RUNTIME MARKER — bright red box; visible iff this component renders */}
-      <div
-        style={{
-          background: '#dc2626',
-          color: 'white',
-          padding: '8px 12px',
-          borderRadius: '8px',
-          fontWeight: 700,
-          fontSize: '11px',
-          marginBottom: '12px',
-          textAlign: 'center',
-        }}
-        data-testid="property-step-active-marker"
-      >
-        DEBUG PROPERTY STEP ACTIVE
-      </div>
+      <p className="mb-1 text-xs font-bold uppercase tracking-widest text-[#fb5614]">
+        Step 2 of 6
+      </p>
       <h2 className="mb-2 text-2xl font-black uppercase tracking-tight text-black sm:text-3xl">
         Your building address
       </h2>
@@ -384,9 +369,6 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
                 spellCheck={false}
                 value={query}
                 onChange={(e) => {
-                  // 🔥 RUNTIME MARKER — proves the user's keystroke
-                  // actually reaches this onChange handler.
-                  console.log('🔥 ADDRESS CHANGE', e.target.value);
                   setQuery(e.target.value);
                   setResolvedAddress(null);
                 }}
@@ -505,12 +487,7 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
           </div>
         )}
 
-        <button 
-          type="submit" 
-          disabled={submitting} 
-          className={primaryButton}
-          style={{ background: "linear-gradient(to right, #ff5614, #ffad05)", color: "#ffffff" }}
-        >
+        <button type="submit" disabled={submitting} className={primaryButton}>
           {submitting ? 'Saving…' : 'Next →'}
         </button>
 
@@ -523,9 +500,6 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
         </button>
       </form>
 
-      {/* Autocomplete dropdown rendered into a portal so it escapes
-          the modal's `overflow-hidden` and the scrollable column's
-          `overflow-y-auto`. */}
       {mounted && dropdown && typeof document !== 'undefined'
         ? createPortal(dropdown, document.body)
         : null}
