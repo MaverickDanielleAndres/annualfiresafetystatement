@@ -741,7 +741,7 @@ export default function ContactCTA({
                             Sending…
                           </>
                         ) : (
-                          "BOOK THE BOSS"
+                          "GET AN INSTANT QUOTE"
                         )}
                       </button>
                       <button

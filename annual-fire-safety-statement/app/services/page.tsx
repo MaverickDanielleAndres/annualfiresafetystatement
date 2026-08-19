@@ -1048,7 +1048,7 @@ export default function ServicesPage() {
 
             <div className="flex flex-wrap items-center gap-6 mt-6">
               <Link href="/book-the-boss" className="btn animate-pump bg-gradient-to-r from-[#ff5614] to-[#ffad05] !text-white px-7 py-3.5 uppercase font-bold tracking-wider text-sm rounded-full border-none shadow-sm hover:scale-105 transition-transform inline-flex items-center justify-center">
-                Book the Boss
+                GET AN INSTANT QUOTE
               </Link>
               <Link href="/free-quote" className="font-bold underline hover:no-underline underline-offset-4 decoration-2 decoration-gray-300 text-[#111111]">
                 Or request a quote

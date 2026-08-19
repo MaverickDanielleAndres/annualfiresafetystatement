@@ -84,7 +84,7 @@ export default function SitewideCTA() {
               source="sitewide"
               pulse
               className="pre-faq-cta-button is-primary"
-              label="Book the Boss"
+              label="GET AN INSTANT QUOTE"
               trailingIcon={
                 <svg
                   className="fsv-btn__arrow"

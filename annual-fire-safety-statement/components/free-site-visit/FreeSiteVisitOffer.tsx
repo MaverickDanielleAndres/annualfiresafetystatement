@@ -33,7 +33,7 @@ export default function FreeSiteVisitOffer({
   source,
   service,
   heading = "Peter will personally come to your property.",
-  copy = "Book the Boss — a free site visit with Peter at your property.",
+  copy = "Get an Instant Quote — we'll provide a straightforward pricing breakdown for your property.",
 }: FreeSiteVisitOfferProps) {
   return (
     <section
@@ -143,7 +143,7 @@ export default function FreeSiteVisitOffer({
               service={service}
               variant="compact"
               pulse
-              label="Book the Boss"
+              label="Get an Instant Quote"
             />
           </div>
         </div>

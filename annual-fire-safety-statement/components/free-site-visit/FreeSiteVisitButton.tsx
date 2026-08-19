@@ -34,7 +34,7 @@ export interface FreeSiteVisitButtonProps
   variant?: FreeSiteVisitButtonVariant;
   /** Show the labeling required for the main persistent CTA. */
   pulse?: boolean;
-  /** Optional explicit label. Defaults to "Book the Boss". */
+  /** Optional explicit label. Defaults to "GET AN INSTANT QUOTE". */
   label?: string;
   /** Optional trailing icon element. */
   trailingIcon?: React.ReactNode;
@@ -49,7 +49,7 @@ const FreeSiteVisitButton = forwardRef<HTMLButtonElement, FreeSiteVisitButtonPro
       service,
       variant = "primary",
       pulse = false,
-      label = "Book the Boss",
+      label = "GET AN INSTANT QUOTE",
       trailingIcon,
       leadingIcon,
       onClick,

@@ -819,7 +819,7 @@ export default function FreeSiteVisitForm({
             Sending&hellip;
           </>
         ) : (
-          "Book the Boss"
+          "Get an Instant Quote"
         )}
       </button>
 
