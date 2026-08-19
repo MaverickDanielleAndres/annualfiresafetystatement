@@ -26,7 +26,7 @@ export default function AccreditationPage() {
         imageAlt="Accredited Practitioner (Fire Safety) on site with a clipboard"
         imagePosition="center"
         primaryCta={{ label: "Get a free quote", href: "/free-quote" }}
-        secondaryCta={{ label: "Read FAQ", href: "/faq" }}
+        secondaryCta={{ label: "About AFSS", href: "/about" }}
       />
 
       {/* Section 01 — APFS visual moment */}

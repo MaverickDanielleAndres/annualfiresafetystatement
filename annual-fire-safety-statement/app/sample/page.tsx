@@ -48,7 +48,7 @@ export default function SamplePage() {
         imageAlt="Sample AFSS document"
         imagePosition="center"
         primaryCta={{ label: "Get a free quote", href: "/free-quote" }}
-        secondaryCta={{ label: "Read FAQ", href: "/faq" }}
+        secondaryCta={{ label: "About AFSS", href: "/about" }}
       />
 
       {/* Section 01 — Document preview with callouts */}

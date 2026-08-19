@@ -150,10 +150,10 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      href="/faq"
+                      href="/about"
                       className="text-[#555555] transition-colors hover:text-[#d64114]"
                     >
-                      Frequently asked
+                      About Us
                     </Link>
                   </li>
                 </ul>

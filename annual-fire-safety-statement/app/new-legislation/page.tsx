@@ -23,7 +23,7 @@ export default function AS1851Page() {
         imageAlt="AS 1851-2012 — 13 February 2026 NSW fire safety maintenance"
         imagePosition="center"
         primaryCta={{ label: "Get a free quote", href: "/free-quote" }}
-        secondaryCta={{ label: "Read FAQ", href: "/faq" }}
+        secondaryCta={{ label: "About AFSS", href: "/about" }}
       />
 
       {/* Section 01 — 13 FEB 2026 visual moment */}

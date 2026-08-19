@@ -32,12 +32,12 @@ export type NavLink = {
 
 export const navLinks: NavLink[] = [
   { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
   { label: "Services", href: "/services" },
   { label: "Accreditation", href: "/accreditation" },
   { label: "AS 1851-2012", href: "/new-legislation" },
   { label: "Sample AFSS", href: "/sample" },
   { label: "Contact", href: "/contact-us" },
-  { label: "FAQ", href: "/faq" },
 ];
 
 // ─── Page metadata factory ────────────────────────────────────────────────

@@ -13,6 +13,11 @@ export interface PageHeroProps {
   variant?: "light" | "dark";
   layout?: "primary" | "secondary";
   eyebrowClassName?: string;
+  hideWatermark?: boolean;
+  hideImageTints?: boolean;
+  imageObjectFit?: "cover" | "contain";
+  foregroundImageSrc?: string;
+  foregroundImageAlt?: string;
 }
 
 import FreeSiteVisitButton from "@/components/free-site-visit/FreeSiteVisitButton";
@@ -28,6 +33,11 @@ export default function PageHero({
   secondaryCta,
   layout = "secondary",
   eyebrowClassName,
+  hideWatermark = false,
+  hideImageTints = false,
+  imageObjectFit = "cover",
+  foregroundImageSrc,
+  foregroundImageAlt,
 }: PageHeroProps) {
   if (layout === "secondary") {
     return (
@@ -111,32 +121,53 @@ export default function PageHero({
           src={imageSrc}
           alt={imageAlt}
           fill
-          style={{ objectFit: "cover", objectPosition: imagePosition }}
+          style={{ objectFit: imageObjectFit, objectPosition: imagePosition }}
           priority
           sizes="(max-width: 1024px) 100vw, 65vw"
           quality={90}
         />
         {/* Warm/Dark Red Tint on the right side to remove any blueish feel */}
-        <div className="absolute inset-0 bg-gradient-to-l from-red-950/40 via-red-900/10 to-transparent pointer-events-none mix-blend-multiply" />
-        <div className="absolute inset-0 bg-red-950/20 pointer-events-none" />
+        {!hideImageTints && (
+          <>
+            <div className="absolute inset-0 bg-gradient-to-l from-red-950/40 via-red-900/10 to-transparent pointer-events-none mix-blend-multiply" />
+            <div className="absolute inset-0 bg-red-950/20 pointer-events-none" />
+          </>
+        )}
         
         {/* Gradient fade from left to right to blend the image into the background color (placed after tints so the left edge matches the solid bg perfectly) */}
-        <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-[#1a0505] from-[5%] via-[#1a0505]/80 via-[30%] to-transparent pointer-events-none" />
+        {!hideImageTints && (
+          <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-[#1a0505] from-[5%] via-[#1a0505]/80 via-[30%] to-transparent pointer-events-none" />
+        )}
+        
+        {foregroundImageSrc && (
+          <div className="absolute inset-0 z-10 flex items-center justify-center lg:justify-end pr-0 lg:-mr-[5%] pb-10 lg:pb-0 pointer-events-none drop-shadow-2xl">
+            <Image
+              src={foregroundImageSrc}
+              alt={foregroundImageAlt || ""}
+              width={900}
+              height={1100}
+              className="w-[100%] sm:w-[85%] lg:w-auto h-[80%] lg:h-[120%] max-h-none lg:max-h-[1000px] object-contain rotate-3 hover:rotate-0 transition-transform duration-500 pointer-events-auto mt-24 lg:mt-0"
+              priority
+            />
+          </div>
+        )}
       </div>
 
       {/* Watermark aligned exactly with the navbar-inner right edge */}
-      <div className="absolute inset-0 z-0 pointer-events-none w-full flex justify-center">
-        {/* We match the navbar-inner max-width exactly */}
-        <div className="w-full max-w-[1440px] relative h-full">
-          {/* We use padding classes that match the navbar-inner breakpoints 
-              (4rem on large, 2rem on 1025-1400, 1rem below 1024) */}
-          <div className="absolute top-6 lg:top-12 opacity-20 mix-blend-overlay hidden sm:block right-[1rem] min-[1025px]:right-[2rem] min-[1441px]:right-[4rem]">
-            <p className="text-white font-black text-2xl md:text-3xl lg:text-4xl uppercase tracking-[0.2em] text-right max-w-sm leading-tight">
-              Annual Fire Safety Statement
-            </p>
+      {!hideWatermark && (
+        <div className="absolute inset-0 z-0 pointer-events-none w-full flex justify-center">
+          {/* We match the navbar-inner max-width exactly */}
+          <div className="w-full max-w-[1440px] relative h-full">
+            {/* We use padding classes that match the navbar-inner breakpoints 
+                (4rem on large, 2rem on 1025-1400, 1rem below 1024) */}
+            <div className="absolute top-6 lg:top-12 opacity-20 mix-blend-overlay hidden sm:block right-[1rem] min-[1025px]:right-[2rem] min-[1441px]:right-[4rem]">
+              <p className="text-white font-black text-2xl md:text-3xl lg:text-4xl uppercase tracking-[0.2em] text-right max-w-sm leading-tight">
+                Annual Fire Safety Statement
+              </p>
+            </div>
           </div>
         </div>
-      </div>  
+      )}
 
       {/* Content wrapper */}
       <div className="container-inner relative z-10 w-full">
@@ -169,6 +200,7 @@ export default function PageHero({
                   <FreeSiteVisitButton
                     source="hero"
                     pulse
+                    label={primaryCta.label}
                     className="btn animate-pump !px-8 !py-4 !text-lg bg-gradient-to-r from-[#ff5614] to-[#ffad05] text-white border-none shadow-md hover:scale-105 transition-transform"
                     style={{ fontSize: "clamp(0.95rem, 1.2vw, 1.05rem)" }}
                   />
