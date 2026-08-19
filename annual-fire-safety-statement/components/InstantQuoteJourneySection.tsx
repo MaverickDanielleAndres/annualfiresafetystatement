@@ -116,7 +116,6 @@ export default function InstantQuoteJourneySection() {
       <InstantQuoteModal 
         isOpen={modalOpen} 
         onClose={() => setModalOpen(false)} 
-        documentType={null} 
       />
     </section>
   );
@@ -142,7 +141,7 @@ function JourneyStep({ delay, number, icon, title, desc, hasArrow }: { delay: nu
       
       {/* Icon circle */}
       <div className="w-[88px] h-[88px] rounded-full bg-[#fff0e6] text-[#fb5614] flex items-center justify-center mb-5 transition-transform group-hover:scale-[1.03] duration-300">
-        {React.cloneElement(icon as React.ReactElement, { size: 36, strokeWidth: 1.5 })}
+        {React.cloneElement(icon as React.ReactElement<any>, { size: 36, strokeWidth: 1.5 })}
       </div>
       
       {/* Title */}
