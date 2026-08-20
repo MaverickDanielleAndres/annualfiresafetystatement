@@ -1,23 +1,18 @@
 /**
- * AFSS — Address provider abstraction + Geoapify implementation.
+ * AFSS — Address provider abstraction (DEPRECATED).
  *
- * Architecture: BROWSER → /api/afss/quote/address-search → server
- * (this file) → Geoapify. The browser NEVER sees the API key.
+ * The active customer-facing flow now uses Google Places API (New)
+ * in the browser (see lib/google/places.ts). This file is kept as
+ * deprecated code for any future audit, but no customer-facing
+ * route imports it.
  *
- * The data exposed to the browser is normalised in this file:
- *
- *   AddressSuggestion → AddressResolvedAddress
- *
- * ...both of which match the client-side Suggestion / ResolvedAddress
- * types in components/quote/steps/PropertyStep.tsx.
+ * The original Geoapify implementation is preserved below for
+ * reference. It is NOT wired into the instant quote request flow.
  */
 
 export interface AddressSuggestion {
   providerId: string;
   description: string;
-  // extra fields surfaced to the client; populated by
-  // resolveInline() so the browser does NOT need a second round-trip
-  // to /address-resolve just to get lat/lng/postcode.
   addressLine1?: string | null;
   addressLine2?: string | null;
   suburb?: string | null;
@@ -46,21 +41,13 @@ export interface AddressProvider {
   readonly name: string;
   readonly isConfigured: () => boolean;
   autocomplete(q: string, limit?: number): Promise<AddressSuggestion[]>;
-  /**
-   * Returns a fully populated ResolvedAddress from a previously-
-   * fetched suggestion. Implementations should prefer the data
-   * already present in the suggestion (avoid an extra provider
-   * round-trip) since Geoapify's autocomplete payload already
-   * includes lat/lng/postcode/etc.
-   */
   resolveInline(suggestion: AddressSuggestion): ResolvedAddress;
-  /** Optional: explicit place_id lookup (rarely needed). */
   resolve(providerId: string): Promise<ResolvedAddress | null>;
 }
 
 /**
- * Geoapify. Hard-codes `countrycode:au`. Falls back gracefully if
- * the API key is missing.
+ * DEPRECATED — Geoapify implementation retained for reference only.
+ * Hard-codes `countrycode:au`. NOT used by the customer flow.
  */
 export class GeoapifyAddressProvider implements AddressProvider {
   readonly name = 'geoapify';
@@ -92,9 +79,6 @@ export class GeoapifyAddressProvider implements AddressProvider {
     try {
       const res = await fetch(`${this.endpoint}?${params.toString()}`, {
         method: 'GET',
-        // Per-keyword cache so two identical keystrokes within
-        // 60 seconds reuse the response. Real downstream rate
-        // limits are handled in the API route's bucket.
         next: { revalidate: 60 },
       });
       if (!res.ok) return [];
@@ -105,11 +89,6 @@ export class GeoapifyAddressProvider implements AddressProvider {
     }
   }
 
-  /**
-   * Convert a suggestion (already populated from the autocomplete
-   * response) into a ResolvedAddress. No extra round-trip; the
-   * autocomplete payload already has every field the UI needs.
-   */
   resolveInline(suggestion: AddressSuggestion): ResolvedAddress {
     return {
       providerId: suggestion.providerId,
@@ -127,18 +106,10 @@ export class GeoapifyAddressProvider implements AddressProvider {
 
   async resolve(providerId: string): Promise<ResolvedAddress | null> {
     if (!providerId || !this.isConfigured()) return null;
-    // Geoapify has no /autocomplete?id=... endpoint; we fall back to
-    // a text-search by the place_id is impossible. We make a
-    // supplementary /geocode/search?text= that matches the closest
-    // feature. Practically unused — the inline path above is the
-    // primary.
     return null;
   }
 
   private toSuggestion(r: any): AddressSuggestion {
-    // Geoapify /geocode/autocomplete returns the FLAT shape:
-    //   { properties: { formatted, address_line1, lat, lon, … }, id }
-    // even when `format=json`.
     const p = (r?.properties ?? r) || {};
     return {
       providerId: String(p?.place_id ?? p?.feature_id ?? ''),
@@ -160,10 +131,9 @@ export class GeoapifyAddressProvider implements AddressProvider {
 }
 
 /**
- * Provider selection. Today there is exactly one wired
- * implementation (Geoapify). Wiring a new one means adding a new
- * class above plus a new branch here.
+ * DEPRECATED — returns null so any caller-side wiring that imports
+ * this getter gracefully no-ops.
  */
 export function createAddressProvider(): AddressProvider | null {
-  return new GeoapifyAddressProvider(process.env.GEOAPIFY_API_KEY ?? '');
+  return null;
 }

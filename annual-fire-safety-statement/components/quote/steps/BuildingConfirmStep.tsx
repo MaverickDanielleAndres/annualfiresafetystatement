@@ -1,9 +1,35 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { primaryButton, secondaryButton, subtleLink } from '../common';
+/**
+ * Step 3 — "Is this your building?"
+ *
+ *   1. Read the saved property from /api/afss/quote/property-get.
+ *   2. Use the browser-side Google Maps Street View Service to find
+ *      the closest outdoor panorama to the property's lat/lng.
+ *   3. Render an interactive StreetViewPanorama in a container,
+ *      initialised with the panorama ID and pointed roughly at the
+ *      building.
+ *   4. POST the surfaced pano_id back to /api/afss/quote/street-image
+ *      so the database records the metadata.
+ *   5. On error / no coverage, fall back to a clean "building
+ *      preview unavailable" state. The customer can still confirm.
+ *   6. On "YES, THAT'S IT" → POST /api/afss/quote/confirm-building.
+ *
+ * The active runtime is 100% Google Maps (browser-side). No
+ * Geoapify or Mapillary requests are made.
+ */
+
+import { useEffect, useRef, useState } from 'react';
+import { primaryButton, subtleLink } from '../common';
 import { api } from '../api';
 import { useToaster } from '../Toast';
+import {
+  createPanorama,
+  facePanoramaToTarget,
+  findPanoramaNear,
+  type PanoramaSearchResult,
+} from '@/lib/google/street-view';
+import { isGoogleMapsConfigured } from '@/lib/google/maps-loader';
 
 interface Props {
   onConfirmed: () => void;
@@ -21,21 +47,7 @@ interface PropertySummary {
   street_image_provider?: string | null;
   street_image_id?: string | null;
   street_image_thumb_url?: string | null;
-}
-
-interface StreetImageResult {
-  providerId: string;
-  latitude: number;
-  longitude: number;
-  sequenceId?: string | null;
-  capturedAt?: string | null;
-  /** The URL Mapillary returned verbatim for this image. */
-  thumbUrl?: string | null;
-  thumb256Url?: string | null;
-  thumb1024Url?: string | null;
-  thumb2048Url?: string | null;
-  thumbOriginalUrl?: string | null;
-  bearing?: number | null;
+  building_confirmed?: boolean | null;
 }
 
 type State =
@@ -49,25 +61,21 @@ type State =
   | 'invalid_response'
   | 'error';
 
-/**
- * Step 3 — "Is this your building?"
- *
- * Flow:
- *   1. Fetch current session's saved property (formatted address
- *      + coordinates).
- *   2. Call /api/afss/quote/street-image (server-side Mapillary).
- *      * If an image is returned → render it.
- *      * If not → show a clear "preview unavailable" fallback,
- *        still letting the customer confirm the address.
- *   3. On confirm, POST /api/afss/quote/confirm-building=true.
- */
 export default function BuildingConfirmStep({ onConfirmed, onChange }: Props) {
   const { push } = useToaster();
   const [property, setProperty] = useState<PropertySummary | null>(null);
-  const [image, setImage] = useState<StreetImageResult | null>(null);
+  const [panoramaResult, setPanoramaResult] = useState<PanoramaSearchResult | null>(null);
   const [state, setState] = useState<State>('loading_property');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const panoramaRef = useRef<any>(null);
+  const linksListenerRef = useRef<any>(null);
+  const panoChangedListenerRef = useRef<any>(null);
+  const positionChangedListenerRef = useRef<any>(null);
+  const panoChangeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastPersistedPanoRef = useRef<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -79,7 +87,9 @@ export default function BuildingConfirmStep({ onConfirmed, onChange }: Props) {
         if (cancelled) return;
         if (!propRes.ok || !propRes.data.property) {
           setState('error');
-          setError('We could not find the building details you saved. Please re-enter your address.');
+          setError(
+            'We could not find the building details you saved. Please re-enter your address.'
+          );
           return;
         }
         setProperty(propRes.data.property);
@@ -90,35 +100,38 @@ export default function BuildingConfirmStep({ onConfirmed, onChange }: Props) {
           setState('no_coverage');
           return;
         }
+        if (!isGoogleMapsConfigured()) {
+          setState('configuration_error');
+          return;
+        }
         setState('loading_image');
-        const imgRes = await api.get<{
-          status?:
-            | 'ok'
-            | 'no_coverage'
-            | 'rate_limited'
-            | 'provider_unavailable'
-            | 'configuration_error'
-            | 'invalid_response';
-          image?: StreetImageResult | null;
-          reason?: string;
-        }>('/api/afss/quote/street-image');
+        const result = await findPanoramaNear(
+          propRes.data.property.latitude,
+          propRes.data.property.longitude
+        );
         if (cancelled) return;
-        if (!imgRes.ok || !imgRes.data.status) {
-          setState('error');
-          setError('We could not load street imagery for this address.');
-          return;
-        }
-        const status = imgRes.data.status;
-        if (status === 'ok' && imgRes.data.image) {
-          setImage(imgRes.data.image);
+        setPanoramaResult(result);
+        if (result.status === 'ok') {
           setState('ready');
+          // Persist the metadata server-side as soon as we know it.
+          try {
+            await api.post('/api/afss/quote/street-image', {
+              pano_id: result.panoId,
+              latitude: result.latitude,
+              longitude: result.longitude,
+              radius_m: result.radiusM,
+            });
+            lastPersistedPanoRef.current = result.panoId ?? null;
+          } catch {
+            // Non-fatal — the panorama still renders.
+          }
           return;
         }
-        if (status === 'no_coverage') setState('no_coverage');
-        else if (status === 'rate_limited') setState('rate_limited');
-        else if (status === 'provider_unavailable') setState('provider_unavailable');
-        else if (status === 'configuration_error') setState('configuration_error');
-        else if (status === 'invalid_response') setState('invalid_response');
+        if (result.status === 'no_coverage') setState('no_coverage');
+        else if (result.status === 'rate_limited') setState('rate_limited');
+        else if (result.status === 'provider_unavailable') setState('provider_unavailable');
+        else if (result.status === 'configuration_error') setState('configuration_error');
+        else if (result.status === 'invalid_response') setState('invalid_response');
         else setState('no_coverage');
       } catch {
         if (cancelled) return;
@@ -130,6 +143,131 @@ export default function BuildingConfirmStep({ onConfirmed, onChange }: Props) {
       cancelled = true;
     };
   }, []);
+
+  // Mount the Street View panorama once the metadata is available
+  // and the container is rendered.
+  useEffect(() => {
+    if (state !== 'ready') return;
+    if (
+      !panoramaResult ||
+      panoramaResult.status !== 'ok' ||
+      !panoramaResult.panoId
+    ) {
+      return;
+    }
+    if (!containerRef.current) return;
+    if (!property?.latitude || !property?.longitude) return;
+
+    let cancelled = false;
+    (async () => {
+      try {
+        const panorama = await createPanorama(containerRef.current!, {
+          panoId: panoramaResult.panoId,
+          position: panoramaResult.latitude && panoramaResult.longitude
+            ? {
+                lat: panoramaResult.latitude,
+                lng: panoramaResult.longitude,
+              }
+            : {
+                lat: property.latitude!,
+                lng: property.longitude!,
+              },
+          heading: 0,
+          pitch: 0,
+          zoom: 1,
+        });
+        if (cancelled) {
+          try {
+            panorama.setVisible?.(false);
+          } catch {}
+          return;
+        }
+        panoramaRef.current = panorama;
+
+        // Aim the camera at the building.
+        try {
+          await facePanoramaToTarget(panorama, {
+            lat: property.latitude!,
+            lng: property.longitude!,
+          });
+        } catch {
+          // Non-fatal — the panorama still renders.
+        }
+
+        // When the customer navigates to a neighbouring panorama,
+        // persist the new pano_id so the audit trail is accurate.
+        panoChangedListenerRef.current = panorama.addListener?.('pano_changed', () => {
+          if (panoChangeTimeoutRef.current) clearTimeout(panoChangeTimeoutRef.current);
+          panoChangeTimeoutRef.current = setTimeout(() => {
+            const newPano = panorama.getPano?.();
+            if (newPano && newPano !== lastPersistedPanoRef.current) {
+              lastPersistedPanoRef.current = newPano;
+              void api.post('/api/afss/quote/street-image', {
+                pano_id: newPano,
+                radius_m: panoramaResult.radiusM ?? null,
+              });
+            }
+          }, 600);
+        });
+        positionChangedListenerRef.current = panorama.addListener?.(
+          'position_changed',
+          () => {
+            const newPos = panorama.getPosition?.();
+            if (!newPos) return;
+            const lat = typeof newPos.lat === 'function' ? newPos.lat() : null;
+            const lng = typeof newPos.lng === 'function' ? newPos.lng() : null;
+            if (lat == null || lng == null) return;
+            const currentPano = panorama.getPano?.();
+            if (currentPano && currentPano !== lastPersistedPanoRef.current) {
+              lastPersistedPanoRef.current = currentPano;
+            }
+            void api.post('/api/afss/quote/street-image', {
+              pano_id: currentPano,
+              latitude: lat,
+              longitude: lng,
+              radius_m: panoramaResult.radiusM ?? null,
+            });
+          }
+        );
+        linksListenerRef.current = panorama.addListener?.('links_changed', () => {
+          // No-op placeholder — links are handled by the widget.
+        });
+      } catch (e: any) {
+        if (cancelled) return;
+        setState('provider_unavailable');
+        push({
+          kind: 'error',
+          text: 'We could not load Street View.',
+        });
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+      if (panoChangeTimeoutRef.current) {
+        clearTimeout(panoChangeTimeoutRef.current);
+        panoChangeTimeoutRef.current = null;
+      }
+      try {
+        panoChangedListenerRef.current?.remove?.();
+      } catch {}
+      try {
+        positionChangedListenerRef.current?.remove?.();
+      } catch {}
+      try {
+        linksListenerRef.current?.remove?.();
+      } catch {}
+      panoChangedListenerRef.current = null;
+      positionChangedListenerRef.current = null;
+      linksListenerRef.current = null;
+      if (panoramaRef.current) {
+        try {
+          panoramaRef.current.setVisible?.(false);
+        } catch {}
+        panoramaRef.current = null;
+      }
+    };
+  }, [state, panoramaResult, property, push]);
 
   async function post(confirmed: boolean) {
     setSubmitting(true);
@@ -156,6 +294,8 @@ export default function BuildingConfirmStep({ onConfirmed, onChange }: Props) {
     }
   }
 
+  const isFallback = state !== 'ready' && state !== 'loading_image' && state !== 'loading_property';
+
   return (
     <div className="mx-auto max-w-md">
       <h2 className="mb-2 text-2xl font-black uppercase tracking-tight text-black sm:text-3xl">
@@ -165,41 +305,18 @@ export default function BuildingConfirmStep({ onConfirmed, onChange }: Props) {
         {property?.formatted_address ?? 'Loading address…'}
       </p>
 
-      <div className="mb-4 overflow-hidden rounded-xl border border-gray-200 bg-gray-100">
+      <div className="relative mb-4 overflow-hidden rounded-xl border border-gray-200 bg-gray-100">
         {state === 'loading_property' || state === 'loading_image' ? (
           <div className="flex h-56 w-full items-center justify-center text-sm text-gray-500">
-            <span>Finding street imagery…</span>
+            <span>Loading Street View…</span>
           </div>
-        ) : state === 'ready' && (image?.thumb1024Url || image?.thumbUrl || image?.thumb256Url || image?.thumbOriginalUrl) ? (
-          // The image element uses the EXACT URL Mapillary returned.
-          // We never construct an image URL ourselves.
-          <img
-            src={
-              image.thumb1024Url ||
-              image.thumbUrl ||
-              image.thumb256Url ||
-              image.thumbOriginalUrl ||
-              ''
-            }
-            alt="Nearest street-level image of your building"
-            className="h-56 w-full object-cover"
-            loading="lazy"
-            onError={() => {
-              // Fallback: show the building-preview-unavailable
-              // state cleanly if the CDN image fails to load.
-              setImage(null);
-              setState('provider_unavailable');
-            }}
+        ) : state === 'ready' ? (
+          <div
+            ref={containerRef}
+            className="h-56 w-full sm:h-72"
+            aria-label="Interactive Street View of your building"
+            role="img"
           />
-        ) : state === 'ready' && image ? (
-          <div className="flex h-56 w-full flex-col items-center justify-center gap-1 px-6 text-center text-sm text-gray-500">
-            <strong className="text-base text-gray-700">
-              Image rendered from ID only
-            </strong>
-            <span className="text-xs">
-              Mapillary returned an image but no thumb URL.
-            </span>
-          </div>
         ) : (
           <div className="flex h-56 w-full flex-col items-center justify-center gap-1 px-6 text-center text-sm text-gray-500">
             <strong className="text-base text-gray-700">
@@ -208,24 +325,25 @@ export default function BuildingConfirmStep({ onConfirmed, onChange }: Props) {
             <span>
               We found your address
               {state === 'no_coverage'
-                ? ', but street imagery isn’t available here.'
+                ? ", but Google Street View isn't available for this location."
                 : state === 'rate_limited'
                   ? ', but the imagery service is rate-limited. You can still continue.'
                   : state === 'provider_unavailable'
                     ? ', but the imagery service is unavailable. You can still continue.'
                     : state === 'configuration_error'
-                      ? ', but the imagery service is misconfigured. You can still continue.'
+                      ? ", but the imagery service isn't configured. You can still continue."
                       : ' right now. You can still continue.'}
             </span>
+            {property?.formatted_address && (
+              <span className="mt-2 max-w-xs text-xs font-medium text-gray-700">
+                {property.formatted_address}
+              </span>
+            )}
           </div>
         )}
       </div>
 
-      {(state === 'no_coverage' ||
-        state === 'rate_limited' ||
-        state === 'provider_unavailable' ||
-        state === 'configuration_error' ||
-        state === 'invalid_response') && (
+      {isFallback && (
         <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-2 text-xs text-amber-800">
           Street image unavailable. You can still continue.
         </div>
@@ -237,27 +355,26 @@ export default function BuildingConfirmStep({ onConfirmed, onChange }: Props) {
         </div>
       )}
 
-      <div className="pt-4 flex items-center justify-center gap-6">
+      <div className="flex items-center justify-center gap-6 pt-4">
         <button
           type="button"
           disabled={submitting}
           onClick={() => post(false)}
           className={subtleLink}
         >
-          ← Back
+          ← Change address
         </button>
         <button
           type="button"
           disabled={submitting}
           onClick={() => post(true)}
           className={primaryButton + ' !mx-0'}
-          style={{ background: "linear-gradient(to right, #ff5614, #ffad05)", color: "#ffffff" }}
+          style={{
+            background: 'linear-gradient(to right, #ff5614, #ffad05)',
+            color: '#ffffff',
+          }}
         >
-          {state === 'no_coverage' ||
-          state === 'rate_limited' ||
-          state === 'provider_unavailable' ||
-          state === 'configuration_error' ||
-          state === 'invalid_response'
+          {isFallback
             ? 'Yes, this is the correct address →'
             : "Yes, that's it →"}
         </button>

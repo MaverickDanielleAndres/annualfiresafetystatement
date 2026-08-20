@@ -1,19 +1,12 @@
 /**
- * AFSS — Google Places / Street View server helpers.
+ * AFSS — Server-side Google Places / Street View helpers (DEPRECATED).
  *
- * Browser-side: the customer types into an Autocomplete widget that
- * uses NEXT_PUBLIC_GOOGLE_MAPS_BROWSER_KEY (restricted to HTTP
- * referrers). The browser then sends the chosen place_id to the
- * server.
+ * The active customer-facing flow uses Google Maps JS API in the
+ * browser (see `lib/google/places.ts` and `lib/google/street-view.ts`).
+ * This file is kept as an optional server-side fallback for any
+ * non-browser consumers (e.g. background jobs, admin tools).
  *
- * Server-side: this module exposes a server-only Places Details call
- * that resolves the place_id into our stored fields. It uses
- * GOOGLE_MAPS_SERVER_KEY (restricted to the server IP). Only fields
- * we actually need are requested (billing control).
- *
- * If the server key is not configured, callers receive null and the
- * UI surfaces a friendly "address unavailable" state. The lead is
- * NOT destroyed.
+ * The customer instant quote does NOT call into this module.
  */
 
 export interface ResolvedPlace {
@@ -39,7 +32,10 @@ const REQUIRED_FIELDS = [
 export async function resolvePlaceFromId(
   placeId: string
 ): Promise<ResolvedPlace | null> {
-  const key = process.env.GOOGLE_MAPS_SERVER_KEY;
+  const key =
+    process.env.GOOGLE_MAPS_SERVER_KEY ||
+    process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ||
+    '';
   if (!key) return null;
 
   const url = new URL(
@@ -84,7 +80,7 @@ function mapPlaceResult(r: any): ResolvedPlace {
 }
 
 function getComponent(components: any[], type: string): string | null {
-  const c = components.find((x: any) => x.types?.includes(type));
+  const c = components.find((x: any) => x?.types?.includes(type));
   return c?.long_name ?? c?.short_name ?? null;
 }
 
@@ -92,13 +88,19 @@ function getComponent(components: any[], type: string): string | null {
  * Returns the closest Street View panorama metadata for a lat/lng.
  * Implemented via the official Street View Metadata endpoint. We do
  * NOT cache or store imagery. The browser then renders the panorama
- * using NEXT_PUBLIC_GOOGLE_MAPS_BROWSER_KEY.
+ * using NEXT_PUBLIC_GOOGLE_MAPS_API_KEY.
+ *
+ * The actually active customer-facing storefront calls
+ * /api/afss/quote/street-image (which uses this helper internally).
  */
 export async function fetchStreetViewMetadata(
   lat: number,
   lng: number
 ): Promise<{ pano_id: string | null; status: string } | null> {
-  const key = process.env.GOOGLE_MAPS_SERVER_KEY;
+  const key =
+    process.env.GOOGLE_MAPS_SERVER_KEY ||
+    process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ||
+    '';
   if (!key) return null;
 
   const url = new URL(
