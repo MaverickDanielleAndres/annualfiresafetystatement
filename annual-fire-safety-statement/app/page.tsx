@@ -1,9 +1,15 @@
-import Link from "next/link";
-import Image from "next/image";
 import type { Metadata } from "next";
-import PageHero from "@/components/PageHero";
-import ContactCTA from "@/components/ContactCTA";
 import { createPageMetadata } from "@/lib/site";
+
+import AfssHeroSection from "@/components/AfssHeroSection";
+import AfssRecognitionSection from "@/components/AfssRecognitionSection";
+import InstantQuoteJourneySection from "@/components/InstantQuoteJourneySection";
+import KnowYourDocumentsSection from "@/components/KnowYourDocumentsSection";
+import WhatIsAnAfssSection from "@/components/WhatIsAnAfssSection";
+import ComplianceSection from "@/components/ComplianceSection";
+import TheProcessSection from "@/components/TheProcessSection";
+import FireSafetyScheduleSection from "@/components/FireSafetyScheduleSection";
+import ContactCTA from "@/components/ContactCTA";
 
 export const metadata: Metadata = createPageMetadata({
   title: "NSW AFSS Specialists — Annual Fire Safety Statements",
@@ -19,46 +25,33 @@ export const metadata: Metadata = createPageMetadata({
   ],
 });
 
-
-
-
-
-import AfssRecognitionSection from "@/components/AfssRecognitionSection";
-import InstantQuoteJourneySection from "@/components/InstantQuoteJourneySection";
-import KnowYourDocumentsSection from "@/components/KnowYourDocumentsSection";
-import TheProcessSection from "@/components/TheProcessSection";
-import WhatIsAnAfssSection from "@/components/WhatIsAnAfssSection";
-import FireSafetyScheduleSection from "@/components/FireSafetyScheduleSection";
-
 export default function HomePage() {
   return (
     <>
-      <PageHero
-        layout="primary"
-        eyebrow="ANNUAL FIRE SAFETY STATEMENTS • NSW"
-        titleLines={["YOUR AFSS ISN'T", "JUST PAPERWORK.", "IT'S RESPONSIBILITY."]}
-        description={
-          <>
-            From your Fire Safety Schedule to assessment and statement,<br />
-            we make the AFSS process clear and straightforward.
-          </>
-        }
-        imageSrc="/herosection.avif"
-        imageAlt="Accredited practitioner inspecting building equipment on site"
-        imagePosition="center"
-        foregroundImageSrc="/annualstatementsample-nobg.png"
-        foregroundImageAlt="Annual Fire Safety Statement sample document"
-        hideWatermark={true}
-        primaryCta={{ label: "GET AN INSTANT QUOTE", href: "/free-quote", isBookTheBoss: true }}
-        secondaryCta={{ label: "VIEW SAMPLE AFSS →", href: "/sample" }}
-      />
+      {/* Hero — new document-panel composition */}
+      <AfssHeroSection />
 
+      {/* 01 / Your AFSS */}
       <AfssRecognitionSection />
+
+      {/* 02 / Instant Quote */}
       <InstantQuoteJourneySection />
+
+      {/* 03 / Know Your Documents */}
       <KnowYourDocumentsSection />
+
+      {/* 04 / What is an AFSS? */}
       <WhatIsAnAfssSection />
+
+      {/* 05 / Penalties, practitioners, why compliance matters (NEW) */}
+      <ComplianceSection />
+
+      {/* 06 / The Process */}
       <TheProcessSection />
+
+      {/* 07 — 10 / Your Fire Safety Statement, Due Date, Accredited Practitioners, AS 1851 */}
       <FireSafetyScheduleSection />
+
       {/* Final CTA */}
       <ContactCTA />
     </>

@@ -288,7 +288,7 @@ export default function ContactCTA({
           letter-spacing: 0.22em;
           text-transform: uppercase;
           font-weight: 700;
-          color: #ffb700;
+          color: #7aa6e6;
         }
         .ccta-boss-name {
           font-size: 1.9rem;
@@ -359,7 +359,7 @@ export default function ContactCTA({
           }
         }
         .ccta-boss-gradient {
-          background: linear-gradient(to right, #ff2a00, #ffb700);
+          background: linear-gradient(90deg, #0b1d36 0%, #1c4d9c 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
@@ -474,7 +474,7 @@ export default function ContactCTA({
                         width: 18,
                         height: 18,
                         borderRadius: "50%",
-                        background: "#ea580c",
+                        background: "#1c4d9c",
                         boxShadow: "0 1px 3px rgba(0,0,0,0.4)",
                         flexShrink: 0,
                       }}
@@ -698,9 +698,9 @@ export default function ContactCTA({
                           minWidth: 240,
                           fontSize: "1rem",
                           fontWeight: 600,
-                          color: "#ffffff",
-                          background: isSubmitting ? "#f87171" : "linear-gradient(135deg, #ff2a00 0%, #ffb700 100%)",
-                          border: "none",
+                          color: isSubmitting ? "#93a0b4" : "#0b1d36",
+                          background: isSubmitting ? "#f5f7fa" : "#ffffff",
+                          border: "1px solid #0b1d36",
                           borderRadius: 8,
                           cursor: isSubmitting ? "not-allowed" : "pointer",
                           display: "inline-flex",
@@ -708,8 +708,8 @@ export default function ContactCTA({
                           justifyContent: "center",
                           gap: 10,
                           outline: "none",
-                          boxShadow: "0 6px 18px rgba(255, 42, 0, 0.25)",
-                          transition: "transform 0.12s, box-shadow 0.2s",
+                          boxShadow: "0 4px 12px rgba(11, 29, 54, 0.08)",
+                          transition: "transform 0.12s, box-shadow 0.2s, background-color 0.18s, color 0.18s",
                           fontFamily: "inherit",
                           textAlign: "center",
                           animation: "fsv-pulse 3s ease-in-out infinite"

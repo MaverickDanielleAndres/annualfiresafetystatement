@@ -140,7 +140,7 @@ export default function QuoteForm() {
       <div className="afss-form__actions">
         <button
           type="submit"
-          className="btn btn-primary btn-lg"
+          className="btn btn-primary btn-lg rounded-full"
           disabled={status === "submitting"}
         >
           {status === "submitting" ? "Sending…" : "Request a quote"}

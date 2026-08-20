@@ -53,7 +53,7 @@ export default function CTASection({
             {primaryCta && (
               <Link
                 href={primaryCta.href}
-                className="btn btn-primary btn-lg"
+                className="btn btn-primary btn-lg rounded-full"
                 style={{ flex: 1, minWidth: "12rem" }}
               >
                 {primaryCta.label}

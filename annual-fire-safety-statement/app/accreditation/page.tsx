@@ -170,7 +170,7 @@ export default function AccreditationPage() {
           </RevealOnView>
 
           <div className="mt-12 flex flex-wrap justify-center gap-3">
-            <Link href="/free-quote" className="btn btn-primary btn-lg">
+            <Link href="/free-quote" className="btn btn-primary btn-lg rounded-full">
               Send us your Fire Safety Schedule
             </Link>
           </div>

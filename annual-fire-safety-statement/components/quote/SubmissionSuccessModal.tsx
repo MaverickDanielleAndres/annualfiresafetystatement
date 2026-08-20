@@ -46,13 +46,13 @@ export default function SubmissionSuccessModal({ submission, onClose }: Props) {
 
   return (
     <div className="mx-auto max-w-md py-2 text-center">
-      <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-[#fb5614]/15">
+      <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-[#1c4d9c]/15">
         <svg
           width="32"
           height="32"
           viewBox="0 0 24 24"
           fill="none"
-          stroke="#fb5614"
+          stroke="#1c4d9c"
           strokeWidth="3"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -62,7 +62,7 @@ export default function SubmissionSuccessModal({ submission, onClose }: Props) {
         </svg>
       </div>
 
-      <p className="mb-1 text-xs font-bold uppercase tracking-widest text-[#fb5614]">
+      <p className="mb-1 text-xs font-bold uppercase tracking-widest text-[#1c4d9c]">
         Quote request received
       </p>
       <h2 className="mb-2 text-2xl font-black uppercase tracking-tight text-black sm:text-3xl">

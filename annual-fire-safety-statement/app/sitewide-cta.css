@@ -1,4 +1,5 @@
 /* SitewideCTA — extracted from components/SitewideCTA.tsx inline <style> block */
+/* Updated for the NSW-form-inspired blue document design system. */
 
 .pre-faq-cta {
   background: transparent;
@@ -8,13 +9,13 @@
 .pre-faq-cta-card {
   align-items: stretch;
   background:
-    radial-gradient(circle at 92% 0%, rgba(255, 153, 51, 0.2), transparent 38%),
-    radial-gradient(circle at 0% 100%, rgba(255, 87, 34, 0.1), transparent 50%),
-    linear-gradient(135deg, #fdecdf 0%, #fde4cd 50%, #ffd9ba 100%);
-  border: 1px solid #ff8a4c;
-  border-radius: 1.5rem;
-  box-shadow: 0 1.25rem 3rem rgba(180, 60, 20, 0.12);
-  color: #111111;
+    radial-gradient(circle at 92% 0%, rgba(28, 77, 156, 0.12), transparent 38%),
+    radial-gradient(circle at 0% 100%, rgba(11, 29, 54, 0.08), transparent 50%),
+    linear-gradient(135deg, #f5f7fa 0%, #e7eef9 50%, #dde7f4 100%);
+  border: 1px solid #1c4d9c;
+  border-radius: 0.5rem;
+  box-shadow: 0 1.25rem 3rem rgba(11, 29, 54, 0.18);
+  color: #0b1d36;
   display: flex;
   isolation: isolate;
   margin-inline: auto;
@@ -23,6 +24,17 @@
   overflow: hidden;
   padding: clamp(1.75rem, 3.5vw, 2.75rem) clamp(1.75rem, 3.5vw, 3rem);
   position: relative;
+}
+
+.pre-faq-cta-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(to right, #0b1d36 0 80%, #b0141f 80% 100%);
+  z-index: 3;
 }
 
 .pre-faq-cta-content {
@@ -60,10 +72,10 @@
 .pre-faq-cta-logo-divider {
   background: linear-gradient(
     to bottom,
-    rgba(17, 17, 17, 0) 0%,
-    rgba(17, 17, 17, 0.28) 30%,
-    rgba(17, 17, 17, 0.28) 70%,
-    rgba(17, 17, 17, 0) 100%
+    rgba(11, 29, 54, 0) 0%,
+    rgba(11, 29, 54, 0.28) 30%,
+    rgba(11, 29, 54, 0.28) 70%,
+    rgba(11, 29, 54, 0) 100%
   );
   display: block;
   height: clamp(3rem, 5.5vw, 4.5rem);
@@ -78,7 +90,7 @@
 }
 
 .pre-faq-cta-eyebrow {
-  color: #ff2a00;
+  color: #1c4d9c;
   font-size: clamp(0.78rem, 1vw, 0.9rem);
   font-weight: 800;
   letter-spacing: 0.22em;
@@ -88,7 +100,7 @@
 }
 
 .pre-faq-cta-title {
-  color: #111111;
+  color: #0b1d36;
   font-size: clamp(2.05rem, 3.7vw, 3.15rem);
   font-weight: 850;
   letter-spacing: -0.04em;
@@ -98,7 +110,7 @@
 }
 
 .pre-faq-cta-title-line-2 {
-  background: linear-gradient(to right, #ff2a00 0%, #ffb700 100%);
+  background: linear-gradient(90deg, #0b1d36 0%, #1c4d9c 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -107,7 +119,7 @@
 }
 
 .pre-faq-cta-copy {
-  color: #2c2c2a;
+  color: #3a4a63;
   font-size: clamp(0.95rem, 1.3vw, 1.05rem);
   font-weight: 500;
   line-height: 1.55;
@@ -126,7 +138,7 @@
 .pre-faq-cta-button {
   align-items: center;
   border: 1px solid transparent;
-  border-radius: 0.55rem;
+  border-radius: 0.375rem;
   cursor: pointer;
   display: inline-flex;
   font-size: 0.95rem;
@@ -146,14 +158,14 @@
 }
 
 .pre-faq-cta-button:focus-visible {
-  outline: 2px solid #ff5722;
+  outline: 2px solid #1c4d9c;
   outline-offset: 3px;
 }
 
 .pre-faq-cta-button.is-primary {
-  background: linear-gradient(135deg, #ff2a00 0%, #ff5722 55%, #ff8a3c 100%);
-  border-color: #ff5722;
-  box-shadow: 0 10px 26px rgba(255, 87, 34, 0.32);
+  background: #0b1d36;
+  border-color: #0b1d36;
+  box-shadow: 0 10px 26px rgba(11, 29, 54, 0.22);
   color: #ffffff;
 }
 
@@ -162,9 +174,9 @@
 }
 
 .pre-faq-cta-button.is-secondary {
-  background: #111111;
-  border-color: #111111;
-  color: #ffffff;
+  background: #ffffff;
+  border-color: #0b1d36;
+  color: #0b1d36;
 }
 
 .pre-faq-cta-art {
@@ -214,15 +226,16 @@
     transform: translateY(-2px);
   }
   .pre-faq-cta-button.is-primary:hover {
-    background: linear-gradient(135deg, #e02400 0%, #e64a19 55%, #ff5722 100%);
-    box-shadow: 0 14px 30px rgba(255, 87, 34, 0.36);
+    background: #1c4d9c;
+    border-color: #1c4d9c;
+    box-shadow: 0 14px 30px rgba(28, 77, 156, 0.36);
   }
   .pre-faq-cta-button.is-primary:hover .fsv-btn__arrow {
     transform: translateX(3px);
   }
   .pre-faq-cta-button.is-secondary:hover {
-    background: #ff5722;
-    border-color: #ff5722;
+    background: #0b1d36;
+    color: #ffffff;
   }
 }
 
@@ -243,7 +256,7 @@
     padding-inline: 0.75rem;
   }
   .pre-faq-cta-card {
-    border-radius: 1.1rem;
+    border-radius: 0.5rem;
     padding: 1.5rem 1.25rem;
   }
   .pre-faq-cta-content {

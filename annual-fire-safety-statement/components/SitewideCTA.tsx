@@ -102,7 +102,7 @@ export default function SitewideCTA() {
                 </svg>
               }
               style={{
-                borderRadius: "0.55rem",
+                borderRadius: 999,
                 padding: "0.85rem 1.5rem",
                 minHeight: "2.95rem",
                 fontSize: "0.95rem",

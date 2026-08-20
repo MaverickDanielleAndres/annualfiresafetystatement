@@ -27,7 +27,7 @@ export default function GetInstantQuoteButton({
         type="button"
         onClick={() => setOpen(true)}
         className={
-          'inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-[#ff5614] to-[#ffad05] px-6 py-4 text-base font-bold uppercase tracking-widest text-white shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg ' +
+          'inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-[#0b1d36] to-[#1c4d9c] px-6 py-4 text-base font-bold uppercase tracking-widest text-white shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg ' +
           className
         }
       >

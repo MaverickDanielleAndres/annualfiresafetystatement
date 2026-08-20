@@ -103,7 +103,7 @@ export default function ContactForm() {
 
           <div className="mt-auto flex flex-col items-center gap-6">
             <div className="flex gap-4 w-full md:w-auto">
-              <button type="submit" className="btn btn-primary animate-pump !text-lg !px-10 !py-4 w-full md:w-auto" disabled={status === "submitting"}>
+              <button type="submit" className="btn btn-primary animate-pump !text-lg !px-10 !py-4 w-full md:w-auto rounded-full" disabled={status === "submitting"}>
                 {status === "submitting" ? "Sending…" : "GET AN INSTANT QUOTE"}
               </button>
               <button type="reset" className="btn btn-secondary !px-6">Reset</button>

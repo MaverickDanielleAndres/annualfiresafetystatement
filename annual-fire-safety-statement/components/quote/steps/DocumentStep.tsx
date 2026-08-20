@@ -251,9 +251,9 @@ export default function DocumentStep({ onUploaded, onFallback, onBack }: Props) 
           onDragOver={onDragOver}
           onDrop={onDrop}
           className={
-            'mb-4 flex h-48 w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed text-center text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[#fb5614]/40 ' +
+            'mb-4 flex h-48 w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed text-center text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[#1c4d9c]/40 ' +
             (dragOver
-              ? 'border-[#fb5614] bg-[#fb5614]/5 text-[#fb5614]'
+              ? 'border-[#1c4d9c] bg-[#1c4d9c]/5 text-[#1c4d9c]'
               : 'border-gray-300 bg-gray-50 text-gray-600 hover:border-gray-400')
           }
           aria-label="Drag and drop your AFSS here, or browse for a file"
@@ -301,14 +301,14 @@ export default function DocumentStep({ onUploaded, onFallback, onBack }: Props) 
       )}
 
       {busy && (
-        <div className="mb-4 rounded-xl border border-[#fb5614]/30 bg-[#fb5614]/5 p-4">
+        <div className="mb-4 rounded-xl border border-[#1c4d9c]/30 bg-[#1c4d9c]/5 p-4">
           <div className="mb-2 flex items-center justify-between text-xs uppercase tracking-widest text-gray-700">
             <span>Uploading your AFSS…</span>
             <span className="font-mono">{progressPct ?? 0}%</span>
           </div>
           <div className="h-1.5 w-full overflow-hidden rounded-full bg-white">
             <div
-              className="h-full bg-[#fb5614] transition-all"
+              className="h-full bg-[#1c4d9c] transition-all"
               style={{ width: `${progressPct ?? 0}%` }}
             />
           </div>
@@ -316,9 +316,9 @@ export default function DocumentStep({ onUploaded, onFallback, onBack }: Props) 
       )}
 
       {uploaded && (
-        <div className="mb-4 rounded-xl border border-[#fb5614]/30 bg-[#fb5614]/5 p-4">
+        <div className="mb-4 rounded-xl border border-[#1c4d9c]/30 bg-[#1c4d9c]/5 p-4">
           <div className="mb-3 flex items-start gap-3">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#fb5614]/15 text-[#fb5614]">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#1c4d9c]/15 text-[#1c4d9c]">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="20 6 9 17 4 12" />
               </svg>
@@ -338,7 +338,7 @@ export default function DocumentStep({ onUploaded, onFallback, onBack }: Props) 
               type="button"
               onClick={() => inputRef.current?.click()}
               disabled={busy}
-              className="flex-1 rounded-md border border-[#fb5614]/30 bg-white px-3 py-2 text-xs font-bold uppercase tracking-widest text-[#fb5614] hover:bg-[#fb5614]/10"
+              className="flex-1 rounded-md border border-[#1c4d9c]/30 bg-white px-3 py-2 text-xs font-bold uppercase tracking-widest text-[#1c4d9c] hover:bg-[#1c4d9c]/10"
             >
               Replace file
             </button>

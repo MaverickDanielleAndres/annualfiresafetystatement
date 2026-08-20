@@ -436,7 +436,7 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
             className={
               'flex cursor-pointer flex-col gap-0.5 px-4 py-2.5 text-sm ' +
               (i === highlighted
-                ? 'bg-[#fb5614]/10 text-black'
+                ? 'bg-[#1c4d9c]/10 text-black'
                 : 'text-gray-800 hover:bg-gray-50')
             }
           >
@@ -605,8 +605,8 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
             )}
 
             {locationResult && (
-              <div className="rounded-lg border border-[#fb5614]/30 bg-[#fb5614]/5 p-4 text-sm">
-                <div className="text-xs font-bold uppercase tracking-widest text-[#fb5614]">
+              <div className="rounded-lg border border-[#1c4d9c]/30 bg-[#1c4d9c]/5 p-4 text-sm">
+                <div className="text-xs font-bold uppercase tracking-widest text-[#1c4d9c]">
                   We found this address
                 </div>
                 <div className="mt-1 text-base font-medium text-black">
@@ -624,7 +624,7 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
                     onClick={acceptLocationResult}
                     className={primaryButton + ' !mx-0 !w-auto !py-2 !px-4 text-xs'}
                     style={{
-                      background: 'linear-gradient(to right, #ff5614, #ffad05)',
+                      background: 'linear-gradient(to right, #0b1d36, #1c4d9c)',
                       color: '#ffffff',
                     }}
                   >
@@ -726,8 +726,8 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
         )}
 
         {resolvedAddress && !manualMode && (
-          <div className="rounded-lg border border-[#fb5614]/30 bg-[#fb5614]/5 p-3 text-sm">
-            <div className="text-xs font-bold uppercase tracking-wide text-[#fb5614]">
+          <div className="rounded-lg border border-[#1c4d9c]/30 bg-[#1c4d9c]/5 p-3 text-sm">
+            <div className="text-xs font-bold uppercase tracking-wide text-[#1c4d9c]">
               Selected
             </div>
             <div className="text-black">{resolvedAddress.formattedAddress}</div>

@@ -222,7 +222,7 @@ export default function DueDateStep({ onSaved, onBack }: Props) {
             type="submit"
             disabled={submitting || unsure || !iso}
             className={primaryButton + ' !mx-0'}
-            style={{ background: "linear-gradient(to right, #ff5614, #ffad05)", color: "#ffffff" }}
+            style={{ background: "linear-gradient(to right, #0b1d36, #1c4d9c)", color: "#ffffff" }}
           >
             {submitting ? 'Saving…' : 'Next →'}
           </button>

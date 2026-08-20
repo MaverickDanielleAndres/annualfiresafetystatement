@@ -121,7 +121,7 @@ export default function ContactStep({ initialSummary, onSaved }: Props) {
             disabled={submitting}
             className={primaryButton}
             style={{ 
-              background: "linear-gradient(to right, #ff5614, #ffad05)",
+              background: "linear-gradient(to right, #0b1d36, #1c4d9c)",
               color: "#ffffff"
             }}
           >

@@ -104,14 +104,14 @@ function Check({ label, done }: { label: string; done: boolean }) {
       className={
         'flex items-center gap-3 rounded-lg border px-4 py-3 text-sm transition-colors ' +
         (done
-          ? 'border-[#fb5614]/30 bg-[#fb5614]/5 text-black'
+          ? 'border-[#1c4d9c]/30 bg-[#1c4d9c]/5 text-black'
           : 'border-gray-200 bg-white text-gray-500')
       }
     >
       <span
         className={
           'flex h-5 w-5 items-center justify-center rounded-full ' +
-          (done ? 'bg-[#fb5614] text-white' : 'border border-gray-300')
+          (done ? 'bg-[#1c4d9c] text-white' : 'border border-gray-300')
         }
       >
         {done ? '✓' : ''}

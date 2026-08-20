@@ -16,7 +16,7 @@ export default function QuoteResultStep({ summary, onClose }: Props) {
   if (summary.requires_manual_review || summary.blocked_by_business_rule) {
     return (
       <div className="mx-auto max-w-md">
-        <p className="mb-1 text-xs font-bold uppercase tracking-widest text-[#fb5614]">
+        <p className="mb-1 text-xs font-bold uppercase tracking-widest text-[#1c4d9c]">
           Result
         </p>
         <h2 className="mb-2 text-2xl font-black uppercase tracking-tight text-black sm:text-3xl">
@@ -45,7 +45,7 @@ export default function QuoteResultStep({ summary, onClose }: Props) {
           type="button"
           onClick={onClose}
           className={primaryButton}
-          style={{ background: "linear-gradient(to right, #ff5614, #ffad05)", color: "#ffffff" }}
+          style={{ background: "linear-gradient(to right, #0b1d36, #1c4d9c)", color: "#ffffff" }}
         >
           Close
         </button>
@@ -83,7 +83,7 @@ export default function QuoteResultStep({ summary, onClose }: Props) {
 
   return (
     <div className="mx-auto max-w-md">
-      <p className="mb-1 text-xs font-bold uppercase tracking-widest text-[#fb5614]">
+      <p className="mb-1 text-xs font-bold uppercase tracking-widest text-[#1c4d9c]">
         Result
       </p>
       <h2 className="mb-2 text-2xl font-black uppercase tracking-tight text-black sm:text-3xl">
@@ -107,7 +107,7 @@ export default function QuoteResultStep({ summary, onClose }: Props) {
         )}
       </div>
 
-      <div className="mb-6 rounded-lg border-2 border-[#fb5614]/30 bg-[#fb5614]/5 p-6 text-center">
+      <div className="mb-6 rounded-lg border-2 border-[#1c4d9c]/30 bg-[#1c4d9c]/5 p-6 text-center">
         <div className="text-xs uppercase tracking-widest text-gray-500">
           Estimated total
         </div>
@@ -139,7 +139,7 @@ export default function QuoteResultStep({ summary, onClose }: Props) {
           disabled={paying}
           onClick={pay}
           className={primaryButton + ' !mx-0'}
-          style={{ background: "linear-gradient(to right, #ff5614, #ffad05)", color: "#ffffff" }}
+          style={{ background: "linear-gradient(to right, #0b1d36, #1c4d9c)", color: "#ffffff" }}
         >
           {paying ? 'Starting payment…' : 'Pay / Book →'}
         </button>

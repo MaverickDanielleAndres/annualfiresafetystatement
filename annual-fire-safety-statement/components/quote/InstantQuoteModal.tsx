@@ -97,8 +97,8 @@ export default function InstantQuoteModal({ isOpen, onClose }: InstantQuoteModal
             className="absolute inset-0 opacity-90"
             style={{
               backgroundImage:
-                'radial-gradient(circle at 20% 0%, rgba(255,86,20,0.45), transparent 60%), ' +
-                'radial-gradient(circle at 90% 90%, rgba(255,173,5,0.35), transparent 60%), ' +
+                'radial-gradient(circle at 20% 0%, rgba(28,77,156,0.45), transparent 60%), ' +
+                'radial-gradient(circle at 90% 90%, rgba(11,29,54,0.35), transparent 60%), ' +
                 'linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%)',
             }}
           />
@@ -112,7 +112,7 @@ export default function InstantQuoteModal({ isOpen, onClose }: InstantQuoteModal
           />
 
           <div className="relative flex items-center gap-2">
-            <div className="h-8 w-1.5 rounded-full bg-gradient-to-b from-[#ff5614] to-[#ffad05]" />
+            <div className="h-8 w-1.5 rounded-full bg-gradient-to-b from-[#0b1d36] to-[#1c4d9c]" />
             <span className="text-xs font-bold uppercase tracking-[0.3em] text-white">
               AFSS Instant Quote
             </span>
@@ -124,7 +124,7 @@ export default function InstantQuoteModal({ isOpen, onClose }: InstantQuoteModal
               <br />
               Your AFSS.
               <br />
-              <span className="bg-gradient-to-r from-[#ff5614] to-[#ffad05] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#0b1d36] to-[#1c4d9c] bg-clip-text text-transparent">
                 Your quote.
               </span>
             </h1>
@@ -134,7 +134,7 @@ export default function InstantQuoteModal({ isOpen, onClose }: InstantQuoteModal
             <ul className="space-y-2 text-sm text-white">
               {['Next → Next → Next', 'Quote', "We'll be in touch"].map((t, i) => (
                 <li key={i} className="flex items-center gap-2">
-                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#ffad05]" />
+                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#1c4d9c]" />
                   {t}
                 </li>
               ))}

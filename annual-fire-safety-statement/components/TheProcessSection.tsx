@@ -6,26 +6,39 @@ import RevealOnView from './RevealOnView';
 
 export default function TheProcessSection() {
   return (
-    <section className="bg-white py-8 lg:py-12 w-full overflow-hidden">
+    <section className="bg-white py-10 lg:py-16 w-full overflow-hidden">
       <div className="container-inner max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-8 lg:mb-10 gap-8">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-12 lg:mb-16 gap-8">
           <div className="flex-1">
             <RevealOnView>
-              <p className="font-bold tracking-widest uppercase mb-4 text-xs md:text-sm flex items-center gap-3">
-                <span className="text-[#fb5614]">05 / THE PROCESS</span>
-              </p>
-              
-              <h2 className="text-[clamp(2.5rem,4vw,3.5rem)] font-black tracking-tight leading-[1.05] text-[#111111]">
-                From schedule.<br/>
-                <span className="bg-gradient-to-r from-[#fb5614] to-[#ffad05] bg-clip-text text-transparent">To your statement.</span>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-xs font-bold tracking-[0.18em] uppercase text-[#1c4d9c]">
+                  06 / The Process
+                </span>
+              </div>
+
+              <h2 className="text-[clamp(2.5rem,4vw,3.5rem)] font-extrabold tracking-tight leading-[1.05] text-[#0b1d36]">
+                From schedule.
+                <br />
+                <span
+                  style={{
+                    background: "linear-gradient(90deg, #0b1d36 0%, #1c4d9c 100%)",
+                    WebkitBackgroundClip: "text",
+                    backgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    color: "transparent",
+                  }}
+                >
+                  To your statement.
+                </span>
               </h2>
             </RevealOnView>
           </div>
           <div className="flex-1 lg:max-w-md">
             <RevealOnView delay={100}>
-              <p className="text-lg text-gray-700 font-medium leading-relaxed">
+              <p className="text-lg text-[#3a4a63] font-medium leading-relaxed">
                 A simple path from your Fire Safety Schedule to the Annual Fire Safety Statement.
               </p>
             </RevealOnView>
@@ -36,12 +49,12 @@ export default function TheProcessSection() {
         <RevealOnView delay={200} className="w-full relative">
           <div className="w-full pt-2 lg:pt-4 pb-4">
             <div className="flex flex-col lg:flex-row items-start justify-between relative max-w-[1100px] mx-auto">
-              
+
               {/* Desktop Connecting Line */}
-              <div className="hidden lg:block absolute top-[32px] left-[10%] right-[10%] h-[1px] bg-[#fb5614] z-0"></div>
+              <div className="hidden lg:block absolute top-[32px] left-[10%] right-[10%] h-[1px] bg-[#1c4d9c] z-0"></div>
 
               {/* Step 1 */}
-              <ProcessStep 
+              <ProcessStep
                 number="01"
                 icon={<FileText size={28} strokeWidth={1.5} />}
                 title="REVIEW"
@@ -50,7 +63,7 @@ export default function TheProcessSection() {
               />
 
               {/* Step 2 */}
-              <ProcessStep 
+              <ProcessStep
                 number="02"
                 icon={<Search size={28} strokeWidth={1.5} />}
                 title="ASSESS"
@@ -59,7 +72,7 @@ export default function TheProcessSection() {
               />
 
               {/* Step 3 */}
-              <ProcessStep 
+              <ProcessStep
                 number="03"
                 icon={<TriangleAlert size={28} strokeWidth={1.5} />}
                 title="ADDRESS"
@@ -68,7 +81,7 @@ export default function TheProcessSection() {
               />
 
               {/* Step 4 */}
-              <ProcessStep 
+              <ProcessStep
                 number="04"
                 icon={<FileCheck size={28} strokeWidth={1.5} />}
                 title="STATEMENT"
@@ -77,7 +90,7 @@ export default function TheProcessSection() {
               />
 
               {/* Step 5 */}
-              <ProcessStep 
+              <ProcessStep
                 number="05"
                 icon={<Send size={28} strokeWidth={1.5} />}
                 title="LODGE"
@@ -97,26 +110,26 @@ export default function TheProcessSection() {
 function ProcessStep({ number, icon, title, subtitle, desc }: any) {
   return (
     <div className="relative flex flex-col items-center text-center flex-1 w-full px-2 mb-16 lg:mb-0 group">
-      
+
       {/* Faint Background Number */}
-      <div className="absolute top-[20px] left-1/2 -translate-x-1/2 text-[120px] xl:text-[140px] font-black text-[#f9f9f9] leading-none z-0 select-none pointer-events-none whitespace-nowrap">
+      <div className="absolute top-[20px] left-1/2 -translate-x-1/2 text-[120px] xl:text-[140px] font-black text-[#e7eef9] leading-none z-0 select-none pointer-events-none whitespace-nowrap">
         {number}
       </div>
 
       {/* Icon */}
-      <div className="relative z-20 w-[64px] h-[64px] rounded-full border-[1.5px] border-[#fb5614] bg-white flex items-center justify-center text-[#fb5614] mb-8 lg:mb-10 group-hover:scale-110 group-hover:bg-[#fff5ef] transition-all duration-300">
+      <div className="relative z-20 w-[64px] h-[64px] rounded-full border-[1.5px] border-[#0b1d36] bg-white flex items-center justify-center text-[#0b1d36] mb-8 lg:mb-10 group-hover:scale-110 group-hover:bg-[#e7eef9] transition-all duration-300">
         {icon}
       </div>
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center w-full">
-        <h3 className="text-[1.05rem] font-black text-[#111111] uppercase tracking-wide mb-2">
+        <h3 className="text-[1.05rem] font-extrabold text-[#0b1d36] uppercase tracking-[0.06em] mb-2">
           {title}
         </h3>
-        <p className="text-[#fb5614] font-semibold text-[0.85rem] xl:text-[0.9rem] mb-3">
+        <p className="text-[#1c4d9c] font-semibold text-[0.85rem] xl:text-[0.9rem] mb-3">
           {subtitle}
         </p>
-        <p className="text-gray-500 font-medium text-[0.85rem] leading-[1.6] max-w-[200px]">
+        <p className="text-[#5b6a82] font-medium text-[0.85rem] leading-[1.6] max-w-[200px]">
           {desc}
         </p>
       </div>

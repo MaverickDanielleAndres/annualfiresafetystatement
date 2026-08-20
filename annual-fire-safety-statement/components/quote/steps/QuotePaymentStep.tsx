@@ -192,7 +192,7 @@ export default function QuotePaymentStep({ summary, onSubmitted, onBack }: Props
         <label
           className={
             'flex cursor-pointer items-start gap-3 px-4 py-4 transition-colors ' +
-            (preference === 'pay_now_simulation' ? 'bg-[#fb5614]/5' : '')
+            (preference === 'pay_now_simulation' ? 'bg-[#1c4d9c]/5' : '')
           }
         >
           <input
@@ -200,7 +200,7 @@ export default function QuotePaymentStep({ summary, onSubmitted, onBack }: Props
             name="payment-preference"
             checked={preference === 'pay_now_simulation'}
             onChange={() => setPreference('pay_now_simulation')}
-            className="mt-1 h-4 w-4 accent-[#fb5614]"
+            className="mt-1 h-4 w-4 accent-[#1c4d9c]"
             disabled={blockedByReview}
           />
           <div>
@@ -215,7 +215,7 @@ export default function QuotePaymentStep({ summary, onSubmitted, onBack }: Props
         <label
           className={
             'flex cursor-pointer items-start gap-3 px-4 py-4 transition-colors ' +
-            (preference === 'contact_first' ? 'bg-[#fb5614]/5' : '')
+            (preference === 'contact_first' ? 'bg-[#1c4d9c]/5' : '')
           }
         >
           <input
@@ -223,7 +223,7 @@ export default function QuotePaymentStep({ summary, onSubmitted, onBack }: Props
             name="payment-preference"
             checked={preference === 'contact_first'}
             onChange={() => setPreference('contact_first')}
-            className="mt-1 h-4 w-4 accent-[#fb5614]"
+            className="mt-1 h-4 w-4 accent-[#1c4d9c]"
           />
           <div>
             <div className="font-bold text-black">Talk to us first</div>
@@ -256,7 +256,7 @@ export default function QuotePaymentStep({ summary, onSubmitted, onBack }: Props
           disabled={!preference || submitting}
           onClick={submit}
           className={primaryButton + ' !mx-0'}
-          style={{ background: "linear-gradient(to right, #ff5614, #ffad05)", color: "#ffffff" }}
+          style={{ background: "linear-gradient(to right, #0b1d36, #1c4d9c)", color: "#ffffff" }}
         >
           {submitting ? 'Submitting…' : 'Submit →'}
         </button>

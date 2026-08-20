@@ -93,7 +93,7 @@ const FreeSiteVisitButton = forwardRef<HTMLButtonElement, FreeSiteVisitButtonPro
             text-transform: uppercase;
           }
           .fsv-btn:focus-visible {
-            outline: 2px solid #ff5722;
+            outline: 2px solid #1c4d9c;
             outline-offset: 3px;
           }
           .fsv-btn:disabled {
@@ -101,18 +101,19 @@ const FreeSiteVisitButton = forwardRef<HTMLButtonElement, FreeSiteVisitButtonPro
             opacity: 0.6;
           }
           .fsv-btn--primary {
-            background: linear-gradient(135deg, #ff2a00 0%, #ffb700 100%);
-            color: #ffffff;
+            background: transparent;
+            color: #0b1d36;
             padding: 0.6rem 1.15rem;
             font-size: 0.9rem;
-            box-shadow: 0 10px 24px rgba(255, 42, 0, 0.28),
-              0 1px 0 rgba(255, 255, 255, 0.25) inset;
-            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(11, 29, 54, 0.08);
+            border-color: #0b1d36;
           }
           .fsv-btn--primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 14px 28px rgba(255, 42, 0, 0.32),
-              0 1px 0 rgba(255, 255, 255, 0.25) inset;
+            background: #0b1d36;
+            color: #ffffff;
+            box-shadow: 0 14px 28px rgba(11, 29, 54, 0.22),
+              0 1px 0 rgba(255, 255, 255, 0.1) inset;
           }
           .fsv-btn--primary:active {
             transform: translateY(0);
@@ -128,15 +129,18 @@ const FreeSiteVisitButton = forwardRef<HTMLButtonElement, FreeSiteVisitButtonPro
             background: rgba(255, 255, 255, 0.18);
           }
           .fsv-btn--compact {
-            background: linear-gradient(135deg, #ff2a00 0%, #ffb700 100%);
-            color: #ffffff;
+            background: transparent;
+            color: #0b1d36;
             padding: 0.5rem 1rem;
             font-size: 0.8125rem;
-            box-shadow: 0 6px 16px rgba(255, 42, 0, 0.25);
+            box-shadow: 0 4px 10px rgba(11, 29, 54, 0.06);
+            border-color: #0b1d36;
           }
           .fsv-btn--compact:hover {
             transform: translateY(-1px);
-            box-shadow: 0 8px 18px rgba(255, 42, 0, 0.3);
+            background: #0b1d36;
+            color: #ffffff;
+            box-shadow: 0 8px 18px rgba(11, 29, 54, 0.2);
           }
 
           /* The pulse — only on the primary CTA when *pulse* is true.
@@ -149,30 +153,30 @@ const FreeSiteVisitButton = forwardRef<HTMLButtonElement, FreeSiteVisitButtonPro
             0% {
               transform: scale(1);
               filter: brightness(1) saturate(1);
-              box-shadow: 0 8px 18px rgba(255, 42, 0, 0.24),
-                0 0 0 0 rgba(255, 42, 0, 0.45),
-                0 1px 0 rgba(255, 255, 255, 0.25) inset;
+              box-shadow: 0 4px 12px rgba(11, 29, 54, 0.08),
+                0 0 0 0 rgba(28, 77, 156, 0.45),
+                0 1px 0 rgba(255, 255, 255, 0.08) inset;
             }
             25% {
               transform: scale(1.05);
-              filter: brightness(1.15) saturate(1.2);
-              box-shadow: 0 12px 28px rgba(255, 42, 0, 0.4),
-                0 0 0 16px rgba(255, 42, 0, 0),
-                0 1px 0 rgba(255, 255, 255, 0.3) inset;
+              filter: brightness(1.05) saturate(1.05);
+              box-shadow: 0 12px 28px rgba(28, 77, 156, 0.32),
+                0 0 0 16px rgba(28, 77, 156, 0),
+                0 1px 0 rgba(255, 255, 255, 0.1) inset;
             }
             50% {
               transform: scale(1);
               filter: brightness(1) saturate(1);
-              box-shadow: 0 8px 18px rgba(255, 42, 0, 0.24),
-                0 0 0 0 rgba(255, 42, 0, 0),
-                0 1px 0 rgba(255, 255, 255, 0.25) inset;
+              box-shadow: 0 4px 12px rgba(11, 29, 54, 0.08),
+                0 0 0 0 rgba(28, 77, 156, 0),
+                0 1px 0 rgba(255, 255, 255, 0.08) inset;
             }
             100% {
               transform: scale(1);
               filter: brightness(1) saturate(1);
-              box-shadow: 0 8px 18px rgba(255, 42, 0, 0.24),
-                0 0 0 0 rgba(255, 42, 0, 0),
-                0 1px 0 rgba(255, 255, 255, 0.25) inset;
+              box-shadow: 0 4px 12px rgba(11, 29, 54, 0.08),
+                0 0 0 0 rgba(28, 77, 156, 0),
+                0 1px 0 rgba(255, 255, 255, 0.08) inset;
             }
           }
           /* Pause the perpetual pulse on hover/focus/active so the button

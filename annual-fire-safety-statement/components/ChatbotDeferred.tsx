@@ -24,6 +24,10 @@ const SUGGESTED_PROMPTS = [
   "What does monthly testing cover?",
 ];
 
+const BRAND_NAVY = "#0b1d36";
+const BRAND_BLUE = "#1c4d9c";
+const BRAND_RED = "#b0141f";
+
 function BrandCorner({ compact = false }: { compact?: boolean }) {
   const size = compact ? { width: 68, height: 48 } : { width: 168, height: 122 };
 
@@ -45,24 +49,24 @@ function BrandCorner({ compact = false }: { compact?: boolean }) {
     >
       <defs>
         <linearGradient
-          id={compact ? "chatCornerOrangeCompact" : "chatCornerOrange"}
+          id={compact ? "chatCornerBlueCompact" : "chatCornerBlue"}
           x1="74"
           y1="0"
           x2="168"
           y2="122"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0" stopColor="#ff7a1a" />
-          <stop offset="0.58" stopColor="#fb5614" />
-          <stop offset="1" stopColor="#ffa20d" />
+          <stop offset="0" stopColor="#173a6a" />
+          <stop offset="0.58" stopColor="#0b1d36" />
+          <stop offset="1" stopColor="#1c4d9c" />
         </linearGradient>
       </defs>
       <path
         d="M50 0H168V122C134 69 98 28 50 0Z"
-        fill={`url(#${compact ? "chatCornerOrangeCompact" : "chatCornerOrange"})`}
+        fill={`url(#${compact ? "chatCornerBlueCompact" : "chatCornerBlue"})`}
       />
-      <path d="M23 0C68 18 109 52 151 104" fill="none" stroke="#fc0403" strokeWidth="14" strokeLinecap="round" />
-      <path d="M45 0C86 20 123 57 168 122" fill="none" stroke="#feaf04" strokeWidth="8" strokeLinecap="round" />
+      <path d="M23 0C68 18 109 52 151 104" fill="none" stroke="#0b1d36" strokeWidth="14" strokeLinecap="round" />
+      <path d="M45 0C86 20 123 57 168 122" fill="none" stroke="#1c4d9c" strokeWidth="8" strokeLinecap="round" />
     </svg>
   );
 }
@@ -250,7 +254,7 @@ export default function ChatbotDeferred({ initialOpen = false }: { initialOpen?:
       {isOpen && (
         <section
           className="chatbot-window"
-          aria-label="Flame from ALLFIRE"
+          aria-label="AFSS Assistant"
           style={{
             position: "relative",
             width: fullScreen ? "calc(100vw - 20px)" : 380,
@@ -258,11 +262,11 @@ export default function ChatbotDeferred({ initialOpen = false }: { initialOpen?:
             maxWidth: 380,
             maxHeight: "86vh",
             borderRadius: 8,
-            boxShadow: "0 18px 46px rgba(18, 18, 18, 0.16)",
+            boxShadow: "0 18px 46px rgba(11, 29, 54, 0.18)",
             overflow: "hidden",
             display: "flex",
             flexDirection: "column",
-            border: "1px solid #ece7e2",
+            border: "1px solid #e3e7ee",
             background: "#fff",
           }}
         >
@@ -297,10 +301,10 @@ export default function ChatbotDeferred({ initialOpen = false }: { initialOpen?:
                       display: "inline-block",
                     }}
                   />
-                  <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: "#161616" }}>Flame from ALLFIRE</p>
+                  <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: "#0b1d36" }}>AFSS Assistant</p>
                 </div>
-                <p style={{ margin: "4px 0 0", fontSize: 11.5, color: "#777", lineHeight: 1.45 }}>
-                  Ask about services, coverage, inspections, and enquiries.
+                <p style={{ margin: "4px 0 0", fontSize: 11.5, color: "#5b6a82", lineHeight: 1.45 }}>
+                  Ask about AFSS, coverage, inspections, and enquiries.
                 </p>
               </div>
 
@@ -311,9 +315,9 @@ export default function ChatbotDeferred({ initialOpen = false }: { initialOpen?:
                   width: 28,
                   height: 28,
                   borderRadius: 999,
-                  border: "1px solid rgba(0,0,0,0.08)",
+                  border: "1px solid rgba(11, 29, 54, 0.12)",
                   background: "rgba(255,255,255,0.82)",
-                  color: "#4b4b4b",
+                  color: "#3a4a63",
                   display: "grid",
                   placeItems: "center",
                   cursor: "pointer",
@@ -332,7 +336,7 @@ export default function ChatbotDeferred({ initialOpen = false }: { initialOpen?:
               zIndex: 1,
               flex: 1,
               overflowY: "auto",
-              background: "#faf7f4",
+              background: "#f5f7fa",
               padding: "14px 14px 4px",
               display: "flex",
               flexDirection: "column",
@@ -343,16 +347,16 @@ export default function ChatbotDeferred({ initialOpen = false }: { initialOpen?:
               <div
                 style={{
                   background: "#fff",
-                  border: "1px solid #ece7e2",
+                  border: "1px solid #e3e7ee",
                   borderRadius: 10,
                   padding: "12px 14px",
                   fontSize: 13,
                   lineHeight: 1.5,
-                  color: "#333",
+                  color: "#3a4a63",
                 }}
               >
-                <p style={{ margin: 0, fontWeight: 700, color: "#161616" }}>Hi — what can we help with?</p>
-                <p style={{ margin: "6px 0 0", color: "#555" }}>
+                <p style={{ margin: 0, fontWeight: 700, color: "#0b1d36" }}>Hi — what can we help with?</p>
+                <p style={{ margin: "6px 0 0", color: "#3a4a63" }}>
                   We cover AFSS, monthly inspections, smoke alarms, sprinklers, extinguishers, fire
                   consultancy, and more across Greater Sydney.
                 </p>
@@ -365,9 +369,9 @@ export default function ChatbotDeferred({ initialOpen = false }: { initialOpen?:
                       style={{
                         fontSize: 11.5,
                         fontWeight: 600,
-                        color: "#fb5614",
-                        background: "#fff5f0",
-                        border: "1px solid #fbd9c5",
+                        color: "#1c4d9c",
+                        background: "#e7eef9",
+                        border: "1px solid #c8d2e0",
                         borderRadius: 999,
                         padding: "6px 10px",
                         cursor: "pointer",
@@ -389,20 +393,20 @@ export default function ChatbotDeferred({ initialOpen = false }: { initialOpen?:
                   style={{
                     alignSelf: isUser ? "flex-end" : "flex-start",
                     maxWidth: "85%",
-                    background: isUser ? "#fb5614" : "#fff",
-                    color: isUser ? "#fff" : "#222",
-                    border: isUser ? "none" : "1px solid #ece7e2",
+                    background: isUser ? "#0b1d36" : "#fff",
+                    color: isUser ? "#fff" : "#0b1d36",
+                    border: isUser ? "1px solid #0b1d36" : "1px solid #e3e7ee",
                     borderRadius: 12,
                     padding: "9px 12px",
                     fontSize: 13.5,
                     lineHeight: 1.5,
                     whiteSpace: "pre-wrap",
                     wordBreak: "break-word",
-                    boxShadow: isUser ? "0 4px 12px rgba(251,86,20,0.18)" : "none",
+                    boxShadow: isUser ? "0 4px 12px rgba(11,29,54,0.18)" : "none",
                   }}
                 >
                   {isPlaceholder ? (
-                    <span style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "#777" }}>
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "#5b6a82" }}>
                       <Loader size={14} className="chatbot-spin" />
                       Thinking…
                     </span>
@@ -417,9 +421,9 @@ export default function ChatbotDeferred({ initialOpen = false }: { initialOpen?:
               <div
                 role="alert"
                 style={{
-                  background: "#fff4f0",
-                  border: "1px solid #fbd9c5",
-                  color: "#a3320d",
+                  background: "#e7eef9",
+                  border: "1px solid #c8d2e0",
+                  color: "#0b1d36",
                   borderRadius: 10,
                   padding: "8px 12px",
                   fontSize: 12.5,
@@ -437,7 +441,7 @@ export default function ChatbotDeferred({ initialOpen = false }: { initialOpen?:
               position: "relative",
               zIndex: 1,
               background: "#fff",
-              borderTop: "1px solid #ece7e2",
+              borderTop: "1px solid #e3e7ee",
               padding: "10px 12px",
               display: "flex",
               alignItems: "flex-end",
@@ -461,18 +465,18 @@ export default function ChatbotDeferred({ initialOpen = false }: { initialOpen?:
                 lineHeight: 1.4,
                 padding: "9px 11px",
                 borderRadius: 10,
-                border: "1px solid #e3ddd6",
-                background: "#faf7f4",
-                color: "#1a1a1a",
+                border: "1px solid #e3e7ee",
+                background: "#f5f7fa",
+                color: "#0b1d36",
                 outline: "none",
                 maxHeight: 120,
                 minHeight: 38,
               }}
               onFocus={(event) => {
-                event.currentTarget.style.borderColor = "#fb5614";
+                event.currentTarget.style.borderColor = "#1c4d9c";
               }}
               onBlur={(event) => {
-                event.currentTarget.style.borderColor = "#e3ddd6";
+                event.currentTarget.style.borderColor = "#e3e7ee";
               }}
             />
             <button
@@ -483,9 +487,9 @@ export default function ChatbotDeferred({ initialOpen = false }: { initialOpen?:
                 width: 38,
                 height: 38,
                 borderRadius: 10,
-                border: "none",
-                background: input.trim().length === 0 || isStreaming ? "#f3c8b3" : "#fb5614",
-                color: "#fff",
+                border: "1px solid #0b1d36",
+                background: input.trim().length === 0 || isStreaming ? "#f5f7fa" : "#0b1d36",
+                color: input.trim().length === 0 || isStreaming ? "#93a0b4" : "#fff",
                 display: "grid",
                 placeItems: "center",
                 cursor: input.trim().length === 0 || isStreaming ? "not-allowed" : "pointer",
@@ -501,7 +505,7 @@ export default function ChatbotDeferred({ initialOpen = false }: { initialOpen?:
               position: "relative",
               zIndex: 1,
               background: "#fff",
-              borderTop: "1px solid #ece7e2",
+              borderTop: "1px solid #e3e7ee",
               flexShrink: 0,
             }}
           >
@@ -515,11 +519,11 @@ export default function ChatbotDeferred({ initialOpen = false }: { initialOpen?:
               }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: 5, minWidth: 0 }}>
-                <MapPin size={12} color="#fb5614" strokeWidth={2.5} />
+                <MapPin size={12} color="#1c4d9c" strokeWidth={2.5} />
                 <span
                   style={{
                     fontSize: 10.5,
-                    color: "#777",
+                    color: "#5b6a82",
                     whiteSpace: "nowrap",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
@@ -535,7 +539,7 @@ export default function ChatbotDeferred({ initialOpen = false }: { initialOpen?:
                   alignItems: "center",
                   gap: 5,
                   textDecoration: "none",
-                  color: "#fb5614",
+                  color: "#1c4d9c",
                   flexShrink: 0,
                 }}
               >
@@ -551,19 +555,19 @@ export default function ChatbotDeferred({ initialOpen = false }: { initialOpen?:
         <button
           type="button"
           onClick={() => setIsOpen(true)}
-          aria-label="Ask Flame from ALLFIRE"
+          aria-label="Ask the AFSS Assistant"
           style={{
             position: "relative",
             overflow: "hidden",
             background: "#fff",
-            border: "1px solid #ece7e2",
+            border: "1px solid #e3e7ee",
             borderRadius: 8,
             padding: "10px 14px 10px 12px",
             display: "flex",
             alignItems: "center",
             gap: 10,
             cursor: "pointer",
-            boxShadow: "0 10px 28px rgba(18,18,18,0.14)",
+            boxShadow: "0 10px 28px rgba(11, 29, 54, 0.16)",
             minWidth: 170,
           }}
         >
@@ -573,8 +577,8 @@ export default function ChatbotDeferred({ initialOpen = false }: { initialOpen?:
               width: 34,
               height: 34,
               borderRadius: "50%",
-              background: "#fff5f0",
-              color: "#fb5614",
+              background: "#e7eef9",
+              color: "#1c4d9c",
               display: "grid",
               placeItems: "center",
               flexShrink: 0,
@@ -585,8 +589,8 @@ export default function ChatbotDeferred({ initialOpen = false }: { initialOpen?:
             <MessageCircle size={18} strokeWidth={2.3} />
           </span>
           <span style={{ position: "relative", zIndex: 1, textAlign: "left" }}>
-            <span style={{ display: "block", margin: 0, fontSize: 11, fontWeight: 750, color: "#171717", lineHeight: 1.1 }}>
-              Ask Flame<br />from ALLFIRE
+            <span style={{ display: "block", margin: 0, fontSize: 11, fontWeight: 750, color: "#0b1d36", lineHeight: 1.1 }}>
+              Ask the AFSS<br />Assistant
             </span>
           </span>
         </button>
