@@ -37,7 +37,7 @@ export default function AfssHeroSection() {
         }}
       />
 
-      <div className="container-inner relative pt-4 pb-12 lg:pt-4 lg:pb-20">
+      <div className="container-inner relative pt-6 pb-12 lg:pt-8 lg:pb-20">
         <div className="grid lg:grid-cols-[1.05fr_1fr] gap-12 lg:gap-16">
           {/* LEFT — copy */}
           <div className="flex flex-col items-center text-center lg:sticky lg:top-32 self-start w-full">
@@ -50,7 +50,7 @@ export default function AfssHeroSection() {
 
             <h1
               id="afss-hero-title"
-              className="text-[clamp(2.5rem,5vw,4.6rem)] font-extrabold tracking-tight leading-[0.98] text-[#0b1d36] m-0 text-center mx-auto"
+              className="text-[clamp(2.2rem,4.2vw,4rem)] font-extrabold tracking-tight leading-[0.98] text-[#0b1d36] m-0 text-center mx-auto"
               style={{ textWrap: "balance" }}
             >
               Your AFSS isn&apos;t
@@ -67,7 +67,7 @@ export default function AfssHeroSection() {
                   color: "transparent",
                 }}
               >
-                It&apos;s responsibility.
+                It&apos;s a responsibility.
               </span>
             </h1>
 
