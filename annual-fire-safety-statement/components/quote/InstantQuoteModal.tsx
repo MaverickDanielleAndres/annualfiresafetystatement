@@ -132,7 +132,11 @@ export default function InstantQuoteModal({ isOpen, onClose }: InstantQuoteModal
               Simple details. One document. We&apos;ll take it from there.
             </p>
             <ul className="space-y-2 text-sm text-white">
-              {['Next → Next → Next', 'Quote', "We'll be in touch"].map((t, i) => (
+              {[
+                "1 — Your details",
+                "2 — Building address",
+                "3 — Assessment + AFSS",
+              ].map((t, i) => (
                 <li key={i} className="flex items-center gap-2">
                   <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#1c4d9c]" />
                   {t}

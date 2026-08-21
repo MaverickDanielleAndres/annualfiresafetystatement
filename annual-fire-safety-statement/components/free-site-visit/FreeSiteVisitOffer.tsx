@@ -1,39 +1,31 @@
 "use client";
 
 /**
- * FreeSiteVisitOffer — contextual banner for the Contact page.
+ * FreeSiteVisitOffer — contextual AFSS banner for the Contact page.
  * ──────────────────────────────────────────────────────────────────────────
- * A small, in-page banner that sits above the contact form on /contact, on
- * the Our Story page, and on the Strata / Our Clients pages. It is
- * intentionally lighter than the SitewideCTA so we can embed it next to
- * other content without crowding.
- *
- * Re-uses the global FreeSiteVisitClientShell context so the same modal
- * opens whether the visitor clicks the header CTA, the hero button, or
- * this banner.
+ * A small, in-page banner that sits above the contact form on /contact,
+ * /free-quote, etc. Independent AFSS branding — no individual person,
+ * no parent-brand cross-promotion.
  */
 
 import React from "react";
-import Image from "next/image";
+import { ShieldCheck } from "lucide-react";
 
 import FreeSiteVisitButton from "@/components/free-site-visit/FreeSiteVisitButton";
 import { type FreeSiteVisitSource } from "@/lib/free-site-visit/analytics";
 
 export interface FreeSiteVisitOfferProps {
   source: FreeSiteVisitSource;
-  /** Service id (lib/services.ts) to pre-select. */
   service?: string;
-  /** Optional custom heading. Defaults to the standard offer copy. */
   heading?: string;
-  /** Optional supporting copy. Defaults to the standard offer copy. */
   copy?: string;
 }
 
 export default function FreeSiteVisitOffer({
   source,
   service,
-  heading = "Peter will personally come to your property.",
-  copy = "Get an Instant Quote — we'll provide a straightforward pricing breakdown for your property.",
+  heading = "Get your AFSS quote organised.",
+  copy = "From your Fire Safety Schedule to a lodged statement — handled by accredited practitioners.",
 }: FreeSiteVisitOfferProps) {
   return (
     <section
@@ -47,14 +39,14 @@ export default function FreeSiteVisitOffer({
         .fsv-offer-card {
           position: relative;
           display: grid;
-          grid-template-columns: 110px minmax(0, 1fr);
+          grid-template-columns: 64px minmax(0, 1fr);
           gap: clamp(1rem, 2.5vw, 1.5rem);
           align-items: center;
           padding: clamp(1rem, 2.5vw, 1.5rem);
           border-radius: 14px;
-          background: linear-gradient(135deg, #fff7f2 0%, #fff 60%, #fff5ec 100%);
-          border: 1px solid rgba(255, 87, 34, 0.18);
-          box-shadow: 0 12px 30px rgba(17, 17, 17, 0.08);
+          background: linear-gradient(135deg, #f5f7fa 0%, #ffffff 60%, #e7eef9 100%);
+          border: 1px solid rgba(28, 77, 156, 0.18);
+          box-shadow: 0 12px 30px rgba(11, 29, 54, 0.08);
           overflow: hidden;
         }
         .fsv-offer-card::before {
@@ -62,23 +54,22 @@ export default function FreeSiteVisitOffer({
           position: absolute;
           inset: 0;
           background:
-            radial-gradient(circle at 0% 0%, rgba(255, 87, 34, 0.16), transparent 55%),
-            radial-gradient(circle at 100% 100%, rgba(255, 183, 0, 0.12), transparent 50%);
+            radial-gradient(circle at 0% 0%, rgba(28, 77, 156, 0.10), transparent 55%),
+            radial-gradient(circle at 100% 100%, rgba(11, 29, 54, 0.06), transparent 50%);
           pointer-events: none;
         }
-        .fsv-offer-portrait {
+        .fsv-offer-badge {
           position: relative;
-          width: 110px;
-          height: 110px;
+          width: 64px;
+          height: 64px;
           border-radius: 50%;
-          overflow: hidden;
-          border: 4px solid #ffffff;
-          box-shadow: 0 6px 18px rgba(17, 17, 17, 0.2);
+          background: #0b1d36;
+          color: #ffffff;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
           flex-shrink: 0;
-        }
-        .fsv-offer-portrait img {
-          object-fit: cover;
-          object-position: center 20%;
+          box-shadow: 0 6px 18px rgba(11, 29, 54, 0.18);
         }
         .fsv-offer-content {
           display: flex;
@@ -91,48 +82,32 @@ export default function FreeSiteVisitOffer({
           font-weight: 700;
           letter-spacing: 0.2em;
           text-transform: uppercase;
-          color: #d64012;
+          color: #1c4d9c;
         }
         .fsv-offer-title {
           font-size: clamp(1.2rem, 2.4vw, 1.55rem);
           font-weight: 800;
           line-height: 1.15;
           margin: 0;
-          color: #111111;
+          color: #0b1d36;
           letter-spacing: -0.01em;
         }
         .fsv-offer-copy {
           font-size: 0.95rem;
           line-height: 1.55;
-          color: #1f1f1f;
+          color: #3a4a63;
           margin: 0;
         }
         .fsv-offer-cta {
           margin-top: 0.5rem;
         }
-
-        @media (max-width: 600px) {
-          .fsv-offer-card {
-            grid-template-columns: 80px minmax(0, 1fr);
-            gap: 0.85rem;
-          }
-          .fsv-offer-portrait {
-            width: 80px;
-            height: 80px;
-          }
-        }
       `}</style>
       <div className="fsv-offer-card">
-        <div className="fsv-offer-portrait" aria-hidden="true">
-          <Image
-            src="/peter-managing-director.jpg"
-            alt=""
-            fill
-            sizes="120px"
-          />
+        <div className="fsv-offer-badge" aria-hidden="true">
+          <ShieldCheck size={26} strokeWidth={1.6} />
         </div>
         <div className="fsv-offer-content">
-          <p className="fsv-offer-eyebrow">Free Site Visit</p>
+          <p className="fsv-offer-eyebrow">Annual Fire Safety Statement</p>
           <h2 id="fsv-offer-title" className="fsv-offer-title">
             {heading}
           </h2>
@@ -143,7 +118,7 @@ export default function FreeSiteVisitOffer({
               service={service}
               variant="compact"
               pulse
-              label="Get an Instant Quote"
+              label="Get my AFSS quote"
             />
           </div>
         </div>

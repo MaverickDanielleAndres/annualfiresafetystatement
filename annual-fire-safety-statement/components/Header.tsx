@@ -1,13 +1,21 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu, X, Phone, ArrowRight } from "lucide-react";
 import { SITE_PHONE, SITE_PHONE_TEL, navLinks } from "@/lib/site";
-import { FacebookIcon, InstagramIcon, LinkedinIcon, YoutubeIcon, TikTokIcon, XIcon } from "./SocialIcons";
-import FreeSiteVisitButton from "@/components/free-site-visit/FreeSiteVisitButton";
+import { openInstantQuote } from "@/lib/quote/open";
+import { hasProjects } from "@/data/projects";
+
+/**
+ * AFSS — global header.
+ *
+ * Lean, AFSS-only navigation. No socials, no parent-brand cross-promotion.
+ * Anchored to the homepage section anchors; the same anchor links work
+ * site-wide because Next.js navigates to "/" + scrolls.
+ */
 
 export default function Header() {
   return (
@@ -21,7 +29,7 @@ export default function Header() {
 function HeaderShell() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const toggleButtonRef = React.useRef<HTMLButtonElement | null>(null);
+  const toggleButtonRef = useRef<HTMLButtonElement | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -66,63 +74,67 @@ function HeaderShell() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [mobileOpen]);
 
-  // Close the mobile menu on route change.
   useEffect(() => {
-    /* eslint-disable-next-line react-hooks/set-state-in-effect */
     setMobileOpen(false);
   }, [pathname]);
 
-  const isActive = (href: string) => {
-    if (href === "/") return pathname === "/";
-    return pathname === href || pathname.startsWith(`${href}/`);
-  };
+  // Track the current URL hash in state so the active-link styling
+  // matches on the server (where window is undefined) and on the first
+  // client render. We deliberately avoid reading window.location.hash
+  // during render — that caused a hydration mismatch when navigating
+  // directly to `/#how-it-works`.
+  const [currentHash, setCurrentHash] = useState("");
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const update = () => setCurrentHash(window.location.hash);
+    update();
+    window.addEventListener("hashchange", update);
+    return () => window.removeEventListener("hashchange", update);
+  }, []);
 
   const closeMenus = () => setMobileOpen(false);
 
+  const isActive = (item: (typeof navLinks)[number]) => {
+    if (!item.anchor) {
+      if (item.href === "/") return pathname === "/";
+      return pathname === item.href || pathname.startsWith(`${item.href}/`);
+    }
+    // Anchor links only "active" on /. Hash is read from state, which is
+    // always "" on the first render (server + client) so the initial
+    // hydration matches.
+    if (pathname !== "/") return false;
+    const hash = item.href.split("#")[1] ?? "";
+    return currentHash === `#${hash}`;
+  };
+
+  // Hide nav items whose target section is currently not rendered.
+  // Projects only renders when approved project data exists. When Pete
+  // supplies data/projects.ts entries, the link returns automatically.
+  const visibleNavLinks = navLinks.filter((item) => {
+    if (item.href === "/#projects" && !hasProjects) return false;
+    return true;
+  });
+
   return (
     <header id="afss-header" className="navbar-shell">
-      <div className={`navbar-topbar bg-[#111111] text-white ${isScrolled ? "is-scrolled" : ""}`}>
-        <div className="navbar-topbar-left">
-          <a href={`tel:${SITE_PHONE_TEL?.replace(/[^+\d]/g, "") ?? "1300765594"}`}>
-            <Phone size={14} /> {SITE_PHONE}
-          </a>
-          <a href="mailto:admin@annualfiresafetystatement.com.au">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <rect width="20" height="16" x="2" y="4" rx="2" />
-              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-            </svg>
-            admin@annualfiresafetystatement.com.au
-          </a>
-        </div>
-        <div className="navbar-topbar-right flex items-center gap-4">
-          <span className="navbar-topbar-tag hidden sm:inline-block mr-2">NSW ACCREDITED PRACTITIONERS</span>
-          <a href="https://www.facebook.com/profile.php?id=61566630403365" target="_blank" rel="noreferrer" aria-label="Facebook" className="hover:text-white transition-colors"><FacebookIcon size={14} /></a>
-          <a href="https://www.instagram.com/_allfireservices_/" target="_blank" rel="noreferrer" aria-label="Instagram" className="hover:text-white transition-colors"><InstagramIcon size={14} /></a>
-          <a href="https://au.linkedin.com/in/allfire-services-sydney-92690516" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="hover:text-white transition-colors"><LinkedinIcon size={14} /></a>
-          <a href="https://www.youtube.com/@allfireservices" target="_blank" rel="noreferrer" aria-label="YouTube" className="hover:text-white transition-colors"><YoutubeIcon size={14} /></a>
-          <a href="https://tiktok.com/@allfireservices" target="_blank" rel="noreferrer" aria-label="TikTok" className="hover:text-white transition-colors"><TikTokIcon size={13} /></a>
-          <a href="https://x.com/Allfiresydney" target="_blank" rel="noreferrer" aria-label="X (Twitter)" className="hover:text-white transition-colors"><XIcon size={13} /></a>
-        </div>
-      </div>
-
       <div className="navbar-inner">
         <Link href="/" className="navbar-brand" onClick={closeMenus}>
-          <Image 
-            src="/logo.png" 
-            alt="Annual Fire Safety Statement" 
-            width={300} 
-            height={60} 
-            style={{ height: "55px", width: "auto" }} 
+          <Image
+            src="/logo.png"
+            alt="Annual Fire Safety Statement"
+            width={300}
+            height={60}
+            style={{ height: "44px", width: "auto" }}
             priority
           />
         </Link>
 
         <ul className="navbar-nav">
-          {navLinks.map((item) => (
+          {visibleNavLinks.map((item) => (
             <li key={item.href}>
               <Link
                 href={item.href}
-                className={`navbar-link ${isActive(item.href) ? "is-active" : ""}`}
+                className={`navbar-link ${isActive(item) ? "is-active" : ""}`}
                 onClick={closeMenus}
               >
                 {item.label}
@@ -132,12 +144,25 @@ function HeaderShell() {
         </ul>
 
         <div className="navbar-actions">
-          <FreeSiteVisitButton
-            source="header"
-            pulse
+          <a
+            href={`tel:${SITE_PHONE_TEL?.replace(/[^+\d]/g, "") ?? "1300765594"}`}
+            className="navbar-phone hidden xl:inline-flex"
+            aria-label={`Call ${SITE_PHONE}`}
+          >
+            <Phone size={14} strokeWidth={2.2} aria-hidden="true" />
+            <span>{SITE_PHONE}</span>
+          </a>
+          <button
+            type="button"
             className="navbar-cta"
-            onClick={closeMenus}
-          />
+            onClick={() => {
+              closeMenus();
+              openInstantQuote({ source: "header" });
+            }}
+          >
+            <span>Get my AFSS quote</span>
+            <ArrowRight size={14} strokeWidth={2.4} aria-hidden="true" />
+          </button>
         </div>
 
         <button
@@ -148,7 +173,7 @@ function HeaderShell() {
           aria-expanded={mobileOpen}
           aria-controls="navbar-mobile-panel"
         >
-          {mobileOpen ? <X size={28} /> : <Menu size={28} />}
+          {mobileOpen ? <X size={26} /> : <Menu size={26} />}
         </button>
       </div>
 
@@ -157,16 +182,18 @@ function HeaderShell() {
         className={`navbar-mobile-panel ${mobileOpen ? "is-open" : ""}`}
         aria-hidden={!mobileOpen}
       >
-        {navLinks.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className="navbar-mobile-link"
-            onClick={closeMenus}
-          >
-            {item.label}
-          </Link>
-        ))}
+        <nav aria-label="Primary">
+          {visibleNavLinks.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="navbar-mobile-link"
+              onClick={closeMenus}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
         <div className="navbar-mobile-cta-wrap">
           <a
             href={`tel:${SITE_PHONE_TEL?.replace(/[^+\d]/g, "") ?? "1300765594"}`}
@@ -175,14 +202,17 @@ function HeaderShell() {
           >
             Call {SITE_PHONE}
           </a>
-          <Link
-            href="/free-quote"
-            className="btn btn-primary !text-[#0b1d36] !bg-transparent"
+          <button
+            type="button"
+            className="btn btn-dark"
             style={{ borderRadius: 999, flex: 1 }}
-            onClick={closeMenus}
+            onClick={() => {
+              closeMenus();
+              openInstantQuote({ source: "header_mobile" });
+            }}
           >
-            Get a free quote
-          </Link>
+            Get my AFSS quote
+          </button>
         </div>
       </div>
     </header>

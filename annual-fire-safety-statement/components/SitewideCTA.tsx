@@ -3,34 +3,26 @@
 import "../app/sitewide-cta.css";
 
 /**
- * SitewideCTA — "Book the Boss" offer card.
- * ─────────────────────────────────────────────────────────────────────────
- * The persistent, sitewide CTA hero card. Simplified for Phase 1 of the
- * latest client changes — the homepage global CTA now reads:
+ * SitewideCTA — sitewide AFSS offer card.
+ * ──────────────────────────────────────────────────────────────────────────
+ * The persistent, sitewide CTA hero card. Independent specialist
+ * identity — no parent-brand cross-promotion, no "Book the Boss", no
+ * individual person.
  *
- *   FREE SITE VISIT   ← eyebrow / supporting context
- *   BOOK THE BOSS     ← primary action
- *   Peter will personally come to your property.
- *   [ Book the Boss → ]   ← primary button
+ * Composition:
+ *   • AFSS wordmark, anchored top-left.
+ *   • "Annual Fire Safety Statement" eyebrow in brand blue.
+ *   • Two-line heading — "From your Fire" then the payoff "Safety
+ *     Schedule." wrapped in the signature navy/blue gradient.
+ *   • Primary CTA "Get my AFSS quote" + secondary "Call 1300 765 594".
  *
- * Composition (top → bottom):
- *   • All Fire Services + FPA Australia Bronze Member wordmarks, with a
- *     hairline divider between them, anchored top-left.
- *   • "Free Site Visit" eyebrow in brand orange.
- *   • Two-line heading — "Peter will personally" then the payoff
- *     "come to your property." wrapped in the signature gradient.
- *   • Orange primary CTA "Book the Boss →" (with header-style breathing
- *     pulse) + black "Call 1300 765 594".
+ * Right region is the NSW AFSS document sample, blended into the navy
+ * card surface via a CSS mask-image gradient so there is no visible
+ * seam — no gradient line to read, no overlay colour to match, just one
+ * continuous navy surface with the document in it.
  *
- * Right-hand region is the Peter portrait, blended into the card surface
- * via a CSS mask-image gradient so there is no visible seam — no gradient
- * line to read, no overlay colour to match, just one continuous warm
- * surface with Peter in it.
- *
- * Design tokens come from `BRANDING_AND_LAYOUT_PRINCIPLES.md` §3, §4,
- * §7 and §8. The rectangular CTA shape and the half-card cover image
- * are intentional local exceptions — they are not promoted into any
- * global rule and remain scoped to this CTA card.
+ * Not used on the homepage (the homepage uses components/home/Hero.tsx
+ * and components/home/FinalCTA.tsx instead).
  */
 
 import Image from "next/image";
@@ -46,44 +38,33 @@ export default function SitewideCTA() {
         marginTop: 0,
       }}
     >
-      {/* Styles extracted to app/sitewide-cta.css so they ship in the prerendered HTML. */}
-
       <div className="pre-faq-cta-card">
         <div className="pre-faq-cta-content">
-          <div className="pre-faq-cta-logos" aria-label="All Fire Services credentials">
+          <div className="pre-faq-cta-logos" aria-label="Annual Fire Safety Statement credentials">
             <div className="pre-faq-cta-logo-block">
               <Image
                 className="pre-faq-cta-logo"
                 src="/logo.png"
-                alt="All Fire Services Sydney — Protecting People, Protecting Property"
+                alt="Annual Fire Safety Statement — Sydney NSW"
                 width={527}
                 height={257}
                 sizes="(max-width: 640px) 11rem, 15rem"
               />
-              <span className="pre-faq-cta-logo-divider" aria-hidden="true" />
-              <Image
-                className="pre-faq-cta-logo"
-                src="/secondlogo.png"
-                alt="FPA Australia Bronze Member — Fire Protection Association Australia"
-                width={302}
-                height={144}
-                sizes="(max-width: 640px) 9rem, 12rem"
-              />
             </div>
           </div>
 
-          <p className="pre-faq-cta-eyebrow">Free Site Visit</p>
+          <p className="pre-faq-cta-eyebrow">Annual Fire Safety Statement</p>
 
           <h2 className="pre-faq-cta-title" id="sitewide-cta-title">
-            Peter will personally<br />
-            <span className="pre-faq-cta-title-line-2">come to your property.</span>
+            From your Fire<br />
+            <span className="pre-faq-cta-title-line-2">Safety Schedule.</span>
           </h2>
 
           <div className="pre-faq-cta-actions">
             <FreeSiteVisitButton
               source="sitewide"
               className="pre-faq-cta-button is-primary animate-pump"
-              label="GET AN INSTANT QUOTE"
+              label="GET MY AFSS QUOTE"
               trailingIcon={
                 <svg
                   className="fsv-btn__arrow"
@@ -116,13 +97,11 @@ export default function SitewideCTA() {
           </div>
         </div>
 
-        {/* Right region — half-card cover image of Peter (Managing
-            Director). Decorative; the heading names Peter for screen
-            readers. */}
+        {/* Right region — half-card cover with the NSW AFSS document */}
         <div className="pre-faq-cta-art" aria-hidden="true">
           <Image
             className="pre-faq-cta-portrait"
-            src="/peterforcta.jpg"
+            src="/sampleafss-nobg.png"
             alt=""
             width={2048}
             height={1536}

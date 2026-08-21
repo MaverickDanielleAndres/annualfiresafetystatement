@@ -5,9 +5,8 @@ import { Loader, MapPin, MessageCircle, Phone, Send, X } from "lucide-react";
 import Image from "next/image";
 import { useLenis } from "lenis/react";
 
-// Local Gemini-backed chat route. The bot is owned by ALLFIRE — it streams
-// from /api/chat (Google Gemini 2.5 Flash) using the knowledge base in
-// lib/allfire-knowledge.ts. No external iframe, no popup.
+// AFSS Assistant — Gemini-backed chat that streams from /api/chat.
+// AFSS-focused knowledge base. No external iframe, no popup.
 const CHAT_ENDPOINT = "/api/chat";
 
 type Message = {
@@ -19,9 +18,9 @@ type Message = {
 // prompt to set the visitor's expectations.
 const SUGGESTED_PROMPTS = [
   "What is an AFSS?",
-  "Do you service my suburb?",
-  "How quickly can you inspect?",
-  "What does monthly testing cover?",
+  "Does my building need an AFSS?",
+  "When is my AFSS due?",
+  "What does an AFSS inspection cover?",
 ];
 
 const BRAND_NAVY = "#0b1d36";
@@ -285,7 +284,7 @@ export default function ChatbotDeferred({ initialOpen = false }: { initialOpen?:
               <div>
                 <Image
                   src="/logo.png"
-                  alt="ALLFIRE"
+                  alt="Annual Fire Safety Statement"
                   width={84}
                   height={40}
                   priority={false}
@@ -304,7 +303,7 @@ export default function ChatbotDeferred({ initialOpen = false }: { initialOpen?:
                   <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: "#0b1d36" }}>AFSS Assistant</p>
                 </div>
                 <p style={{ margin: "4px 0 0", fontSize: 11.5, color: "#5b6a82", lineHeight: 1.45 }}>
-                  Ask about AFSS, coverage, inspections, and enquiries.
+                  Ask about AFSS, Fire Safety Schedules, due dates, and accredited practitioners.
                 </p>
               </div>
 
@@ -357,8 +356,9 @@ export default function ChatbotDeferred({ initialOpen = false }: { initialOpen?:
               >
                 <p style={{ margin: 0, fontWeight: 700, color: "#0b1d36" }}>Hi — what can we help with?</p>
                 <p style={{ margin: "6px 0 0", color: "#3a4a63" }}>
-                  We cover AFSS, monthly inspections, smoke alarms, sprinklers, extinguishers, fire
-                  consultancy, and more across Greater Sydney.
+                  We help NSW building owners and managers with their Annual
+                  Fire Safety Statements — from your Fire Safety Schedule
+                  through assessment and lodgement.
                 </p>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 12 }}>
                   {SUGGESTED_PROMPTS.map((prompt) => (

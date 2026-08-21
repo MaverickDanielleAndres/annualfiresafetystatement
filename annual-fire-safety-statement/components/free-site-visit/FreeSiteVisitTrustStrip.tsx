@@ -1,23 +1,20 @@
 "use client";
 
 /**
- * FreeSiteVisitTrustStrip — compact Peter trust strip.
+ * FreeSiteVisitTrustStrip — slim AFSS trust strip.
  * ──────────────────────────────────────────────────────────────────────────
- * A slim, premium transition between the hero and the rest of the page
- * that answers the implicit "Why is the Free Site Visit different?" with
- * a real photo of Peter, his name, his role, and a one-line promise:
- * "Personally attends every Free Site Visit."
- *
- * The strip is intentionally small — it's a transition, not a new section.
+ * A slim transition between sections that re-affirms the AFSS promise
+ * without naming any individual person. Used only by internal pages
+ * (contact, etc.); the homepage has its own FinalCTA.
  */
 
 import React from "react";
-import Image from "next/image";
+import { ShieldCheck } from "lucide-react";
 
 export default function FreeSiteVisitTrustStrip() {
   return (
     <section
-      aria-label="Why the Free Site Visit is personal"
+      aria-label="Why an AFSS specialist"
       className="fsv-trust-strip"
       style={{
         background: "#ffffff",
@@ -37,20 +34,18 @@ export default function FreeSiteVisitTrustStrip() {
           margin: 0 auto;
           flex-wrap: wrap;
         }
-        .fsv-trust-strip-portrait {
-          position: relative;
-          width: 56px;
-          height: 56px;
+        .fsv-trust-strip-badge {
+          width: 48px;
+          height: 48px;
           border-radius: 50%;
-          overflow: hidden;
-          border: 3px solid #ffffff;
-          box-shadow: 0 4px 12px rgba(17, 17, 17, 0.15);
+          background: #0b1d36;
+          color: #ffffff;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
           flex: 0 0 auto;
-          background: #f1f1f1;
-        }
-        .fsv-trust-strip-portrait img {
-          object-fit: cover;
-          object-position: center 20%;
+          border: 3px solid #ffffff;
+          box-shadow: 0 4px 12px rgba(11, 29, 54, 0.18);
         }
         .fsv-trust-strip-text {
           display: flex;
@@ -61,27 +56,27 @@ export default function FreeSiteVisitTrustStrip() {
         .fsv-trust-strip-name {
           font-size: clamp(0.95rem, 1.4vw, 1.05rem);
           font-weight: 800;
-          color: #111111;
+          color: #0b1d36;
           line-height: 1.2;
           margin: 0;
         }
         .fsv-trust-strip-role {
           font-size: 0.78rem;
-          color: #5b5b5b;
+          color: #5b6a82;
           line-height: 1.3;
           margin: 0;
         }
         .fsv-trust-strip-promise {
           margin: 0;
           font-size: clamp(0.85rem, 1.2vw, 0.95rem);
-          color: #1f1f1f;
+          color: #0b1d36;
           font-weight: 600;
           line-height: 1.4;
           flex: 1 1 auto;
           text-align: left;
         }
         .fsv-trust-strip-promise strong {
-          color: #d64012;
+          color: #1c4d9c;
           font-weight: 800;
         }
         @media (max-width: 540px) {
@@ -91,20 +86,15 @@ export default function FreeSiteVisitTrustStrip() {
         }
       `}</style>
       <div className="fsv-trust-strip-inner">
-        <div className="fsv-trust-strip-portrait" aria-hidden="true">
-          <Image
-            src="/peter-managing-director.jpg"
-            alt=""
-            fill
-            sizes="56px"
-          />
+        <div className="fsv-trust-strip-badge" aria-hidden="true">
+          <ShieldCheck size={20} strokeWidth={1.8} />
         </div>
         <div className="fsv-trust-strip-text">
-          <p className="fsv-trust-strip-name">Peter Tricklebank</p>
-          <p className="fsv-trust-strip-role">Managing Director</p>
+          <p className="fsv-trust-strip-name">NSW Accredited Practitioners</p>
+          <p className="fsv-trust-strip-role">Independent AFSS specialists</p>
         </div>
         <p className="fsv-trust-strip-promise">
-          <strong>Personally attends every Free Site Visit.</strong>
+          <strong>Schedule-led assessments across Greater Sydney &amp; NSW.</strong>
         </p>
       </div>
     </section>

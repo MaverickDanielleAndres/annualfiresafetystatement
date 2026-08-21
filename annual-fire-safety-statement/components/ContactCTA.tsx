@@ -391,39 +391,37 @@ export default function ContactCTA({
                   : { display: "flex", flexDirection: "column", gap: "3rem", alignItems: "stretch" }
               }
             >
-              <div 
+              <div
                 className="ccta-panel contact-cta_content"
               >
                 <Image
-                  src="/peterforcta.jpg"
-                  alt="Peter Tricklebank - Boss"
+                  src="/sampleafss-nobg.png"
+                  alt="NSW Annual Fire Safety Statement"
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 430px"
                   quality={70}
-                  style={{ objectFit: "cover", objectPosition: "center 35%" }}
+                  style={{ objectFit: "contain", objectPosition: "center 35%" }}
                 />
-                {/* Dark overlay on top 75% — same as FSV modal */}
-                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "75%", background: "linear-gradient(180deg, rgba(8,8,10,0.85) 0%, rgba(8,8,10,0.7) 45%, rgba(8,8,10,0.1) 92%, rgba(8,8,10,0) 100%)", pointerEvents: "none", zIndex: 1 }} />
-                {/* Bottom fade to make identity block readable */}
-                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "38%", background: "linear-gradient(0deg, rgba(8,8,10,0.82) 0%, rgba(8,8,10,0.5) 55%, rgba(8,8,10,0) 100%)", pointerEvents: "none", zIndex: 1 }} />
+                {/* Dark overlay on top 75% */}
+                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "75%", background: "linear-gradient(180deg, rgba(11,29,54,0.92) 0%, rgba(11,29,54,0.78) 45%, rgba(11,29,54,0.1) 92%, rgba(11,29,54,0) 100%)", pointerEvents: "none", zIndex: 1 }} />
+                {/* Bottom fade */}
+                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "38%", background: "linear-gradient(0deg, rgba(11,29,54,0.85) 0%, rgba(11,29,54,0.5) 55%, rgba(11,29,54,0) 100%)", pointerEvents: "none", zIndex: 1 }} />
 
-                {/* Copy overlaid on the dark image — top-left, same as FSV modal */}
                 <div className="ccta-copy-block" style={{ position: "absolute", top: 0, left: 0, right: 0, padding: "1.6rem 1.6rem 1.4rem", zIndex: 2 }}>
                   <p className="ccta-eyebrow">
-                    Free Site Visit
+                    Annual Fire Safety Statement
                   </p>
                   <h2 className="ccta-headline">
-                    Book the <span className="ccta-boss-gradient">Boss</span>
+                    Get your <span className="ccta-boss-gradient">AFSS</span>
                   </h2>
                   <h3 className="ccta-subhead">
-                    <span style={{ color: "#ffffff" }}>Peter will personally</span><br />
+                    <span style={{ color: "#ffffff" }}>From your Fire</span><br />
                     <span className="ccta-boss-gradient">
-                      come to your property.
+                      Safety Schedule.
                     </span>
                   </h3>
                 </div>
 
-                {/* Identity block — bottom-left, same as FSV modal */}
                 <div
                   className="ccta-identity-block"
                   style={{
@@ -451,7 +449,7 @@ export default function ContactCTA({
                       textShadow: "0 2px 8px rgba(0,0,0,0.6)",
                     }}
                   >
-                    The Boss
+                    NSW Accredited
                   </p>
                   <p
                     style={{
@@ -481,7 +479,7 @@ export default function ContactCTA({
                     >
                       <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg>
                     </span>
-                    Personally attends every Free Site Visit.
+                    Independent specialist AFSS support across NSW.
                   </p>
                 </div>
               </div>
@@ -675,7 +673,7 @@ export default function ContactCTA({
                         style={{ width: 18, height: 18, marginTop: 2, cursor: "pointer" }}
                       />
                       <span style={{ fontSize: "0.95rem", color: "#111111", lineHeight: 1.5 }}>
-                        I agree to be contacted about this enquiry by All Fire Services Australia. We&rsquo;ll never share your details. See our{" "}
+                        I agree to be contacted about this enquiry by Annual Fire Safety Statement. We&rsquo;ll never share your details. See our{" "}
                         <Link href="/" className="text-style-link" style={{ color: "#111111", fontWeight: 500, textDecoration: "underline" }}>
                           privacy notice
                         </Link>
@@ -770,7 +768,7 @@ export default function ContactCTA({
                       </div>
                       <div className="text-center mt-1">
                         <span style={{ fontSize: "1.05rem", color: "#111111", fontWeight: 600 }}>After Hours: </span>
-                        <a href="tel:1300765594" style={{ fontSize: "1.05rem", color: "#c11c00", fontWeight: 700, textDecoration: "none", transition: "color 0.2s" }} onMouseOver={(e) => e.currentTarget.style.textDecoration = "underline"} onMouseOut={(e) => e.currentTarget.style.textDecoration = "none"}>1300 765 594</a>
+                        <a href="tel:1300765594" style={{ fontSize: "1.05rem", color: "#1c4d9c", fontWeight: 700, textDecoration: "none", transition: "color 0.2s" }} onMouseOver={(e) => e.currentTarget.style.textDecoration = "underline"} onMouseOut={(e) => e.currentTarget.style.textDecoration = "none"}>1300 765 594</a>
                       </div>
                     </div>
 

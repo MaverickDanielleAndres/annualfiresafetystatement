@@ -149,7 +149,7 @@ export default function ComplianceSection() {
             </div>
           </RevealOnView>
 
-          {/* Card D: ALLFIRE Solution */}
+          {/* Card D: Independent AFSS Specialists */}
           <RevealOnView delay={250} className="h-full">
             <div className="flex flex-col h-full bg-[#0b1d36] text-white rounded-[0.25rem] overflow-hidden shadow-[0_12px_24px_rgba(11,29,54,0.15)] relative">
               <div className="p-6 pb-0 relative z-10">
@@ -159,27 +159,27 @@ export default function ComplianceSection() {
                   </div>
                   <div className="flex flex-col flex-1 pt-1">
                     <span className="text-[0.75rem] font-bold tracking-[0.08em] text-white uppercase leading-[1.3]">
-                      D. ALLFIRE:<br/>
-                      YOUR AFSS SOLUTION<br/>
-                      PROVIDER
+                      D. INDEPENDENT<br/>
+                      AFSS SPECIALISTS<br/>
+                      NSW
                     </span>
                     <div className="w-full h-[1px] bg-white/20 mt-2"></div>
                   </div>
                 </div>
-                
+
                 <p className="text-[0.85rem] text-white/80 leading-[1.6] mb-3">
-                  ALLFIRE Fire Protection Management is a NSW fire protection provider. With offices in Sydney, Newcastle and the NSW Central Coast, we bring hundreds of years of combined experience in fire protection.
+                  We are an independent specialist AFSS provider focused on NSW strata, commercial and industrial buildings. Our accredited practitioners assess the applicable measures on your Fire Safety Schedule and prepare your annual statement.
                 </p>
                 <p className="text-[0.85rem] text-white/80 leading-[1.6] mb-8">
-                  Our experts offer a free walk-around to ensure your building is compliant and not at risk. Severe financial penalties apply for non-compliance.
+                  We coordinate the assessment, address items needing attention, and support lodgement where required. Significant penalties apply for non-compliance under current NSW regulation.
                 </p>
               </div>
               <div className="mt-auto p-6 pt-0 z-10">
                 <Link
-                  href="/contact"
-                  className="w-full bg-white text-[#0b1d36] hover:bg-[#f5f7fa] py-3.5 px-4 rounded-[0.25rem] flex items-center justify-between text-[0.8rem] font-bold tracking-[0.08em] transition-colors group uppercase"
+                  href="/contact-us"
+                  className="w-full bg-white !text-[#0b1d36] hover:bg-[#f5f7fa] py-3.5 px-4 rounded-[0.25rem] flex items-center justify-between text-[0.8rem] font-bold tracking-[0.08em] transition-colors group uppercase"
                 >
-                  CONTACT US TODAY
+                  CONTACT US
                   <ArrowRight size={16} strokeWidth={2.4} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>

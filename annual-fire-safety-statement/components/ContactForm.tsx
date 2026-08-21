@@ -33,29 +33,29 @@ export default function ContactForm() {
 
   return (
     <div className="grid lg:grid-cols-[1fr_1.2fr] rounded-2xl overflow-hidden shadow-card border border-[#ececec] bg-white">
-      {/* Left side: Book the Boss graphic */}
-      <div className="relative min-h-[400px] lg:min-h-full bg-black flex flex-col justify-between p-8 md:p-12 text-white overflow-hidden">
+      {/* Left side: AFSS specialist panel */}
+      <div className="relative min-h-[400px] lg:min-h-full bg-[#0b1d36] flex flex-col justify-between p-8 md:p-12 text-white overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img src="/img-practitioner.svg" alt="The Boss" className="w-full h-full object-cover opacity-60 mix-blend-luminosity" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+          <img src="/img-practitioner.svg" alt="Accredited AFSS practitioner" className="w-full h-full object-cover opacity-30 mix-blend-luminosity" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0b1d36] via-[#0b1d36]/60 to-transparent" />
         </div>
-        
+
         <div className="relative z-10">
-          <p className="text-[#fb5614] font-bold tracking-widest uppercase mb-4 text-sm">Free Site Visit</p>
+          <p className="text-[#7aa6e6] font-bold tracking-widest uppercase mb-4 text-sm">Annual Fire Safety Statement</p>
           <h2 className="text-5xl md:text-6xl font-black uppercase leading-none tracking-tight mb-4">
-            Book The <span className="text-[#fb5614]">Boss</span>
+            Get my <span className="text-[#7aa6e6]">AFSS</span>
           </h2>
           <p className="text-xl font-medium leading-snug">
-            Peter will personally<br/>
-            <span className="text-[#fb5614]">come to your property.</span>
+            From your Fire Safety Schedule<br/>
+            <span className="text-[#7aa6e6]">to a lodged statement.</span>
           </p>
         </div>
-        
+
         <div className="relative z-10 mt-12">
-          <h3 className="text-4xl font-black uppercase mb-3">THE BOSS</h3>
+          <h3 className="text-4xl font-black uppercase mb-3">NSW ACCREDITED</h3>
           <p className="text-sm flex items-center gap-2 font-medium">
-            <span className="w-5 h-5 rounded-full bg-[#fb5614] flex items-center justify-center text-xs font-bold text-white">✓</span>
-            Personally attends every Free Site Visit.
+            <span className="w-5 h-5 rounded-full bg-[#1c4d9c] flex items-center justify-center text-xs font-bold text-white">✓</span>
+            Specialist AFSS assessments across NSW.
           </p>
         </div>
       </div>
@@ -109,7 +109,7 @@ export default function ContactForm() {
               <button type="reset" className="btn btn-secondary !px-6">Reset</button>
             </div>
             <p className="text-sm font-bold text-[#111111] m-0">
-              After Hours: <span className="text-[#fb5614]">1300 765 594</span>
+              After Hours: <span className="text-[#1c4d9c]">1300 765 594</span>
             </p>
           </div>
 

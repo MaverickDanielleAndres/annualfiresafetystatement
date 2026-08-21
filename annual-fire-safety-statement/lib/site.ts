@@ -1,6 +1,5 @@
 // Site-wide configuration for the Annual Fire Safety Statement website.
-// Inherits the structure of All Fire Services (lib/seo.ts) but is its own
-// distinct specialist identity focused on AFSS in NSW.
+// Independent specialist identity focused on AFSS in NSW.
 
 export const SITE_NAME = "Annual Fire Safety Statement";
 export const SITE_SHORT_NAME = "AFSS";
@@ -24,19 +23,23 @@ export const DEFAULT_OG_IMAGE = "/og-image.svg";
 
 // ─── Navigation ────────────────────────────────────────────────────────────
 // Single source of truth for header, footer and any in-page nav.
+// The header is intentionally lean and AFSS-focused. /services,
+// /accreditation, /new-legislation, /sample, /contact-us still resolve
+// for other entry points.
 
 export type NavLink = {
   label: string;
   href: string;
+  /** When true, the link points to a homepage anchor instead of a route. */
+  anchor?: boolean;
 };
 
 export const navLinks: NavLink[] = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Services", href: "/services" },
-  { label: "Accreditation", href: "/accreditation" },
-  { label: "AS 1851-2012", href: "/new-legislation" },
-  { label: "Sample AFSS", href: "/sample" },
+  { label: "How it works", href: "/#how-it-works", anchor: true },
+  { label: "AFSS requirements", href: "/#what-is-afss", anchor: true },
+  { label: "Inspection", href: "/#inspection", anchor: true },
+  { label: "Projects", href: "/#projects", anchor: true },
+  { label: "FAQs", href: "/#faqs", anchor: true },
   { label: "Contact", href: "/contact-us" },
 ];
 
