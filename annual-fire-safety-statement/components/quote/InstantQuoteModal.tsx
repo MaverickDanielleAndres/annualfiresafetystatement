@@ -12,6 +12,7 @@
  */
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import QuoteFlow from './QuoteFlow';
 import type { QuoteSessionSummary } from '@/lib/afss/types';
 
@@ -92,41 +93,38 @@ export default function InstantQuoteModal({ isOpen, onClose }: InstantQuoteModal
           className="relative hidden w-2/5 overflow-hidden bg-black text-white md:flex md:flex-col md:justify-between md:p-10"
           aria-hidden
         >
-          {/* Background image gradient (no random stock — pure CSS). */}
+          {/* Background image */}
+          <Image
+            src="/sampleafss-nobg.png"
+            alt="Sample AFSS"
+            fill
+            className="object-cover"
+          />
+          {/* Dark overlay gradient like before */}
           <div
             className="absolute inset-0 opacity-90"
             style={{
               backgroundImage:
-                'radial-gradient(circle at 20% 0%, rgba(28,77,156,0.45), transparent 60%), ' +
-                'radial-gradient(circle at 90% 90%, rgba(11,29,54,0.35), transparent 60%), ' +
-                'linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%)',
-            }}
-          />
-          {/* Decorative fire safety pattern (low opacity). */}
-          <div className="pointer-events-none absolute inset-0 opacity-10"
-            style={{
-              backgroundImage:
-                "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60'><circle cx='30' cy='30' r='1' fill='%23ffffff'/></svg>\")",
-              backgroundSize: '40px 40px',
+                'radial-gradient(circle at 20% 0%, rgba(28,77,156,0.6), transparent 60%), ' +
+                'radial-gradient(circle at 90% 90%, rgba(11,29,54,0.6), transparent 60%), ' +
+                'linear-gradient(180deg, rgba(26,26,26,0.85) 0%, rgba(10,10,10,0.95) 100%)',
             }}
           />
 
           <div className="relative flex items-center gap-2">
-            <div className="h-8 w-1.5 rounded-full bg-gradient-to-b from-[#0b1d36] to-[#1c4d9c]" />
+            <div className="h-8 w-1.5 rounded-full bg-red-600" />
             <span className="text-xs font-bold uppercase tracking-[0.3em] text-white">
               AFSS Instant Quote
             </span>
           </div>
 
           <div className="relative space-y-6">
-            <h1 id="afss-quote-title" className="text-3xl font-black uppercase leading-tight tracking-tight md:text-4xl">
+            <h1 id="afss-quote-title" className="text-3xl font-black uppercase leading-tight tracking-tight md:text-4xl text-white">
               Your building.
               <br />
               Your AFSS.
               <br />
-              <span className="bg-gradient-to-r from-[#0b1d36] to-[#1c4d9c] bg-clip-text text-transparent">
-                Your quote.
-              </span>
+              Your quote.
             </h1>
             <p className="max-w-sm text-base text-white">
               Simple details. One document. We&apos;ll take it from there.
@@ -138,14 +136,14 @@ export default function InstantQuoteModal({ isOpen, onClose }: InstantQuoteModal
                 "3 — Assessment + AFSS",
               ].map((t, i) => (
                 <li key={i} className="flex items-center gap-2">
-                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#1c4d9c]" />
+                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-red-600" />
                   {t}
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="relative text-xl font-bold text-white">
+          <div className="relative text-base font-bold text-white">
             <a href="tel:1300765594" className="hover:text-white transition-colors">
               Call 1300 765 594
             </a>

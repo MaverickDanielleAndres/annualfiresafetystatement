@@ -5,6 +5,7 @@ import Hero from "@/components/home/Hero";
 import GotYourAfss from "@/components/home/GotYourAfss";
 import HowItWorks from "@/components/home/HowItWorks";
 import InspectionInvolves from "@/components/home/InspectionInvolves";
+import SampleAfss from "@/components/home/SampleAfss";
 import NeedsAfss from "@/components/home/NeedsAfss";
 import WhatIsAfss from "@/components/home/WhatIsAfss";
 import MeasuresAssessed from "@/components/home/MeasuresAssessed";
@@ -147,37 +148,38 @@ export default function HomePage() {
       {/* 03 / What the inspection involves */}
       <InspectionInvolves />
 
-      {/* 04 / Does my building need an AFSS? */}
+      {/* 04 / Sample AFSS */}
+      <SampleAfss />
+
+      {/* 05 / Does my building need an AFSS? */}
       <NeedsAfss />
 
-      {/* 05 / What is an AFSS? */}
+      {/* 06 / What is an AFSS? */}
       <WhatIsAfss />
 
-      {/* 06 / What gets assessed? */}
+      {/* 07 / What gets assessed? */}
       <MeasuresAssessed />
 
-      {/* 07 / Due date & penalties */}
+      {/* 08 / Due date & penalties */}
       <DueDatePenalties />
 
-      {/* 08 / Accredited Practitioners */}
+      {/* 09 / Accredited Practitioners */}
       <AccreditedPractitioners />
 
-      {/* 09 / Projects — currently hidden (data empty, see data/projects.ts) */}
-      <Projects />
-
-      {/* 10 / Partners — currently hidden (data empty, see data/partners.ts) */}
-      <Partners />
-
-      {/* 11 / Testimonials — currently hidden (data empty, see data/testimonials.ts) */}
-      <Testimonials />
-
-      {/* When the above three return, the visible labels below shift to
-          12 / Know your documents and 13 / AS 1851-2012 respectively. */}
-      {/* 09 / Know your documents (visible while Projects/Partners/Testimonials are hidden) */}
+      {/* 10 / Know your documents */}
       <KnowYourDocuments />
 
-      {/* 10 / AS 1851-2012 (visible while Projects/Partners/Testimonials are hidden) */}
+      {/* 11 / AS 1851-2012 */}
       <AS1851 />
+
+      {/* 12 / Projects — empty-safe (hides when data/projects.ts is empty) */}
+      <Projects />
+
+      {/* 13 / Partners — empty-safe (hides when data/partners.ts is empty) */}
+      <Partners />
+
+      {/* 14 / Testimonials — empty-safe (hides when data/testimonials.ts is empty) */}
+      <Testimonials />
 
       {/* FAQ */}
       <FAQ />

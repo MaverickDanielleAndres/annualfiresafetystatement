@@ -4,7 +4,7 @@ import RevealOnView from "@/components/RevealOnView";
 import Image from "next/image";
 
 /**
- * AFSS homepage — 04 / What gets assessed?
+ * AFSS homepage — 07 / What gets assessed?
  *
  * Common categories. Critical copy point: the Fire Safety Schedule
  * determines what applies to each building.
@@ -53,7 +53,7 @@ export default function MeasuresAssessed() {
             <RevealOnView>
               <div className="flex items-center gap-3 mb-6">
                 <div className="bg-[#b0141f] text-white font-bold text-[0.85rem] px-2 py-0.5 rounded-[3px] leading-tight">
-                  06
+                  07
                 </div>
                 <span className="text-[#1c4d9c] font-bold text-[0.85rem] tracking-[0.15em] uppercase">
                   / WHAT GETS ASSESSED?

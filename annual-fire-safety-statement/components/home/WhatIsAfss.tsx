@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 
 /**
- * AFSS homepage — 05 / What is an AFSS?
+ * AFSS homepage — 06 / What is an AFSS?
  *
  * Left: Title, text, and 05image.png
  * Right: 6 numbered facts in a grid, followed by a full-width bottom card.
@@ -35,7 +35,7 @@ const facts = [
   {
     num: "03",
     title: "How often",
-    desc: "Generally every 12 months, for the current year.",
+    desc: "Generally every 12 months, for the current year. It must be submitted to council before the due date.",
     Icon: Calendar,
   },
   {
@@ -62,7 +62,7 @@ export default function WhatIsAfss() {
   return (
     <section
       id="what-is-afss"
-      className="bg-white py-20 w-full overflow-hidden"
+      className="bg-white section-y-tight w-full overflow-hidden"
     >
       <div className="container-inner">
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 items-start">
@@ -72,7 +72,7 @@ export default function WhatIsAfss() {
               {/* Badge & Subtitle */}
               <div className="flex items-center gap-3 mb-6">
                 <div className="bg-[#b0141f] text-white font-bold text-[0.85rem] px-2 py-0.5 rounded-[3px] leading-tight">
-                  05
+                  06
                 </div>
                 <span className="text-[#1c4d9c] font-bold text-[0.85rem] tracking-[0.15em] uppercase">
                   / WHAT IS AN AFSS?

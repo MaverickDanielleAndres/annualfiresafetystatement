@@ -1,12 +1,19 @@
 /**
  * AFSS — Google Street View (browser-side) helpers.
  *
+ * This is the ONLY piece of the customer flow that still talks to
+ * Google. After the 2026 provider migration:
+ *
+ *   • Address autocomplete  → Geoapify (server-side proxy)
+ *   • Reverse geocoding      → Geoapify (server-side proxy)
+ *   • Building imagery       → Google Street View (this file)
+ *
  *   * `findPanoramaNear(lat, lng)` — uses `StreetViewService.getPanorama`
  *     with progressive radii to find the closest outdoor panorama.
  *   * `createPanorama(container, options)` — instantiates a
  *     `StreetViewPanorama` in a container element with sensible
  *     initial heading/pitch/zoom.
- *   * `computeHeadingToTarget(from, to)` — uses
+ *   * `facePanoramaToTarget(panorama, target)` — uses
  *     `google.maps.geometry.spherical.computeHeading` so the camera
  *     naturally faces the customer's building.
  *

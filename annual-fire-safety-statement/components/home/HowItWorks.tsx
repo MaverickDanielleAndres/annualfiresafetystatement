@@ -47,7 +47,7 @@ export default function HowItWorks() {
   return (
     <section
       id="how-it-works"
-      className="bg-white py-20 lg:py-28 w-full overflow-hidden"
+      className="bg-white section-y-tight w-full overflow-hidden"
     >
       <div className="container-inner">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-8 lg:mb-10 gap-8">

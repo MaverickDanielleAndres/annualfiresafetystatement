@@ -7,7 +7,7 @@ import { openInstantQuote } from "@/lib/quote/open";
 
 export default function DueDatePenalties() {
   return (
-    <section className="bg-white py-16 lg:py-24 w-full overflow-hidden">
+    <section className="bg-white section-y-tight w-full overflow-hidden">
       <div className="container-inner">
         {/* Adjusted grid to give the right card more width */}
         <div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-12 lg:gap-16 items-start">
@@ -18,7 +18,7 @@ export default function DueDatePenalties() {
               {/* Overline */}
               <div className="flex items-center gap-3 mb-6">
                 <div className="bg-[#b0141f] text-white font-bold text-[0.85rem] px-2 py-0.5 rounded-[3px] leading-tight">
-                  07
+                  08
                 </div>
                 <span className="text-[#1c4d9c] font-bold text-[0.85rem] tracking-[0.15em] uppercase">
                   / DUE DATE & PENALTIES
@@ -117,7 +117,7 @@ export default function DueDatePenalties() {
                   <span className="w-[55%] text-[#1c4d9c] font-bold text-[0.8rem] uppercase tracking-wider">
                     FIRST WEEK
                   </span>
-                  <span className="w-[45%] text-[#0b1d36] font-bold text-[0.95rem]">
+                  <span className="w-[45%] text-[#d9232d] font-bold text-[0.95rem]">
                     $1,100
                   </span>
                 </div>
@@ -125,7 +125,7 @@ export default function DueDatePenalties() {
                   <span className="w-[55%] text-[#1c4d9c] font-bold text-[0.8rem] uppercase tracking-wider">
                     SECOND WEEK
                   </span>
-                  <span className="w-[45%] text-[#0b1d36] font-bold text-[0.95rem]">
+                  <span className="w-[45%] text-[#d9232d] font-bold text-[0.95rem]">
                     $2,200
                   </span>
                 </div>
@@ -133,7 +133,7 @@ export default function DueDatePenalties() {
                   <span className="w-[55%] text-[#1c4d9c] font-bold text-[0.8rem] uppercase tracking-wider">
                     THIRD WEEK
                   </span>
-                  <span className="w-[45%] text-[#0b1d36] font-bold text-[0.95rem]">
+                  <span className="w-[45%] text-[#d9232d] font-bold text-[0.95rem]">
                     $3,300
                   </span>
                 </div>
@@ -141,7 +141,7 @@ export default function DueDatePenalties() {
                   <span className="w-[55%] text-[#1c4d9c] font-bold text-[0.8rem] uppercase tracking-wider">
                     FOURTH &amp; EACH<br/>SUBSEQUENT WEEK
                   </span>
-                  <span className="w-[45%] text-[#0b1d36] font-bold text-[0.95rem]">
+                  <span className="w-[45%] text-[#d9232d] font-bold text-[0.95rem]">
                     $4,400
                   </span>
                 </div>
@@ -158,7 +158,7 @@ export default function DueDatePenalties() {
 
               {/* Info Row */}
               <div className="flex items-center gap-3">
-                <Info size={18} className="text-[#1c4d9c]" strokeWidth={2} shrink-0 />
+                <Info size={18} className="text-[#1c4d9c] shrink-0" strokeWidth={2} />
                 <span className="text-[0.85rem] text-[#4a5568]">
                   Use your council area when you start your quote.
                 </span>

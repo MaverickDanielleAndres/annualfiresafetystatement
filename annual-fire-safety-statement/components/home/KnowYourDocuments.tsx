@@ -6,7 +6,7 @@ import { Calendar, ClipboardList, ShieldCheck, ArrowRight } from "lucide-react";
 import RevealOnView from "@/components/RevealOnView";
 
 /**
- * AFSS homepage — 12 / Know Your Documents.
+ * AFSS homepage — 10 / Know Your Documents.
  *
  * Three documents: AFSS, FSS, FSC. Each uses an editorial split
  * (number, icon, title, subtitle, description, link) — no boxed cards
@@ -55,7 +55,7 @@ export default function KnowYourDocuments() {
             <RevealOnView>
               <div className="flex items-center gap-3 mb-6">
                 <div className="bg-[#b0141f] text-white font-bold text-[0.85rem] px-2 py-0.5 rounded-[3px] leading-tight">
-                  09
+                  10
                 </div>
                 <span className="text-[#1c4d9c] font-bold text-[0.85rem] tracking-[0.15em] uppercase">
                   / KNOW YOUR DOCUMENTS
@@ -122,18 +122,18 @@ export default function KnowYourDocuments() {
                   <div className="flex items-center gap-2 mb-2">
                     <span
                       aria-hidden="true"
-                      className="text-[#1c4d9c]"
+                      className="text-[#b0141f]"
                     >
                       <Icon size={18} strokeWidth={1.6} />
                     </span>
-                    <span className="text-[0.72rem] font-mono font-bold tracking-[0.06em] uppercase text-[#1c4d9c]">
+                    <span className="text-[0.72rem] font-mono font-bold tracking-[0.06em] uppercase text-[#b0141f]">
                       {d.num}
                     </span>
                   </div>
                   <h3 className="text-[1.02rem] font-extrabold uppercase tracking-[0.02em] text-[#0b1d36] leading-tight">
                     {d.title}
                   </h3>
-                  <p className="mt-1 text-[0.92rem] font-bold text-[#1c4d9c]">
+                  <p className="mt-1 text-[0.92rem] font-bold text-[#b0141f]">
                     {d.subtitle}
                   </p>
                   <p className="mt-2 text-[0.88rem] text-[#3a4a63] leading-[1.55]">

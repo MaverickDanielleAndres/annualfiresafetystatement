@@ -15,8 +15,9 @@
  *      preview unavailable" state. The customer can still confirm.
  *   6. On "YES, THAT'S IT" → POST /api/afss/quote/confirm-building.
  *
- * The active runtime is 100% Google Maps (browser-side). No
- * Geoapify or Mapillary requests are made.
+ * This step is the only place in the customer flow that still calls
+ * the Google Maps JS API. Address autocomplete and reverse geocoding
+ * are handled by the Geoapify server-side proxies.
  */
 
 import { useEffect, useRef, useState } from 'react';
@@ -355,12 +356,12 @@ export default function BuildingConfirmStep({ onConfirmed, onChange }: Props) {
         </div>
       )}
 
-      <div className="flex items-center justify-center gap-6 pt-4">
+      <div className="flex w-full items-center gap-6 pt-4">
         <button
           type="button"
           disabled={submitting}
           onClick={() => post(false)}
-          className={subtleLink}
+          className={subtleLink + " flex-shrink-0"}
         >
           ← Change address
         </button>
@@ -368,7 +369,7 @@ export default function BuildingConfirmStep({ onConfirmed, onChange }: Props) {
           type="button"
           disabled={submitting}
           onClick={() => post(true)}
-          className={primaryButton + ' !mx-0'}
+          className={primaryButton + ' flex-1 !mx-0 !text-[11px] leading-tight whitespace-nowrap'}
           style={{
             background: 'linear-gradient(to right, #0b1d36, #1c4d9c)',
             color: '#ffffff',

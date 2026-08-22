@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Mail, Phone, ArrowUpRight } from "lucide-react";
 import { SITE_PHONE, SITE_EMAIL, SITE_PHONE_TEL, navLinks } from "@/lib/site";
 import { openInstantQuote } from "@/lib/quote/open";
+import { hasProjects } from "@/data/projects";
 
 /**
  * AFSS — global footer.
@@ -16,6 +17,13 @@ import { openInstantQuote } from "@/lib/quote/open";
 
 export default function Footer() {
   const phoneTel = SITE_PHONE_TEL?.replace(/[^+\d]/g, "") ?? "1300765594";
+
+  // Hide the Projects nav link if no approved project data exists yet
+  // — same logic as the Header so the footer never carries a dead anchor.
+  const visibleNavLinks = navLinks.filter((item) => {
+    if (item.href === "/#projects" && !hasProjects) return false;
+    return true;
+  });
 
   return (
     <footer
@@ -31,9 +39,10 @@ export default function Footer() {
           >
             Annual Fire Safety
             <br />
+            Statements.{" "}
             <span
               style={{
-                background: "linear-gradient(90deg, #ffffff 0%, #7aa6e6 100%)",
+                background: "linear-gradient(90deg, #ffffff 0%, #b0141f 100%)",
                 WebkitBackgroundClip: "text",
                 backgroundClip: "text",
                 WebkitTextFillColor: "transparent",
@@ -41,7 +50,7 @@ export default function Footer() {
                 display: "inline-block",
               }}
             >
-              Statements. Sorted.
+              Sorted.
             </span>
           </p>
         </div>
@@ -79,9 +88,9 @@ export default function Footer() {
                 className="btn btn-secondary whitespace-nowrap"
                 style={{ borderRadius: 999 }}
               >
-                <Phone size={14} strokeWidth={2.2} aria-hidden="true" />
+                <Phone size={16} strokeWidth={2.2} className="shrink-0" aria-hidden="true" />
                 Call {SITE_PHONE}
-                <ArrowUpRight size={14} strokeWidth={2.4} aria-hidden="true" />
+                <ArrowUpRight size={16} strokeWidth={2.4} className="shrink-0" aria-hidden="true" />
               </a>
             </div>
 
@@ -136,7 +145,7 @@ export default function Footer() {
                   AFSS site
                 </h2>
                 <ul className="flex flex-col gap-2.5 text-[0.92rem] font-medium leading-snug">
-                  {navLinks.map((link) => (
+                  {visibleNavLinks.map((link) => (
                     <li key={link.href}>
                       <Link
                         href={link.href}

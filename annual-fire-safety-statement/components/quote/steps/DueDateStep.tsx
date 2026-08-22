@@ -176,7 +176,7 @@ export default function DueDateStep({ onSaved, onBack }: Props) {
             <button
               type="button"
               onClick={() => setUsePicker(true)}
-              className={subtleLink + ' mt-2 inline-block'}
+              className={subtleLink + ' mt-2 inline-block !text-black'}
             >
               Or pick via calendar →
             </button>
@@ -209,11 +209,11 @@ export default function DueDateStep({ onSaved, onBack }: Props) {
           </div>
         )}
 
-        <div className="pt-4 flex items-center justify-center gap-6">
+        <div className="pt-4 flex w-full items-center gap-4 sm:gap-6">
           <button
             type="button"
             onClick={onBack}
-            className={subtleLink}
+            className={subtleLink + ' flex-shrink-0'}
           >
             ← Back
           </button>
@@ -221,7 +221,7 @@ export default function DueDateStep({ onSaved, onBack }: Props) {
           <button
             type="submit"
             disabled={submitting || unsure || !iso}
-            className={primaryButton + ' !mx-0'}
+            className={primaryButton + ' flex-1 !mx-0'}
             style={{ background: "linear-gradient(to right, #0b1d36, #1c4d9c)", color: "#ffffff" }}
           >
             {submitting ? 'Saving…' : 'Next →'}
@@ -231,7 +231,7 @@ export default function DueDateStep({ onSaved, onBack }: Props) {
             type="button"
             disabled={submitting}
             onClick={onSubmitUnsure}
-            className={subtleLink}
+            className={subtleLink + ' flex-shrink-0'}
           >
             I&apos;m not sure →
           </button>

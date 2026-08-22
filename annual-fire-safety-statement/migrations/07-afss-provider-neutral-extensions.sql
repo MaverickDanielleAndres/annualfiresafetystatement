@@ -41,7 +41,7 @@ ALTER TABLE afss.properties
 
 COMMENT ON COLUMN afss.properties.address_provider        IS 'External provider of the address (geoapify, geoscape, manual, etc.). Provider-neutral.';
 COMMENT ON COLUMN afss.properties.address_provider_id     IS 'External provider''s stable id for this address.';
-COMMENT ON COLUMN afss.properties.street_image_provider   IS 'External provider of the street-level imagery (mapillary, manual, none).';
+COMMENT ON COLUMN afss.properties.street_image_provider   IS 'External provider of the street-level imagery (e.g. google_street_view, manual, none).';
 
 CREATE INDEX IF NOT EXISTS idx_properties_address_provider_id
   ON afss.properties (address_provider, address_provider_id)

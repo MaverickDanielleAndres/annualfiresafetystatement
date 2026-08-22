@@ -18,9 +18,13 @@ export const runtime = 'nodejs';
  * POST /api/afss/quote/property
  *
  * Saves the customer-selected address to afss.properties.
- * Provider-neutral. Accepts either the old Google-style payload
- * (google_place_id) or the new Geoapify-style payload
- * (address_provider / address_provider_id).
+ * Provider-neutral. Accepts either the legacy Google-style payload
+ * (`google_place_id`) or the current Geoapify-style payload
+ * (`address_provider='geoapify'` + `address_provider_id`).
+ *
+ * `google_place_id` is OPTIONAL — Geoapify addresses are saved with
+ * `google_place_id = NULL` and `address_provider = 'geoapify'`. See
+ * migrations/07-afss-provider-neutral-extensions.sql.
  *
  * After save we advance the session to building_confirmation.
  */

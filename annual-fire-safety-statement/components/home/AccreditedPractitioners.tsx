@@ -4,7 +4,7 @@ import { ArrowRight, Target, CalendarCheck, ShieldCheck } from "lucide-react";
 import RevealOnView from "@/components/RevealOnView";
 
 /**
- * AFSS homepage — 08 / Accredited Practitioners.
+ * AFSS homepage — 09 / Accredited Practitioners.
  *
  * Three principles. Link to the FPAA public register for verification.
  * The previous design used an image with a practitioner figure; here we
@@ -38,7 +38,7 @@ export default function AccreditedPractitioners() {
             <RevealOnView>
               <div className="flex items-center gap-3 mb-6">
                 <div className="bg-[#b0141f] text-white font-bold text-[0.85rem] px-2 py-0.5 rounded-[3px] leading-tight">
-                  08
+                  09
                 </div>
                 <span className="text-[#1c4d9c] font-bold text-[0.85rem] tracking-[0.15em] uppercase">
                   / ACCREDITED PRACTITIONERS

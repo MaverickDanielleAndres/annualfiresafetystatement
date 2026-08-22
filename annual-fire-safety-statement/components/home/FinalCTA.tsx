@@ -45,10 +45,10 @@ export default function FinalCTA() {
             <h2 className="h-section h-section--light">
               Your AFSS due?
               <br />
+              Let's get it{" "}
               <span
                 style={{
-                  background:
-                    "linear-gradient(90deg, #ffffff 0%, #7aa6e6 100%)",
+                  background: "linear-gradient(90deg, #ffffff 0%, #b0141f 100%)",
                   WebkitBackgroundClip: "text",
                   backgroundClip: "text",
                   WebkitTextFillColor: "transparent",
@@ -56,9 +56,8 @@ export default function FinalCTA() {
                   display: "inline-block",
                 }}
               >
-                Let's get it{" "}
+                sorted.
               </span>
-              <span className="text-[#b0141f]">sorted.</span>
             </h2>
             <p className="mt-5 text-[1.05rem] text-white/80 max-w-[36rem] leading-[1.55]">
               Start your AFSS quote online, or talk to us if you&rsquo;d

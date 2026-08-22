@@ -4,15 +4,19 @@
  * Step 2 — Australian building address.
  *
  *   ┌─────────────────────────────────────────────────────────────┐
- *   │  Google Places API (New) autocomplete        — browser-side  │
- *   │  Browser Geolocation + Google Geocoder       — "Use my loc"  │
- *   │  Save to existing POST /api/afss/quote/property             │
+ *   │  Geoapify autocomplete         — /api/afss/quote/address-search
+ *   │  Browser Geolocation + Geoapify reverse geocode
+ *   │                                 — /api/afss/quote/address-resolve
+ *   │  Save to existing POST /api/afss/quote/property
  *   └─────────────────────────────────────────────────────────────┘
  *
- * The browser holds the API key via NEXT_PUBLIC_GOOGLE_MAPS_API_KEY.
- * Google Cloud restrictions (HTTP referrer + enabled APIs) are the
- * security boundary. We never call any Geoapify / Mapillary
- * endpoint from the customer flow.
+ * The browser NEVER holds a Geoapify key. Every provider call is
+ * routed through the two server-side proxies which read
+ * `GEOAPIFY_API_KEY` from the server env.
+ *
+ * Google is no longer used by this step. The only place the Google
+ * Maps JS API is still loaded is Step 3 (BuildingConfirmStep) for
+ * the Street View panorama widget.
  */
 
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
@@ -21,45 +25,22 @@ import { Field, inputClass, primaryButton, secondaryButton, subtleLink } from '.
 import { api } from '../api';
 import { useToaster } from '../Toast';
 import type { QuoteSessionSummary } from '@/lib/afss/types';
-import type { NormalisedAddress } from '@/lib/google/places';
-import {
-  fetchAddressSuggestions,
-  fetchPlaceDetails,
-  resetSession,
-} from '@/lib/google/places';
-import { reverseGeocode } from '@/lib/google/geocoder';
-import { isGoogleMapsConfigured } from '@/lib/google/maps-loader';
+import type {
+  AddressSuggestion,
+  NormalizedAddress,
+} from '@/lib/afss/providers/address-provider';
 
 interface Props {
   onSaved: (s: QuoteSessionSummary | null) => void;
   onBack: () => void;
 }
 
-interface Suggestion {
-  id: string;
-  primaryText: string;
-  secondaryText: string;
-  fullText: string;
-}
-
-type LocationState =
-  | 'idle'
-  | 'requesting'
-  | 'locating'
-  | 'reverse_geocoding'
-  | 'found'
-  | 'permission_denied'
-  | 'unavailable'
-  | 'timeout'
-  | 'low_accuracy'
-  | 'error';
-
 interface LocationResult {
   latitude: number;
   longitude: number;
   accuracy: number;
   accuracyLabel: 'good' | 'approximate' | 'low';
-  address: NormalisedAddress;
+  address: NormalizedAddress;
 }
 
 interface DropdownPos {
@@ -71,12 +52,23 @@ interface DropdownPos {
 const MIN_QUERY_LEN = 3;
 const DEBOUNCE_MS = 280;
 
+type LocationState =
+  | 'idle'
+  | 'requesting'
+  | 'reverse_geocoding'
+  | 'found'
+  | 'permission_denied'
+  | 'unavailable'
+  | 'timeout'
+  | 'low_accuracy'
+  | 'error';
+
 export default function PropertyStep({ onSaved, onBack }: Props) {
   const { push } = useToaster();
   const [query, setQuery] = useState('');
-  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([]);
   const [highlighted, setHighlighted] = useState<number>(-1);
-  const [resolvedAddress, setResolvedAddress] = useState<NormalisedAddress | null>(null);
+  const [resolvedAddress, setResolvedAddress] = useState<NormalizedAddress | null>(null);
   const [manualMode, setManualMode] = useState(false);
   const [manualAddressLine1, setManualAddressLine1] = useState('');
   const [manualSuburb, setManualSuburb] = useState('');
@@ -88,6 +80,7 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [pos, setPos] = useState<DropdownPos | null>(null);
+  const [providerUnavailable, setProviderUnavailable] = useState(false);
 
   // "Use my location" state
   const [locationState, setLocationState] = useState<LocationState>('idle');
@@ -97,8 +90,9 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
 
   const inputRef = useRef<HTMLInputElement | null>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
+  const reverseAbortRef = useRef<AbortController | null>(null);
   const requestSeq = useRef(0);
-  const mapsConfigured = useMemo(() => isGoogleMapsConfigured(), []);
 
   useEffect(() => {
     setMounted(true);
@@ -126,6 +120,7 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
   }, [showDropdown, query]);
 
   useEffect(() => {
+    if (providerUnavailable) return;
     if (query.trim().length < MIN_QUERY_LEN) {
       setSuggestions([]);
       setShowDropdown(false);
@@ -147,34 +142,54 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query]);
+  }, [query, providerUnavailable]);
 
   async function fetchSuggestions(q: string) {
     const seq = ++requestSeq.current;
+    // Cancel any in-flight request from the previous keystroke.
+    if (abortRef.current) abortRef.current.abort();
+    const ctrl = new AbortController();
+    abortRef.current = ctrl;
+
     setLoading(true);
     setError(null);
     try {
-      const list = await fetchAddressSuggestions(q, {
-        locationBias: locationResult
-          ? { lat: locationResult.latitude, lng: locationResult.longitude }
-          : null,
-      });
+      const res = await fetch(
+        `/api/afss/quote/address-search?q=${encodeURIComponent(q)}`,
+        { credentials: 'include', signal: ctrl.signal }
+      );
+      const data = (await res.json().catch(() => null)) as
+        | { ok: true; provider: 'geoapify'; suggestions: AddressSuggestion[] }
+        | { ok: false; error: string }
+        | null;
+
       if (seq !== requestSeq.current) return;
-      setLoading(false);
-      const mapped: Suggestion[] = list.map((s) => ({
-        id: s.providerId,
-        primaryText: s.primaryText,
-        secondaryText: s.secondaryText,
-        fullText: s.fullText,
-      }));
-      setSuggestions(mapped);
-      setShowDropdown(mapped.length > 0);
-      setHighlighted(-1);
-      if (mapped.length === 0) {
-        // Not fatal — the input remains live, just no suggestions.
+
+      if (!res.ok || !data || !('ok' in data) || data.ok === false) {
+        if (res.status === 503) {
+          setProviderUnavailable(true);
+          setSuggestions([]);
+          setShowDropdown(false);
+          setLoading(false);
+          return;
+        }
+        throw new Error(
+          (data && 'error' in data && data.error) ||
+            "We couldn't load address suggestions. Please check your connection or try again."
+        );
       }
-    } catch (e: any) {
-      if (seq !== requestSeq.current) return;
+
+      setLoading(false);
+      setSuggestions(data.suggestions ?? []);
+      setShowDropdown((data.suggestions ?? []).length > 0);
+      setHighlighted(-1);
+    } catch (e) {
+      if (
+        (e instanceof Error && e.name === 'AbortError') ||
+        seq !== requestSeq.current
+      ) {
+        return;
+      }
       setLoading(false);
       setSuggestions([]);
       setShowDropdown(false);
@@ -182,41 +197,24 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
         kind: 'warning',
         title: 'Address lookup',
         text:
-          e?.message ||
+          (e instanceof Error && e.message) ||
           "We couldn't load address suggestions. Please check your connection or try again.",
       });
     }
   }
 
-  async function selectSuggestion(idx: number) {
+  function selectSuggestion(idx: number) {
     const s = suggestions[idx];
     if (!s) return;
     setError(null);
     setSuggestions([]);
     setShowDropdown(false);
     setQuery(s.fullText);
-    setLoading(true);
-    try {
-      const resolved = await fetchPlaceDetails(s.id, {
-        primaryText: s.primaryText,
-        secondaryText: s.secondaryText,
-        fullText: s.fullText,
-      });
-      setLoading(false);
-      if (!resolved) {
-        setError('We could not resolve that address. Please try again.');
-        return;
-      }
-      setResolvedAddress(resolved);
-      push({ kind: 'success', text: 'Address found.' });
-    } catch (e: any) {
-      setLoading(false);
-      push({
-        kind: 'error',
-        title: 'Address lookup',
-        text: e?.message ?? 'We could not resolve that address.',
-      });
-    }
+    // Geoapify returns the full normalised address in the autocomplete
+    // response — there is no follow-up round-trip needed (unlike the
+    // legacy Google Places flow which required a second fetchPlaceDetails).
+    setResolvedAddress(s.address);
+    push({ kind: 'success', text: 'Address found.' });
   }
 
   function handleKey(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -232,7 +230,7 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
       setHighlighted((h) => Math.max(h - 1, -1));
     } else if (e.key === 'Enter') {
       e.preventDefault();
-      if (highlighted >= 0) void selectSuggestion(highlighted);
+      if (highlighted >= 0) selectSuggestion(highlighted);
     } else if (e.key === 'Escape') {
       e.preventDefault();
       setShowDropdown(false);
@@ -248,6 +246,7 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
     setLocationState('requesting');
     setLocationError(null);
     setLocationResult(null);
+
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
         const lat = pos.coords.latitude;
@@ -256,25 +255,52 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
         const accuracyLabel: 'good' | 'approximate' | 'low' =
           accuracy <= 50 ? 'good' : accuracy <= 150 ? 'approximate' : 'low';
         setLocationState('reverse_geocoding');
+
+        // Cancel any in-flight reverse-geocode from a prior click.
+        if (reverseAbortRef.current) reverseAbortRef.current.abort();
+        const ctrl = new AbortController();
+        reverseAbortRef.current = ctrl;
+
         try {
-          const addr = await reverseGeocode(lat, lng);
-          if (!addr) {
-            setLocationState('error');
-            setLocationError('We found your coordinates but could not resolve an Australian address.');
-            return;
+          const res = await fetch(
+            `/api/afss/quote/address-resolve?lat=${encodeURIComponent(
+              lat
+            )}&lng=${encodeURIComponent(lng)}`,
+            { credentials: 'include', signal: ctrl.signal }
+          );
+          const data = (await res.json().catch(() => null)) as
+            | { ok: true; provider: 'geoapify'; address: NormalizedAddress }
+            | { ok: false; error: string }
+            | null;
+          if (!res.ok || !data || !('ok' in data) || data.ok === false) {
+            if (res.status === 503) {
+              setProviderUnavailable(true);
+              setLocationState('unavailable');
+              setLocationError(
+                "Address lookup is temporarily unavailable. Please type your address below."
+              );
+              return;
+            }
+            throw new Error(
+              (data && 'error' in data && data.error) ||
+                'We could not resolve an Australian address.'
+            );
           }
           setLocationResult({
             latitude: lat,
             longitude: lng,
             accuracy,
             accuracyLabel,
-            address: addr,
+            address: data.address,
           });
           setLocationState('found');
-        } catch (e: any) {
+        } catch (e) {
+          if (e instanceof Error && e.name === 'AbortError') return;
           setLocationState('error');
           setLocationError(
-            e?.message ?? 'We could not reverse-geocode your location.'
+            e instanceof Error
+              ? e.message
+              : 'We could not reverse-geocode your location.'
           );
         }
       },
@@ -337,7 +363,7 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
       return;
     }
     setSubmitting(true);
-    const payload: any = manualMode
+    const payload: Record<string, unknown> | null = manualMode
       ? {
           address_provider: 'manual',
           address_provider_id: null,
@@ -356,18 +382,19 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
         }
       : resolvedAddress
         ? {
-            address_provider: 'google',
-            address_provider_id: resolvedAddress.providerId,
-            address_line_1: resolvedAddress.addressLine1,
-            address_line_2: resolvedAddress.addressLine2,
-            suburb: resolvedAddress.suburb,
-            state: resolvedAddress.state,
-            postcode: resolvedAddress.postcode,
-            country: resolvedAddress.country,
+            address_provider: 'geoapify',
+            address_provider_id: resolvedAddress.providerId ?? null,
+            address_line_1: resolvedAddress.addressLine1 ?? null,
+            address_line_2: resolvedAddress.addressLine2 ?? null,
+            suburb: resolvedAddress.suburb ?? null,
+            city: resolvedAddress.city ?? null,
+            state: resolvedAddress.state ?? null,
+            postcode: resolvedAddress.postcode ?? null,
+            country: resolvedAddress.country ?? 'AU',
             formatted_address: resolvedAddress.formattedAddress,
             latitude: resolvedAddress.latitude,
             longitude: resolvedAddress.longitude,
-            google_place_id: resolvedAddress.providerId,
+            google_place_id: null,
           }
         : null;
     if (!payload) return;
@@ -421,16 +448,16 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
       >
         {suggestions.map((s, i) => (
           <li
-            key={s.id}
+            key={s.providerId || `${s.fullText}-${i}`}
             role="option"
             aria-selected={i === highlighted}
             onMouseDown={(e) => {
               e.preventDefault();
-              void selectSuggestion(i);
+              selectSuggestion(i);
             }}
             onTouchStart={(e) => {
               e.preventDefault();
-              void selectSuggestion(i);
+              selectSuggestion(i);
             }}
             onMouseEnter={() => setHighlighted(i)}
             className={
@@ -450,11 +477,11 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
           aria-hidden
           className="border-t border-gray-100 px-4 py-2 text-[10px] uppercase tracking-wider text-gray-400"
         >
-          Powered by Google
+          Powered by Geoapify
         </li>
       </ul>
     );
-  }, [showDropdown, pos, suggestions, highlighted, query, loading]);
+  }, [showDropdown, pos, suggestions, highlighted, query, loading, selectSuggestion]);
 
   const useMyLocationDisabled =
     typeof navigator === 'undefined' || !navigator.geolocation;
@@ -468,11 +495,11 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
         Start typing — pick an Australian address from the list, or use your current location.
       </p>
 
-      {!mapsConfigured && (
+      {providerUnavailable && (
         <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800">
-          (Developer) Google Maps API key is not configured. Add
-          <span className="mx-1 font-mono">NEXT_PUBLIC_GOOGLE_MAPS_API_KEY</span>
-          to your environment.
+          (Developer) Address search is temporarily unavailable. Check that
+          <span className="mx-1 font-mono">GEOAPIFY_API_KEY</span>
+          is configured on the server.
         </div>
       )}
 
@@ -505,28 +532,28 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
                   aria-autocomplete="list"
                   aria-expanded={showDropdown}
                   aria-controls="afss-address-listbox"
-                  disabled={!mapsConfigured}
+                  disabled={providerUnavailable}
                 />
                 {loading && (
-                  <span className="mt-1 block text-xs text-gray-400">Searching…</span>
+                  <span className="mt-1 block text-xs text-gray-400">Searching addresses…</span>
                 )}
               </div>
             </Field>
 
-            <div className="flex items-center gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
               <button
                 type="button"
                 onClick={handleUseMyLocation}
-                disabled={useMyLocationDisabled || !mapsConfigured}
-                className={secondaryButton + ' inline-flex items-center justify-center gap-2'}
+                disabled={useMyLocationDisabled || providerUnavailable}
+                className="flex items-center justify-start gap-2 rounded-md border border-gray-300 bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-widest text-gray-700 transition hover:bg-gray-50 hover:border-gray-400 disabled:opacity-50"
               >
                 <svg
-                  width="16"
-                  height="16"
+                  width="14"
+                  height="14"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  strokeWidth="2"
+                  strokeWidth="2.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   aria-hidden
@@ -540,10 +567,21 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
                 </svg>
                 Use my location
               </button>
+              {!manualMode && !resolvedAddress && !locationResult && (
+                <button
+                  type="button"
+                  onClick={() => setManualMode(true)}
+                  className="flex items-center justify-start gap-2 rounded-md border border-gray-300 bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-widest text-gray-700 transition hover:bg-gray-50 hover:border-gray-400 text-left leading-tight"
+                >
+                  Or enter address manually →
+                </button>
+              )}
               {refiningFromLocation && (
-                <span className="text-xs text-gray-500">
-                  Refine the address below.
-                </span>
+                <div className="flex items-center justify-start">
+                  <span className="text-xs text-gray-500">
+                    Refine the address below.
+                  </span>
+                </div>
               )}
             </div>
 
@@ -552,14 +590,9 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
                 Asking your browser for your location…
               </div>
             )}
-            {locationState === 'locating' && (
-              <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-600">
-                Locating…
-              </div>
-            )}
             {locationState === 'reverse_geocoding' && (
               <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-600">
-                Resolving the nearest Australian address…
+                Finding your address…
               </div>
             )}
             {locationState === 'low_accuracy' && locationError && (
@@ -613,11 +646,18 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
                   {locationResult.address.formattedAddress}
                 </div>
                 <div className="mt-1 text-xs text-gray-600">
-                  Approximate accuracy: <strong>{Math.round(locationResult.accuracy)} m</strong>
+                  Accuracy: approximately{' '}
+                  <strong>{Math.round(locationResult.accuracy)} m</strong>
                   {locationResult.accuracyLabel === 'good' && ' — good'}
                   {locationResult.accuracyLabel === 'approximate' && ' — approximate'}
                   {locationResult.accuracyLabel === 'low' && ' — low accuracy'}
                 </div>
+                {locationResult.accuracyLabel === 'low' && (
+                  <div className="mt-2 rounded border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
+                    Your location may not be precise enough to identify the exact building.
+                    Please confirm the address.
+                  </div>
+                )}
                 <div className="mt-3 flex flex-wrap gap-2">
                   <button
                     type="button"
@@ -706,15 +746,7 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
           </div>
         )}
 
-        {!manualMode && !resolvedAddress && !locationResult && (
-          <button
-            type="button"
-            onClick={() => setManualMode(true)}
-            className={subtleLink + ' inline-block'}
-          >
-            Or enter address manually →
-          </button>
-        )}
+        {/* old manual button location removed */}
         {manualMode && (
           <button
             type="button"
@@ -740,14 +772,18 @@ export default function PropertyStep({ onSaved, onBack }: Props) {
           </div>
         )}
 
-        <div className="flex items-center justify-center gap-6 pt-4">
-          <button type="button" onClick={onBack} className={subtleLink}>
+        <div className="flex w-full items-center gap-6 pt-4">
+          <button type="button" onClick={onBack} className={subtleLink + " flex-shrink-0"}>
             ← Back
           </button>
           <button
             type="submit"
             disabled={submitting}
-            className={primaryButton + ' !mx-0'}
+            className={primaryButton + ' flex-1 !mx-0'}
+            style={{ 
+              background: "linear-gradient(to right, #0b1d36, #1c4d9c)",
+              color: "#ffffff"
+            }}
           >
             {submitting ? 'Saving…' : 'Next →'}
           </button>

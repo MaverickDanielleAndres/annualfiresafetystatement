@@ -89,7 +89,36 @@ function HeaderShell() {
     const update = () => setCurrentHash(window.location.hash);
     update();
     window.addEventListener("hashchange", update);
-    return () => window.removeEventListener("hashchange", update);
+
+    // Scroll spy to update active link based on current section
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setCurrentHash(`#${entry.target.id}`);
+          }
+        });
+      },
+      { rootMargin: "-20% 0px -70% 0px" }
+    );
+
+    // Give DOM time to mount all sections
+    setTimeout(() => {
+      navLinks.forEach((link) => {
+        if (link.anchor) {
+          const id = link.href.split("#")[1];
+          if (id) {
+            const el = document.getElementById(id);
+            if (el) observer.observe(el);
+          }
+        }
+      });
+    }, 100);
+
+    return () => {
+      window.removeEventListener("hashchange", update);
+      observer.disconnect();
+    };
   }, []);
 
   const closeMenus = () => setMobileOpen(false);

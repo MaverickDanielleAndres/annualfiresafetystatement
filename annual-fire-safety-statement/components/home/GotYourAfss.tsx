@@ -90,7 +90,7 @@ export default function GotYourAfss() {
                     className="flex-1 group flex w-full items-center gap-5 !p-5 sm:!p-6 bg-white !border-2 !border-solid !border-[#d3dce8] !rounded-xl text-left transition-all hover:!border-[#1c4d9c] hover:!bg-[#f5f8fc] hover:shadow-[0_8px_24px_rgba(28,77,156,0.06)] cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#1c4d9c]"
                   >
                     {/* Left Icon */}
-                    <div className="flex-none flex items-center justify-center w-12 h-12 rounded-full bg-[#f0f4fa] text-[#1c4d9c] transition-colors group-hover:bg-white group-hover:shadow-sm">
+                    <div className="flex-none flex items-center justify-center w-12 h-12 rounded-full bg-[#fde8e9] text-[#b0141f] transition-colors group-hover:bg-white group-hover:shadow-sm">
                       {p.icon}
                     </div>
 

@@ -200,7 +200,7 @@ export default function QuotePaymentStep({ summary, onSubmitted, onBack }: Props
             name="payment-preference"
             checked={preference === 'pay_now_simulation'}
             onChange={() => setPreference('pay_now_simulation')}
-            className="mt-1 h-4 w-4 accent-[#1c4d9c]"
+            className="h-4 w-4 accent-[#1c4d9c] mt-0.5"
             disabled={blockedByReview}
           />
           <div>
@@ -223,7 +223,7 @@ export default function QuotePaymentStep({ summary, onSubmitted, onBack }: Props
             name="payment-preference"
             checked={preference === 'contact_first'}
             onChange={() => setPreference('contact_first')}
-            className="mt-1 h-4 w-4 accent-[#1c4d9c]"
+            className="h-4 w-4 accent-[#1c4d9c] mt-0.5"
           />
           <div>
             <div className="font-bold text-black">Talk to us first</div>
@@ -240,12 +240,12 @@ export default function QuotePaymentStep({ summary, onSubmitted, onBack }: Props
         </div>
       )}
 
-      <div className="pt-4 flex items-center justify-center gap-6">
+      <div className="pt-4 flex w-full items-center gap-6">
         {onBack && (
           <button
             type="button"
             onClick={onBack}
-            className={subtleLink}
+            className={subtleLink + ' flex-shrink-0'}
           >
             ← Back
           </button>
@@ -255,7 +255,7 @@ export default function QuotePaymentStep({ summary, onSubmitted, onBack }: Props
           type="button"
           disabled={!preference || submitting}
           onClick={submit}
-          className={primaryButton + ' !mx-0'}
+          className={primaryButton + ' flex-1 !mx-0'}
           style={{ background: "linear-gradient(to right, #0b1d36, #1c4d9c)", color: "#ffffff" }}
         >
           {submitting ? 'Submitting…' : 'Submit →'}

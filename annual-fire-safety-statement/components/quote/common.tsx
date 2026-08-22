@@ -35,15 +35,12 @@ export function Field({
 }
 
 export const inputClass =
-  'w-full rounded-lg border border-gray-300 px-4 py-3 text-base text-black placeholder-gray-400 focus:border-[#1c4d9c] focus:outline-none focus:ring-2 focus:ring-[#1c4d9c]/40';
+  'w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-black placeholder-gray-400 focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/40';
 
-export const primaryButton = clsx(
-  'afss-primary-btn mx-auto',
-  'transition-all shadow-[0_8px_20px_rgba(28,77,156,0.25)] hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(28,77,156,0.4)] disabled:cursor-not-allowed disabled:opacity-60'
-);
+export const primaryButton = 'afss-primary-btn';
 
 export const secondaryButton = clsx(
-  'w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-base font-bold uppercase tracking-widest text-gray-700',
+  'w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-bold uppercase tracking-widest text-gray-700',
   'transition-all hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60'
 );
 

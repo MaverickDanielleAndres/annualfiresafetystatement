@@ -6,7 +6,7 @@ import { ArrowRight, Check, CalendarCheck } from "lucide-react";
 import RevealOnView from "@/components/RevealOnView";
 
 /**
- * AFSS homepage — 13 / AS 1851-2012.
+ * AFSS homepage — 11 / AS 1851-2012.
  *
  * Supporting section. Distinguishes AS 1851-2012 (routine servicing /
  * maintenance) from the AFSS (annual assessment + statement).
@@ -56,7 +56,7 @@ export default function AS1851() {
             <RevealOnView>
               <div className="flex items-center gap-3 mb-6">
                 <div className="bg-[#b0141f] text-white font-bold text-[0.85rem] px-2 py-0.5 rounded-[3px] leading-tight">
-                  10
+                  11
                 </div>
                 <span className="text-[#1c4d9c] font-bold text-[0.85rem] tracking-[0.15em] uppercase">
                   / AS 1851-2012

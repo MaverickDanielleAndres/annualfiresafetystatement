@@ -64,7 +64,7 @@ export default function NeedsAfss() {
   };
 
   return (
-    <section className="relative bg-white py-24 lg:py-32 w-full overflow-hidden">
+    <section className="relative bg-white section-y-tight w-full overflow-hidden">
 
 
       <div className="container-inner relative z-10 max-w-[1200px] mx-auto px-6">
@@ -74,7 +74,7 @@ export default function NeedsAfss() {
             <RevealOnView>
               <div className="flex items-center gap-3 mb-6">
                 <div className="bg-[#b0141f] text-white font-bold text-[0.85rem] px-2 py-0.5 rounded-[3px] leading-tight">
-                  04
+                  05
                 </div>
                 <span className="text-[#1c4d9c] font-bold text-[0.85rem] tracking-[0.15em] uppercase">
                   / DOES MY BUILDING NEED AN AFSS?
@@ -88,13 +88,10 @@ export default function NeedsAfss() {
             </RevealOnView>
           </div>
           
-          <div className="flex-1 lg:max-w-lg lg:pt-16">
+          <div className="flex-1 lg:max-w-lg lg:pt-11">
             <RevealOnView delay={100}>
               <p className="text-[1.1rem] text-[#374151] leading-[1.6]">
                 An Annual Fire Safety Statement (AFSS) is generally required for NSW buildings where essential fire safety measures apply.
-              </p>
-              <p className="text-[1.1rem] text-[#374151] leading-[1.6] mt-6">
-                The Fire Safety Schedule usually identifies the measures and minimum standards that apply to the building.
               </p>
             </RevealOnView>
           </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { subtleLink } from '../common';
+import { subtleLink, primaryButton } from '../common';
 import { api } from '../api';
 import { useToaster } from '../Toast';
 
@@ -371,29 +371,39 @@ export default function DocumentStep({ onUploaded, onFallback, onBack }: Props) 
         </div>
       )}
 
-      {!uploaded && (
-        <div className="pt-4 flex items-center justify-center gap-6">
-          {onBack && (
-            <button
-              type="button"
-              onClick={onBack}
-              disabled={busy}
-              className={subtleLink}
-            >
-              ← Back
-            </button>
-          )}
+      <div className="pt-4 flex w-full items-center gap-4 sm:gap-6">
+        {onBack && (
+          <button
+            type="button"
+            onClick={onBack}
+            disabled={busy}
+            className={subtleLink + ' flex-shrink-0'}
+          >
+            ← Back
+          </button>
+        )}
 
+        {uploaded ? (
+          <button
+            type="button"
+            onClick={() => onUploaded()}
+            disabled={busy}
+            className={primaryButton + ' flex-1 !mx-0'}
+            style={{ background: "linear-gradient(to right, #0b1d36, #1c4d9c)", color: "#ffffff" }}
+          >
+            Next →
+          </button>
+        ) : (
           <button
             type="button"
             onClick={reportFallback}
             disabled={busy}
-            className={subtleLink}
+            className={subtleLink + ' flex-shrink-0'}
           >
             I can&apos;t find my AFSS →
           </button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

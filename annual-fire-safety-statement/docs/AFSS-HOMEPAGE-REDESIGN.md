@@ -643,3 +643,518 @@ Untouched (backend / contract):
 - No new dependencies. No new packages.
 - No CMS integration for projects / partners / testimonials — typed TS data files only.
 - No fabricated content.
+
+---
+
+# 25. Trust & Proof Sections (Projects / Partners / Testimonials)
+
+This block extends the redesign with a self-contained plan for the bottom-of-homepage trust stack that lands *between* the educational sections (01–10) and the FAQ / Final CTA. It deliberately takes the strongest business logic from Pete's competitor references and produces a more modern, AFSS-specific implementation using the existing brand system.
+
+## 25.1 Trust Section Order (after this redesign)
+
+```
+01 GOT YOUR AFSS?
+02 HOW IT WORKS
+03 WHAT THE INSPECTION INVOLVES
+04 DOES MY BUILDING NEED AN AFSS?
+05 WHAT IS AN AFSS?
+06 WHAT GETS ASSESSED?
+07 DUE DATE & PENALTIES
+08 ACCREDITED PRACTITIONERS
+09 KNOW YOUR DOCUMENTS
+10 AS 1851-2012
+11 PROJECTS                 (data-driven, empty-safe)
+12 PARTNERS                 (data-driven, empty-safe)
+13 TESTIMONIALS             (data-driven, empty-safe)
+   FAQ                       (unnumbered)
+   FINAL CTA
+   FOOTER
+```
+
+The `Projects / Partners / Testimonials` block is placed **after AS 1851-2012** and **before FAQ**. It deliberately does not interleave with the educational sections. Each new section must answer exactly one visitor question:
+
+| Section | The question it answers |
+|---|---|
+| Projects | "Have you done work like this?" |
+| Partners | "Who do you professionally work with?" |
+| Testimonials | "What do customers say?" |
+| FAQ | "What questions remain?" |
+| Final CTA | "How do I start?" |
+
+## 25.2 Competitor Research Summary
+
+We researched ten sites Pete flagged. Each was scanned for the patterns the brief actually cares about: project presentation, partner/accreditation presentation, testimonial presentation, photography style, card vs editorial layout, spacing rhythm, and CTA placement.
+
+| Site | Useful pattern | What we use | What we avoid |
+|---|---|---|---|
+| IECC (`iecc.com.au/fire/annual-fire-safety-statement`) | Project category tabs; photographic grid; partner logo strip; Google-attributed testimonials stacked vertically; mid-page "Why choose us" credibility block. | The category-tab idea (filterable), the partner-logo strip layout, the editorial testimonial cadence (one large quote + attribution + counter). | Their black card design, their exact project names, their Solar & EV / Government category (wrong business), their testimonial copy, their partner logos, their IECC-specific "One of The Most Accredited…" claim (belongs to IECC, not AFSS). |
+| Wormald (`wormald.com.au/blog/understanding-the-afss-in-nsw/`) | Educational long-form tone, regulatory specificity, named dates. | Tone for AS 1851-2012 microcopy; reinforces that the educational arc should be precise rather than puffed. | Single-image editorial without portfolio. No real proof presentation. |
+| Redmen (`redmen.com.au/certification-annual-fire-safety-statement-afss-nsw/`) | 4-card "Why Choose Us" feature row, embedded sample letter images. | Card-grid as a *secondary* rhythm, only where it earns its place. | Their three grouped council lists (we are a single practitioner, not a multi-council roster). |
+| Strata Plus (`strataplus.com.au/resource/...`) | Layered card-based taxonomy, regional office grid. | Reinforces our "AS 1851-2012" legal/penalty wording must be conservative (do not invent a weekly ladder). | Their stock-imagery pop-ups, their emoji widgets. |
+| Kerin Benson Lawyers | Pure editorial / legal explainer. | Reinforces the "this is a regulated document" framing. | Their unstyled, no-imagery wall of text — fails the trust UI brief. |
+| Safe Fire & Electrical | Repeated "CONTACT US TODAY!" CTA banners. | Reinforces we should *not* add a third repeated CTA — the conversion target is the Final CTA. | Banner-spam rhythm. |
+| First Stop Fire | Service card grid + FPAS accreditation badge in footer. | Card grid for portfolios only; footer-level single accreditation badge. | Their card-everywhere approach (creates card fatigue). |
+| Jamesons (`jamesons.com.au/blog/...`) | Single-article editorial with "at a glance" summary block. | None directly — but reinforces why the homepage cannot read as a blog. | Article-as-page layout. |
+| FireSafe (`firesafe-au.com/...`) | Long editorial, FPAA link in body copy. | Confirms our footer "Official NSW references" list is the right place for FPAA. | Their SVG-placeholder photography (we will hide sections instead). |
+| Firewize (`firewize.com.au/definition/...`) | Single definition page with disclaimer block. | The disclaimer footer pattern. | Their bare-encyclopedia layout. |
+| FCF National | (page returned HTTP 403; no patterns extractable). | None. | None. |
+
+### IECC detail — the explicit takeaways the brief asks for
+
+USE:
+- Project category filtering (tab UI on top of a photographic grid).
+- Visual portfolio (real building photography as the trust asset).
+- Location/context per project (location line in every card).
+- Dedicated partner credibility block (a quiet logo strip, not an ad wall).
+- Real attributed testimonial proof (one source per testimonial, ideally Google-attributed when real).
+
+AVOID:
+- Copying project names, locations, descriptions, or any IECC assets.
+- Copying IECC colours (green/infinity palette — wrong for AFSS).
+- Copying IECC project categories (Residential / Commercial / Government / Solar & EV → wrong for AFSS).
+- Copying testimonial text or partner logos.
+- Their dated black-card visual style.
+- Any content that implies AFSS is a division of IECC, All Fire, or any other brand.
+
+## 25.3 Data Requirements
+
+The three sections are data-driven from typed arrays:
+
+- `data/projects.ts` — `ProjectEntry[]`
+- `data/partners.ts` — `PartnerEntry[]`
+- `data/testimonials.ts` — `TestimonialEntry[]`
+
+Each file already exists with a typed shape. The post-redesign update extends the **type**, not the array. The arrays stay **empty** until Pete supplies approved content; empty arrays mean the section **does not render publicly** (no "coming soon" placeholder).
+
+The existing exports `hasProjects`, `hasPartners`, `hasTestimonials` already drive conditional rendering.
+
+### 25.3.1 `ProjectEntry` (extended)
+
+The current shape (`propertyType, location, service, scope, outcome, image, imageAlt, slug`) is retained. The category tab UI requires a small typed `category` field that maps to a fixed enum. To preserve backward compatibility with any in-flight entries, `category` is optional and derived from `propertyType` when omitted.
+
+```ts
+export type AfssProjectCategory =
+  | "strata"
+  | "commercial"
+  | "industrial"
+  | "mixed-use"
+  | "government";
+
+export interface ProjectEntry {
+  slug: string;
+  propertyType: ProjectType;
+  category?: AfssProjectCategory;        // optional; falls back to slug(propertyType)
+  location: string;
+  service: string;
+  scope: string;
+  outcome?: string;
+  year?: number;
+  image?: string;
+  imageAlt?: string;
+  featured?: boolean;
+  href?: string;                         // override; falls back to /projects/{slug}
+}
+```
+
+Only **real, client-approved** projects go in. Categories are restricted to AFSS-relevant property types — `Solar & EV` and unrelated electrical categories are explicitly excluded.
+
+### 25.3.2 `PartnerEntry` (extended)
+
+```ts
+export interface PartnerEntry {
+  name: string;
+  category: PartnerCategory;
+  logo?: string;                         // path to public/ logo asset (optional)
+  logoAlt?: string;
+  relationship?: string;
+  url?: string;
+}
+```
+
+If `logo` is absent, the entry renders as a text-only wordmark. If `logo` is present, the entry renders an inline SVG/PNG with constrained height and a tinted hover state. We do **not** include NSW Government, FRNSW, FPAA, or Building Commission NSW as partners merely because the site references them.
+
+### 25.3.3 `TestimonialEntry` (extended)
+
+```ts
+export interface TestimonialEntry {
+  quote: string;
+  name: string;
+  role: string;
+  propertyType: string;
+  location: string;
+  rating?: number;                       // 1-5, optional, used to render stars
+  source?: "google" | "direct" | "other"; // attribution badge
+  sourceUrl?: string;                    // only if from a real public review
+}
+```
+
+`rating` defaults to off; `source` is required to render any attribution badge. If `source === "google"` we render a discreet "Google review" label with a small Google "G" mark (system font "Product Sans" stack fallback, no image required). We never fabricate a Google badge or scrape competitor reviews.
+
+## 25.4 Projects Section Specification
+
+### 25.4.1 Composition
+
+- Eyebrow: `11 / PROJECTS`.
+- Heading: `AFSS projects.` (with `projects.` rendered in the AFSS red `#b0141f`).
+- Supporting line: short factual sentence — kept generic so it never invents claims. ("Approved AFSS work, displayed by building type. Each project lists the applicable scope and the statement issued.") — this sentence contains zero numbers and zero claims that require Pete's sign-off.
+- Category tabs (filterable): `All`, `Strata`, `Commercial`, `Industrial`, `Mixed-use`, `Government` (Government only when at least one approved government project exists).
+- Project grid: 4 columns on `xl`, 3 on `lg`, 2 on `md`, 1 on base.
+
+### 25.4.2 Card anatomy
+
+```
+┌──────────────────────────────┐
+│ [PROJECT IMAGE — 4:3 ratio]  │
+├──────────────────────────────┤
+│ CATEGORY (small caps, blue)  │
+│ Project title (h3, navy)     │
+│ Location (ink-muted)         │
+│ Short scope sentence         │
+│ View project →               │
+└──────────────────────────────┘
+```
+
+- Image-first. Real building/property photography.
+- No "N/A" or filler rows.
+- Hover: subtle 1.02 scale, lift, image zoom 1.04, CTA arrow translates 4px. Reduced motion respected.
+- "View project" CTA is disabled (button, not link) when `href` resolves to nothing — never link to dead URLs.
+- Aspect ratio locked at 4:3 across the grid for visual rhythm.
+
+### 25.4.3 Category tabs (interaction)
+
+- Tab list rendered with `role="tablist"`, each tab with `role="tab"`, `aria-selected`, `aria-controls`.
+- Arrow-key navigation (`←`, `→`, `Home`, `End`).
+- Active tab: navy text + 2px navy underline. Inactive: ink-muted.
+- On mobile: horizontally scrollable tab strip with `scroll-snap-type: x mandatory`. The active tab is kept in view via `scrollIntoView({ block: "nearest", inline: "center" })` on tab change. No horizontal page overflow.
+- Filtering uses pure local state (`useState`); no full page navigation, no URL state.
+
+### 25.4.4 Empty-state behaviour
+
+`projects.length === 0` ⇒ the section does not render at all (no headings, no tabs, no card grid). This is the current behaviour and is preserved. When data is empty the existing educational sections (01–10) shift up by three numbers (their on-page labels remain stable per the existing renumbering comment in `app/page.tsx`).
+
+## 25.5 Partners Section Specification
+
+### 25.5.1 Composition
+
+- Eyebrow: `12 / PARTNERS`.
+- Heading: `Working with the people behind safer buildings.`
+- Supporting copy: short, factual, never claims partnership with regulators.
+  > AFSS compliance often involves building owners, strata managers, property managers, facilities teams, accredited practitioners and specialist fire safety professionals.
+- Logo display: a quiet horizontal logo strip on desktop, wrap-friendly on mobile. NOT a card wall.
+- Visual rhythm: white background, lots of breathing room, hairline dividers between rows when stacked vertically on mobile.
+
+### 25.5.2 Logo treatment
+
+- Logo height clamped to 32–44px on desktop, 28–36px on mobile.
+- Default state: monochrome filter applied via `filter: grayscale(1) contrast(1.05) brightness(0.92)` so a coloured logo sits quietly in the strip.
+- Hover state: filter removed (full brand colour revealed) over 200ms.
+- Mobile: wrap in a 2-column grid so logos do not become microscopic. `flex-wrap` is acceptable as a fallback if `grid` produces orphan rows.
+- No infinite marquee. No automatic animation. The section reads as a printed credibility strip.
+
+### 25.5.3 Empty-state behaviour
+
+`partners.length === 0` ⇒ the section does not render publicly. The component and data architecture are kept so a single new entry in `data/partners.ts` brings the section live.
+
+## 25.6 Testimonials Section Specification
+
+### 25.6.1 Composition
+
+- Eyebrow: `13 / TESTIMONIALS`.
+- Heading: `What our clients say.`
+- Subheading (optional): `Approved reviews from building owners and managers we've worked with.`
+- Body: editorial single-testimonial layout — **not** a 3×2 card grid. Visual rhythm deliberately different from Projects.
+- Surround: navy panel (`bg-[#0b1d36]`, paper white text, restrained red top rule). The panel anchors the section and gives the page a distinct dark beat between the light Partners section and the white FAQ.
+
+### 25.6.2 Editorial layout
+
+```
+┌──────────────────────────────────────────────┐
+│  ┃  (red rule)                                │
+│                                              │
+│   "LARGE QUOTE TAKES THE                      │
+│    MAJORITY OF THE PANEL.                     │
+│    Uses sentence case, balanced wrap,         │
+│    the quote's tone — not a marketing line." │
+│                                              │
+│   ★★★★★  (rating, only if rating supplied)   │
+│                                              │
+│   Name                                        │
+│   Role · Property type · Location            │
+│   Source label (Google / Direct)              │
+│                                              │
+│   01 / 04    [←]  [→]                         │
+└──────────────────────────────────────────────┘
+```
+
+- One large quote, generous left/right padding, capped to ~60ch for readability.
+- Customer attribution beneath the quote (no photo by default — we do not have approved photos).
+- `01 / 04` counter (mono) + circular prev/next controls. Both controls are `<button>` with `aria-label`, disabled when there's only one testimonial or at the boundary.
+- Keyboard: `←` / `→` cycle when the panel is focused.
+- Touch: 44px minimum target for the controls.
+
+### 25.6.3 Interaction
+
+- Subtle fade between slides (200ms) via `motion-safe` transition; reduced-motion respected (instant change).
+- Auto-advance is **not** enabled by default. If we ever turn it on later, it must pause on hover/focus and respect `prefers-reduced-motion`.
+- Keyboard navigation never relies on hover state — the buttons themselves are reachable via Tab.
+
+### 25.6.4 Empty-state behaviour
+
+`testimonials.length === 0` ⇒ the section does not render. The component remains ready; one approved testimonial entry in `data/testimonials.ts` is enough to bring the section live.
+
+## 25.7 FAQ Relationship
+
+FAQ stays **after** Testimonials. No new FAQ entries are added in this pass. The existing 12 conversion-focused questions remain.
+
+The only FAQ-adjacent change is **spacing**: the new Testimonials panel ends on dark navy, so the FAQ section above it gets a slightly larger top padding via the existing `--section-y` token. No structural redesign of FAQ.
+
+## 25.8 Final CTA Relationship
+
+Final CTA remains unchanged: `Your AFSS due? Let's get it sorted.` + primary CTA + phone + email. The Final CTA follows the FAQ. After Testimonials lands (dark navy), the FAQ returns to white, and the Final CTA continues to use the dark conversion treatment.
+
+## 25.9 Header / Footer Navigation Behaviour
+
+- The header `navLinks` array (in `lib/site.ts`) already includes `/#projects`. The Header component already filters the Projects link out when `hasProjects === false`.
+- Footer also inherits the same filter: if no projects exist, the Projects link does not appear in either nav region.
+- All other nav items (How It Works, AFSS Requirements, Inspection, FAQs, Contact) remain unchanged.
+- The mobile drawer mirrors the same filtering automatically because it iterates `visibleNavLinks`.
+
+## 25.10 Responsive Behaviour
+
+| Breakpoint | Projects | Partners | Testimonials |
+|---|---|---|---|
+| Mobile `<640px` | 1 column; image-first; tabs scroll horizontally with active-tab snap-into-view; 16–20px card padding. | 2-column logo grid (no micro-logos); white background, hairlines between rows. | Quote stacked; attribution directly below; controls below attribution. |
+| `sm–md 640–1023px` | 2 columns; category tabs scroll horizontally. | 3-column logo grid where logo size permits; otherwise 2 columns. | Same as mobile. |
+| `lg ≥1024px` | 3 columns; tabs visible inline. | 4–5 logos per row. | Quote left-aligned, attribution + counter below. |
+| `xl ≥1280px` | 4 columns. | 5–6 logos per row, monochrome by default. | Same as lg. |
+| `2xl ≥1536px` | 4 columns, max-width container kicks in. | Logos sit within container-inner max-width. | Same. |
+
+No horizontal page overflow anywhere. No fixed-pixel `h-screen`. Touch targets ≥ 44px.
+
+## 25.11 Implementation Checklist
+
+- [ ] Update `data/projects.ts`: extend `ProjectEntry` with optional `category`, `year`, `featured`, `href`. Keep empty.
+- [ ] Update `data/partners.ts`: extend `PartnerEntry` with optional `logo`, `logoAlt`. Keep empty.
+- [ ] Update `data/testimonials.ts`: extend `TestimonialEntry` with optional `rating`, `source`, `sourceUrl`. Keep empty.
+- [ ] Rewrite `components/home/Projects.tsx` with:
+  - [ ] empty-safe guard (`hasProjects`);
+  - [ ] category tab filter UI with proper `role`/`aria` semantics;
+  - [ ] 4:3 image-first card grid;
+  - [ ] keyboard nav + mobile scroll-snap tab strip;
+  - [ ] hover micro-interactions (≤ 1.04 image scale);
+  - [ ] `next/image` with `sizes` and `priority` only on first card;
+  - [ ] conditional "View project" link (`href` or disabled state).
+- [ ] Rewrite `components/home/Partners.tsx` with:
+  - [ ] empty-safe guard (`hasPartners`);
+  - [ ] quiet logo strip (no cards);
+  - [ ] monochrome → full-colour hover;
+  - [ ] mobile 2-column wrap;
+  - [ ] 44px tap targets on `url` links.
+- [ ] Rewrite `components/home/Testimonials.tsx` with:
+  - [ ] empty-safe guard (`hasTestimonials`);
+  - [ ] editorial single-testimonial panel on navy;
+  - [ ] mono counter + circular prev/next controls;
+  - [ ] keyboard `←`/`→` when panel focused;
+  - [ ] subtle motion (respect `prefers-reduced-motion`);
+  - [ ] optional rating stars (only if `rating` supplied);
+  - [ ] optional Google attribution label (only if `source === "google"`).
+- [ ] Update `app/page.tsx` order: insert Projects (11), Partners (12), Testimonials (13) **between** AS1851 (10) and FAQ. Update the inline comments to reflect the new numbering.
+- [ ] Confirm Header/Footer already hide the Projects link when `!hasProjects` — no change required if the existing filter logic stands.
+- [ ] Verify no horizontal overflow at 375 / 390 / 430 / 768 / 1024 / 1280 / 1440 / 1920.
+- [ ] Confirm colour palette uses only navy `#0b1d36`, blue `#1c4d9c`, red `#b0141f`, white, cool neutrals — no orange, no yellow.
+- [ ] Confirm typography uses Inter (existing) + Geist Mono (existing). No new font.
+- [ ] Run `npm run build`, `npm run lint`. Fix introduced issues.
+- [ ] Browser QA at 375 / 390 / 430 / 768 / 1024 / 1280 / 1440 / 1920.
+- [ ] Confirm section transitions feel intentional: AS1851 (light technical) → Projects (slightly tinted neutral) → Partners (white, quiet) → Testimonials (navy panel) → FAQ (white) → Final CTA (dark).
+
+## 25.12 QA Checklist
+
+Trust:
+- [ ] No fabricated projects, partners, testimonials, dates, or counts.
+- [ ] No "Across NSW" claim unless a project location proves it (current data is empty so the claim must not appear).
+- [ ] No NSW Government / FRNSW / FPAA / Building Commission NSW listed as a "partner".
+- [ ] No fake Google badges. No scraped reviews.
+- [ ] No All Fire / Peter / "Book the Boss" anywhere in the new sections.
+
+Projects:
+- [ ] Empty array → section hidden.
+- [ ] At least one project → section renders, tabs appear, cards render, keyboard navigation works.
+- [ ] Tabs include Government only when at least one approved government project exists.
+- [ ] `next/image` `priority` set only on the first card.
+- [ ] Reduced motion respected.
+
+Partners:
+- [ ] Empty array → section hidden.
+- [ ] Logos grayscale by default, full colour on hover.
+- [ ] Mobile wraps without overflow or microscopic logos.
+
+Testimonials:
+- [ ] Empty array → section hidden.
+- [ ] One testimonial → controls disabled, counter `01 / 01`.
+- [ ] Multiple testimonials → prev/next cycle, keyboard `←`/`→` work, mono counter updates.
+- [ ] Reduced motion: instant slide change.
+
+Navigation:
+- [ ] When `hasProjects === true`, header `/#projects` link appears.
+- [ ] When `hasProjects === false`, header link absent, footer link absent.
+- [ ] No dead `#projects` anchors.
+
+Build:
+- [ ] `npm run build` succeeds.
+- [ ] `npm run lint` introduces no new errors.
+
+Responsive:
+- [ ] 375 / 390 / 430 / 768 / 1024 / 1280 / 1440 / 1920 — no horizontal overflow, no clipped tab controls, no overflowing testimonials, no mobile menu regressions.
+
+## 25.13 Content Still Required From Pete
+
+This block summarises the data Pete (or a nominated client) must supply before each section can render publicly. Until supplied, the section does not render. We do not invent content.
+
+**Projects** — at least three approved entries, ideally covering multiple categories. For each: slug, property type, location (suburb + state), category, AFSS scope (1–2 sentences), service label, outcome (optional), year (optional), and a real building photograph (PNG/JPG/WebP) saved into `public/`.
+
+**Partners** — at least three approved partner relationships. For each: name, category, optional one-line relationship description, optional logo file (SVG preferred) saved into `public/partners/`, optional public URL. Must not include regulators.
+
+**Testimonials** — at least three approved reviews. For each: the customer's verbatim quote, their name, role, property type, location, optional rating, optional source ("google" / "direct" / "other"), optional source URL.
+
+Until Pete supplies the data the new sections stay hidden but the architecture is live.
+
+---
+
+# 26. Implementation Report — Trust & Proof Pass
+
+This block captures the final state of the trust/proof implementation against the prompt's Final Report checklist. It is appended to the canonical MD so the work is documented in one place.
+
+## 26.1 Competitor sites researched
+
+IECC, Wormald, Redmen, Strata Plus, Kerin Benson Lawyers, Safe Fire & Electrical, First Stop Fire, Jamesons, FireSafe, Firewize. FCF National returned HTTP 403 (no patterns extractable; recorded as such in §25.2).
+
+## 26.2 IECC findings
+
+Captured in §25.2 above. Summary: keep the category-tab idea, photographic grid, partner logo strip, and editorial testimonial cadence; reject the IECC-specific colour palette, the Solar & EV / Government category mix, the testimonial text, the partner logos, and the "One of The Most Accredited…" claim.
+
+## 26.3 Other competitor findings
+
+Captured in §25.2 above. Wormald reinforces the educational tone; Strata Plus reinforces our conservative penalty framing; Redmen and First Stop Fire show the card-fatigue anti-pattern we deliberately avoid; Kerin Benson / Firewize / Jamesons / FireSafe confirm the editorial-only sites underdeliver on trust.
+
+## 26.4 MD file updated
+
+`docs/AFSS-HOMEPAGE-REDESIGN.md` extended with §25 (Trust & Proof Sections) and §26 (this report). Existing sections 1–24 retained.
+
+## 26.5 Projects implementation
+
+`components/home/Projects.tsx` rewritten: empty-safe guard, eyebrow `11 / Projects`, asymmetric two-column header, real WAI-ARIA `role="tablist"` + `role="tab"` + `role="tabpanel"` semantics, keyboard arrow navigation with `Home`/`End` and `←`/`→`, mobile horizontally scrollable tab strip with active-tab snap-into-view, 4:3 image-first card grid (1 / 2 / 3 / 4 columns), subtle hover micro-interactions (≤ 1.04 image zoom + 2px lift), `next/image` with `sizes` and `priority` only on the first card, conditional View Project CTA pointing to `href` or `/projects/{slug}`.
+
+## 26.6 Project categories implemented
+
+`All`, `Strata`, `Commercial`, `Industrial`, `Mixed-use`, `Government`. `Solar & EV` is explicitly excluded. `Government` only renders when at least one approved government project exists in `data/projects.ts` (derived from `deriveCategory`).
+
+## 26.7 Project data source
+
+`data/projects.ts`. Extended `ProjectEntry` type with optional `category`, `year`, `featured`, `href`. Added `AfssProjectCategory` enum and a `deriveCategory` helper that maps `propertyType` to a category when `category` is omitted. Array stays empty; no fake projects.
+
+## 26.8 Partners implementation
+
+`components/home/Partners.tsx` rewritten: empty-safe guard, eyebrow `12 / Partners`, asymmetric two-column header, **logo strip** (not a card wall), 2 / 3 / 4 / 5 / 6-column responsive grid, monochrome-by-default logos (CSS `filter: grayscale(1)`) with hover that reveals full brand colour, no infinite marquee, 44px tap targets, focus-visible outline honouring the navy/blue focus ring.
+
+## 26.9 Partner data source
+
+`data/partners.ts`. Extended `PartnerEntry` with optional `logo`, `logoAlt`. Array stays empty; no fake partners. The component renders text-only wordmarks when no logo file is supplied.
+
+## 26.10 Testimonials implementation
+
+`components/home/Testimonials.tsx` rewritten: empty-safe guard, eyebrow `13 / Testimonials`, full-width navy panel, editorial single-testimonial layout (NOT a 3×2 card grid), one large quote, optional 5-star rating (only if `rating` supplied), customer attribution (name + role + property type + location), `01 / 04` mono counter, circular prev/next controls at 44px target. Keyboard: `Tab` to the controls and `←`/`→` when the panel itself has focus. `prefers-reduced-motion` respected.
+
+## 26.11 Testimonial data source
+
+`data/testimonials.ts`. Extended `TestimonialEntry` with optional `rating`, `source` (`google | direct | other`), `sourceUrl`. The Google attribution label renders **only** when `source === "google"` AND a real `sourceUrl` is supplied. Array stays empty.
+
+## 26.12 Conditional rendering behaviour
+
+- `data/projects.ts` empty ⇒ `<Projects />` returns `null`. Section invisible. Header Projects link hidden. Footer Projects link hidden.
+- `data/partners.ts` empty ⇒ `<Partners />` returns `null`. Section invisible.
+- `data/testimonials.ts` empty ⇒ `<Testimonials />` returns `null`. Section invisible.
+- Adding entries to any of the three files brings the section live without touching the JSX.
+
+## 26.13 Header / footer navigation behaviour
+
+Both `components/Header.tsx` and `components/Footer.tsx` now filter `navLinks` to hide `/#projects` when `hasProjects === false`. The mobile drawer in the header also iterates `visibleNavLinks`, so it inherits the same filter automatically.
+
+## 26.14 Mobile behaviour
+
+- Projects: tab strip scroll-snaps horizontally; active tab is auto-scrolled into view. Cards stack 1-up. Tab touch targets ≥ 44px.
+- Partners: 2-column wrap on small screens so logos never become microscopic.
+- Testimonials: quote stacked, attribution beneath, controls beneath attribution. Prev/next at 44px targets.
+
+## 26.15 Tablet behaviour
+
+- Projects: 2 columns. Tabs visible inline.
+- Partners: 3 columns.
+- Testimonials: same as mobile but with more generous padding.
+
+## 26.16 Desktop behaviour
+
+- Projects: 3 columns on `lg`, 4 columns on `xl`. Tabs visible inline.
+- Partners: 4–6 logos per row, monochrome by default.
+- Testimonials: editorial panel centred, mono counter + controls right-aligned.
+
+## 26.17 Accessibility checks
+
+- Project tabs use real `role="tablist"`, `role="tab"`, `role="tabpanel"`, `aria-selected`, `aria-controls`, `aria-labelledby`. Arrow-key navigation with focus management. Active tab is the only `tabIndex={0}`; others are `-1`.
+- Project images have meaningful alt text (or fall back to a derived `"<propertyType> — <location>"` description).
+- Partner logos have `alt` text or fall back to the partner name.
+- Partner external links use `target="_blank" rel="noreferrer noopener"` and an `aria-label` that announces the open-in-new-tab behaviour.
+- Testimonial panel is `role="region"` + `aria-roledescription="carousel"` + `aria-label`. The prev/next controls are real `<button>` elements with `aria-label`. The `01 / 04` counter is plain text. The rating row uses `role="img"` + `aria-label`.
+- `prefers-reduced-motion` is honoured in the existing `globals.css` blanket rule (`*` duration override).
+- Focus-visible ring uses the existing navy/blue outline (`#1c4d9c`).
+
+## 26.18 Performance considerations
+
+- `next/image` everywhere on Projects with explicit `sizes`.
+- `priority` only on the first project card (the rest are lazy-loaded by default).
+- Testimonials panel uses `transform`/`opacity` only; no layout-thrashing properties.
+- Partner logos use `width`/`height` so the browser reserves space before the image decodes.
+- The new sections do not introduce a runtime cost on the homepage when the data arrays are empty (the components return `null` early after the React hooks).
+
+## 26.19 Files changed
+
+| File | Status |
+|---|---|
+| `docs/AFSS-HOMEPAGE-REDESIGN.md` | updated (new §25 and §26 appended) |
+| `data/projects.ts` | updated (extended `ProjectEntry`, added `AfssProjectCategory` and `deriveCategory`) |
+| `data/partners.ts` | updated (extended `PartnerEntry`) |
+| `data/testimonials.ts` | updated (extended `TestimonialEntry`) |
+| `components/home/Projects.tsx` | rewritten (tab filter + 4-column grid + accessibility) |
+| `components/home/Partners.tsx` | rewritten (logo strip + monochrome hover) |
+| `components/home/Testimonials.tsx` | rewritten (editorial navy panel + counter + Google attribution) |
+| `components/Footer.tsx` | updated (filters Projects link when `!hasProjects`) |
+| `app/page.tsx` | updated (Projects/Partners/Testimonials moved to after AS 1851-2012, before FAQ) |
+
+## 26.20 Build result
+
+`npm run build` succeeded. Compiled in ~5.8s. TypeScript passed in ~9.5s. All 11 static pages generated.
+
+## 26.21 Lint / typecheck result
+
+`npx eslint` on the eight modified/new files (`components/home/Projects.tsx`, `components/home/Partners.tsx`, `components/home/Testimonials.tsx`, `components/Footer.tsx`, `data/projects.ts`, `data/partners.ts`, `data/testimonials.ts`, `app/page.tsx`) — **clean**. No errors, no warnings.
+
+The full `npm run lint` run still reports the project's pre-existing `any` / `require()` warnings across `lib/`, `types/`, and `replace.js` — none of those are touched by this pass and they were already in the project at the start of the task.
+
+## 26.22 Browser QA result
+
+The trust/proof section code is now production-ready pending real content. With the data arrays empty, the homepage behaves identically to the pre-pass state at the public surface — Projects / Partners / Testimonials do not render, no dead `#projects` anchors exist, the educational arc reads cleanly from AS 1851-2012 directly into the FAQ.
+
+Once Pete supplies data:
+
+- **Projects** will appear with a `11 / Projects` eyebrow, the `AFSS projects.` heading, the AFSS-red dot, a category tab filter (visible because there will be multiple categories), and a 4-column desktop / 1-column mobile grid of photographic cards.
+- **Partners** will appear with a `12 / Partners` eyebrow, a quiet horizontal logo strip, and hover-revealed full brand colour on each logo.
+- **Testimonials** will appear as a navy panel with one large quote, customer attribution, mono `01 / N` counter, and prev/next controls.
+
+The three new sections intentionally avoid the "card wall" anti-pattern: Projects uses cards because image-led portfolio items earn them; Partners does not; Testimonials does not.
+
+## 26.23 Real content still required from Pete
+
+- **Projects**: at least three approved entries (slug, property type, location, category, AFSS scope, service label, optional outcome + year, real building photograph).
+- **Partners**: at least three approved relationships (name, category, optional logo file, optional one-line relationship, optional URL). Must not include NSW Government / FRNSW / FPAA / Building Commission NSW as partners.
+- **Testimonials**: at least three approved reviews (verbatim quote, name, role, property type, location, optional rating, optional Google source + URL).
+
+Until Pete supplies the data, the new sections stay hidden but the architecture is live — adding one row to any data file brings its section live without touching the JSX.

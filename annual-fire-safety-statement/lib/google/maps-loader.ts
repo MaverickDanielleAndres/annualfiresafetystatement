@@ -1,8 +1,15 @@
 /**
- * AFSS — Google Maps JavaScript loader (browser-only).
+ * AFSS — Google Maps JavaScript loader (browser-only, Street View only).
+ *
+ * The active AFSS customer flow uses Google Maps JS API for ONE
+ * thing only: rendering the building-confirmation `StreetViewPanorama`
+ * widget. Address autocomplete and reverse geocoding are handled by
+ * the Geoapify server-side proxies (`/api/afss/quote/address-search`
+ * and `/api/afss/quote/address-resolve`). The `places` and `geocoding`
+ * libraries are intentionally NOT loaded.
  *
  * Uses the CURRENT (2026) Google-recommended strategy:
- *   * A single <script src="...?loading=async&libraries=places,streetView,geometry">
+ *   * A single <script src="...?loading=async&libraries=streetView,geometry">
  *     is injected exactly once per page.
  *   * After the script resolves, we call `google.maps.importLibrary()`
  *     for the libraries we actually need. The loader caches the
@@ -16,8 +23,9 @@
  *     matches what AGENTS.md / Google Cloud docs recommend in 2026.
  *
  * Visibility: the API key is INTENTIONALLY exposed to the browser.
- * Google Cloud API-key restrictions (HTTP referrer + APIs) are the
- * security boundary.
+ * Google Cloud API-key restrictions (HTTP referrer + Maps JS API) are
+ * the security boundary. The Places and Geocoding APIs are no longer
+ * required by this code.
  */
 
 const GOOGLE_MAPS_SCRIPT_ID = 'afss-google-maps-js';
@@ -26,8 +34,12 @@ export interface GoogleMapsLoaderOptions {
   apiKey: string;
   language?: string;
   region?: string;
-  /** Libraries to pre-load. Keeping this small avoids loading bloat. */
-  libraries?: Array<'places' | 'streetView' | 'geometry' | 'geocoding' | 'maps' | 'core'>;
+  /**
+   * Libraries to pre-load. The AFSS flow uses ONLY `streetView` and
+   * `geometry`. `places` and `geocoding` were removed when the active
+   * address flow was migrated to Geoapify — do not re-add them here.
+   */
+  libraries?: Array<'streetView' | 'geometry' | 'maps' | 'core'>;
 }
 
 export type GoogleMapsNamespace = typeof globalThis.google.maps;
@@ -73,7 +85,7 @@ export function loadGoogleMaps(
     return scriptState.promise;
   }
 
-  const libraries = (opts.libraries ?? ['places', 'streetView', 'geometry']).join(
+  const libraries = (opts.libraries ?? ['streetView', 'geometry']).join(
     ','
   );
 
